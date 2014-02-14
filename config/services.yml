@@ -1,0 +1,13 @@
+services:
+    rxu.posts_merging.listener:
+        class: rxu\posts_merging\event\listener
+        arguments:
+            - @config
+            - @dbal.conn
+            - @auth
+            - @template
+            - @user
+            - %core.root_path%
+            - %core.php_ext%
+        tags:
+            - { name: event.listener }
