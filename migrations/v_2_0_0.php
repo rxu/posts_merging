@@ -50,17 +50,16 @@ class v_2_0_0 extends \phpbb\db\migration\migration
 			array('config.add', array('merge_no_topics', 0)),
 
 			// Current version
-			array('config.add', array('test_version', '2.0.0')),
-/*
+			array('config.add', array('posts_merging_version', '2.0.0')),
+
 			// Add ACP modules
-			array('module.add', array('acp', 'ACP_CAT_DOT_MODS', 'ACP_QUICKREPLY')),
-			array('module.add', array('acp', 'ACP_QUICKREPLY', array(
-					'module_basename'	=> '\tatiana5\quickreply\acp\quickreply_module',
-					'module_langname'	=> 'ACP_QR_CONFIG',
-					'module_mode'		=> 'config_quickreply',
-					'module_auth'		=> 'acl_a_quickreply',
+			array('module.add', array('acp', 'ACP_CAT_DOT_MODS', 'ACP_POSTS_MERGING')),
+			array('module.add', array('acp', 'ACP_POSTS_MERGING', array(
+					'module_basename'	=> '\rxu\posts_merging\acp\posts_merging_module',
+					'module_langname'	=> 'ACP_POSTS_MERGING',
+					'module_mode'		=> 'config_posts_merging',
+					'module_auth'		=> 'acl_a_board',
 			))),
-*/
 		);
 	}
 }

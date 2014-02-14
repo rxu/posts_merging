@@ -1,7 +1,7 @@
 <?php
 /** 
 *
-* posting [Russian]
+* posts_merging [Russian]
 *
 * @package posts_merging
 * @copyright (c) 2014 Ruslan Uzdenov (rxu)
@@ -35,7 +35,6 @@ if (empty($lang) || !is_array($lang))
 // in a url you again do not need to specify an order e.g., 'Click %sHERE%s' is fine
 
 $lang = array_merge($lang, array(
-
 	'MERGE_SEPARATOR'		=> "\n\n[size=85][color=green]Отправлено спустя %s %s %s:[/color][/size]\n",
 	'MERGE_SUBJECT'			=> "[size=85][color=green]%s[/color][/size]\n",
 
@@ -69,14 +68,4 @@ $lang = array_merge($lang, array(
 		2	=> '%d года',
 		3	=> '%d лет'
 	),
-	
-// ACP block
-	'MERGE_INTERVAL'				=> 'Интервал склеивания сообщений',
-	'MERGE_INTERVAL_EXPLAIN'		=> 'Количество часов, в течение которого сообщения пользователя будут склеены с его последним сообщением темы. Оставьте поле пустым или установите 0 для отключения этой функции.',
-	'MERGE_NO_TOPICS'				=> 'Темы без склеивания',
-	'MERGE_NO_TOPICS_EXPLAIN'		=> 'Список разделённых запятыми номеров тем, в которых склеивание сообщений отключено.',
-	'MERGE_NO_FORUMS'				=> 'Форумы без склеивания',
-	'MERGE_NO_FORUMS_EXPLAIN'		=> 'Список разделённых запятыми номеров форумов, в которых склеивание сообщений отключено.',
-
-
 ));
