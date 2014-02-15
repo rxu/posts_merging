@@ -4,7 +4,7 @@
 * posts_merging [Ukrainian]
 *
 * @package posts_merging
-* @copyright (c) 2014 Ruslan Uzdenov (rxu)
+* @copyright (c) 2014 Alex Fryschyn (Sherlock)
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License 
 *
 */
