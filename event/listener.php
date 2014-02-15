@@ -33,6 +33,7 @@ class listener implements EventSubscriberInterface
 		$this->config = $config;
 		$this->phpbb_root_path = $phpbb_root_path;
 		$this->php_ext = $php_ext;
+		$this->merge = true;
     }
 
 	static public function getSubscribedEvents()
@@ -73,16 +74,18 @@ class listener implements EventSubscriberInterface
 				trigger_error('NO_POST');
 			}
 
-			$merge = false;
 			$merge_interval = intval($this->config['merge_interval']) * 3600;
 			$current_time = time();
-			if (($current_time - $merge_post_data['topic_last_post_time']) < $merge_interval)
+
+			// Do not merge if the post is locked or if allowed merge period has left
+			if ($merge_post_data['post_edit_locked'] || (($current_time - $merge_post_data['topic_last_post_time']) > $merge_interval))
 			{
-				$merge = true;
+				$this->merge = false;
+				return;
 			}
 
-			// Do merging
-			if ($merge && $merge_post_data['poster_id'] == $this->user->data['user_id'] && $this->user->data['is_registered'] && $this->user->data['user_id'] != ANONYMOUS)
+			// Everything seems to be ok, do merging
+			if ($this->merge && $merge_post_data['poster_id'] == $this->user->data['user_id'] && $this->user->data['is_registered'] && $this->user->data['user_id'] != ANONYMOUS)
 			{
 				$this->user->add_lang_ext('rxu/posts_merging', 'posts_merging');
 
@@ -363,16 +366,21 @@ class listener implements EventSubscriberInterface
 
 	public function modify_viewtopic_rowset($event)
 	{
-		$rowset = $event['rowset_data'];
-		$rowset = array_merge($rowset, array('post_created'	=> $event['row']['post_created']));
-		$event['rowset_data'] = $rowset;
-	
+		if($this->merge)
+		{
+			$rowset = $event['rowset_data'];
+			$rowset = array_merge($rowset, array('post_created'	=> $event['row']['post_created']));
+			$event['rowset_data'] = $rowset;
+		}
 	}
 
 	public function modify_viewtopic_postrow($event)
 	{
-		$post_row = $event['post_row'];
-		$post_row['POST_DATE'] = (!$event['row']['post_created']) ? $this->user->format_date($event['row']['post_time']) : $this->user->format_date($event['row']['post_created']);
-		$event['post_row'] = $post_row;
+		if($this->merge)
+		{
+			$post_row = $event['post_row'];
+			$post_row['POST_DATE'] = (!$event['row']['post_created']) ? $this->user->format_date($event['row']['post_time']) : $this->user->format_date($event['row']['post_created']);
+			$event['post_row'] = $post_row;
+		}
 	}
 }
