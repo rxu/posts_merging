@@ -40,7 +40,7 @@ $lang = array_merge($lang, array(
 
 	'D_SECONDS'  => array(
 		1	=> '%d секунду',
-		2	=> '%d секундb',
+		2	=> '%d секунди',
 		3	=> '%d секунд'
 	),
 	'D_MINUTES'  => array(
