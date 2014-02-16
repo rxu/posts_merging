@@ -366,21 +366,15 @@ class listener implements EventSubscriberInterface
 
 	public function modify_viewtopic_rowset($event)
 	{
-		if($this->merge)
-		{
-			$rowset = $event['rowset_data'];
-			$rowset = array_merge($rowset, array('post_created'	=> $event['row']['post_created']));
-			$event['rowset_data'] = $rowset;
-		}
+		$rowset = $event['rowset_data'];
+		$rowset = array_merge($rowset, array('post_created'	=> $event['row']['post_created']));
+		$event['rowset_data'] = $rowset;
 	}
 
 	public function modify_viewtopic_postrow($event)
 	{
-		if($this->merge)
-		{
-			$post_row = $event['post_row'];
-			$post_row['POST_DATE'] = (!$event['row']['post_created']) ? $this->user->format_date($event['row']['post_time']) : $this->user->format_date($event['row']['post_created']);
-			$event['post_row'] = $post_row;
-		}
+		$post_row = $event['post_row'];
+		$post_row['POST_DATE'] = (!$event['row']['post_created']) ? $this->user->format_date($event['row']['post_time']) : $this->user->format_date($event['row']['post_created']);
+		$event['post_row'] = $post_row;
 	}
 }
