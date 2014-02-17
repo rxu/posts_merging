@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* @package test
+* @package posts_merging
 * @copyright (c) 2014 rxu
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -13,7 +13,7 @@ class v_2_0_0 extends \phpbb\db\migration\migration
 {
 	public function effectively_installed()
 	{
-		return isset($this->config['test_version']) && version_compare($this->config['test_version'], '2.0.0', '>=');
+		return isset($this->config['posts_merging_version']) && version_compare($this->config['posts_merging_version'], '2.0.0', '>=');
 	}
 
 	static public function depends_on()
