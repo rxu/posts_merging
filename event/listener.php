@@ -47,10 +47,9 @@ class listener implements EventSubscriberInterface
 
 	public function posts_merging($event)
 	{
-		global $phpbb_container, $message_parser;
+		global $post_data, $phpbb_container, $message_parser;
 
 		$data = $event['data'];
-		$post_data = $event['post_data'];
 
 		$post_need_approval = (!$this->auth->acl_get('f_noapprove', $data['forum_id']) && !$this->auth->acl_get('m_approve', $data['forum_id'])) ? true : false;
 
@@ -157,7 +156,7 @@ class listener implements EventSubscriberInterface
 				$sql_data[TOPICS_TABLE]['sql'] = array(
 					'topic_last_post_id'		=> $merge_post_id,
 					'topic_last_poster_id'		=> $poster_id,
-					'topic_last_poster_name'	=> (!$this->user->data['is_registered'] && $event['post_author_name']) ? $event['post_author_name'] : (($this->user->data['user_id'] != ANONYMOUS) ? $this->user->data['username'] : ''),
+					'topic_last_poster_name'	=> (!$this->user->data['is_registered'] && $event['username']) ? $event['username'] : (($this->user->data['user_id'] != ANONYMOUS) ? $this->user->data['username'] : ''),
 					'topic_last_poster_colour'	=> ($this->user->data['user_id'] != ANONYMOUS) ? $this->user->data['user_colour'] : '',
 					'topic_last_post_subject'	=> utf8_normalize_nfc($merge_post_data['post_subject']),
 					'topic_last_post_time'		=> $post_time,
@@ -171,7 +170,7 @@ class listener implements EventSubscriberInterface
 						'forum_last_post_subject'	=> utf8_normalize_nfc($merge_post_data['post_subject']),
 						'forum_last_post_time'		=> $post_time,
 						'forum_last_poster_id'		=> $poster_id,
-						'forum_last_poster_name'	=> (!$this->user->data['is_registered'] && $event['post_author_name']) ? $event['post_author_name'] : (($this->user->data['user_id'] != ANONYMOUS) ? $this->user->data['username'] : ''),
+						'forum_last_poster_name'	=> (!$this->user->data['is_registered'] && $event['username']) ? $event['username'] : (($this->user->data['user_id'] != ANONYMOUS) ? $this->user->data['username'] : ''),
 						'forum_last_poster_colour'	=> ($this->user->data['user_id'] != ANONYMOUS) ? $this->user->data['user_colour'] : '',
 					);	
 				}
@@ -327,7 +326,7 @@ class listener implements EventSubscriberInterface
 					// If a username was supplied or the poster is a guest, we will use the supplied username.
 					// Doing it this way we can use "...post by guest-username..." in notifications when
 					// "guest-username" is supplied or ommit the username if it is not.
-					$username = ($event['post_author_name'] !== '' || !$this->user->data['is_registered']) ? $event['post_author_name'] : $this->user->data['username'];
+					$username = ($event['username'] !== '' || !$this->user->data['is_registered']) ? $event['username'] : $this->user->data['username'];
 
 					// Send Notifications
 					$notification_data = array_merge($data, array(
