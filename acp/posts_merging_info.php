@@ -18,7 +18,7 @@ class posts_merging_info
 			'title'		=> 'ACP_POSTS_MERGING',
 			'version'	=> '2.0.0',
 			'modes'		=> array(
-				'config_posts_merging'		=> array('title' => 'ACP_POSTS_MERGING', 'auth' => 'acl_a_board', 'cat' => array('ACP_POSTS_MERGING')),
+				'config_posts_merging'		=> array('title' => 'ACP_POSTS_MERGING', 'auth' => 'ext_rxu/posts_merging && acl_a_board', 'cat' => array('ACP_POSTS_MERGING')),
 			),
 		);
 	}

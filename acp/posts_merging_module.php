@@ -12,8 +12,7 @@ namespace rxu\posts_merging\acp;
 class posts_merging_module
 {
 	var $u_action;
-	var $max_rep_id;
-	var $step = 1000;
+	var $new_config = array();
 
 	function main($id, $mode)
 	{

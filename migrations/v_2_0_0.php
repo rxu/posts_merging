@@ -58,7 +58,7 @@ class v_2_0_0 extends \phpbb\db\migration\migration
 					'module_basename'	=> '\rxu\posts_merging\acp\posts_merging_module',
 					'module_langname'	=> 'ACP_POSTS_MERGING',
 					'module_mode'		=> 'config_posts_merging',
-					'module_auth'		=> 'acl_a_board',
+					'module_auth'		=> 'ext_rxu/posts_merging && acl_a_board',
 			))),
 		);
 	}
