@@ -102,7 +102,7 @@ class listener implements EventSubscriberInterface
 
 				// Decode addon message text for update properly
 				$message_parser->decode_message($data['bbcode_uid']);
-				$data['message'] = html_entity_decode($message_parser->message,  ENT_COMPAT, 'UTF-8');
+				$data['message'] = $message_parser->message;
 
 				unset($message_parser);
 
@@ -182,6 +182,9 @@ class listener implements EventSubscriberInterface
 				$sql = 'UPDATE ' . TOPICS_TABLE . ' SET ' . $this->db->sql_build_array('UPDATE', $sql_data[TOPICS_TABLE]['sql']) . ' WHERE topic_id = ' . $data['topic_id']; 
 				$this->db->sql_query($sql);
 
+				$sql = 'UPDATE ' . USERS_TABLE . "	SET user_lastpost_time = $post_time	WHERE user_id = " . (int) $this->user->data['user_id'];
+				$this->db->sql_query($sql);
+
 				if ($merge_post_data['topic_type'] != POST_GLOBAL)
 				{
 					$sql = 'UPDATE ' . FORUMS_TABLE . ' SET ' . $this->db->sql_build_array('UPDATE', $sql_data[FORUMS_TABLE]['sql']) . ' WHERE forum_id = ' . $data['forum_id']; 
@@ -205,7 +208,7 @@ class listener implements EventSubscriberInterface
 							FROM ' . ATTACHMENTS_TABLE . '
 							WHERE ' . $this->db->sql_in_set('attach_id', array_keys($orphan_rows)) . '
 								AND is_orphan = 1
-								AND poster_id = ' . $this->user->data['user_id'];
+								AND poster_id = ' . (int) $this->user->data['user_id'];
 						$result = $this->db->sql_query($sql);
 
 						$orphan_rows = array();
@@ -254,7 +257,7 @@ class listener implements EventSubscriberInterface
 							$sql = 'UPDATE ' . ATTACHMENTS_TABLE . ' SET ' . $this->db->sql_build_array('UPDATE', $attach_sql) . '
 								WHERE attach_id = ' . $attach_row['attach_id'] . '
 									AND is_orphan = 1
-									AND poster_id = ' . $this->user->data['user_id'];
+									AND poster_id = ' . (int) $this->user->data['user_id'];
 							$this->db->sql_query($sql);
 						}
 					}
@@ -297,7 +300,7 @@ class listener implements EventSubscriberInterface
 				{
 					$sql = 'SELECT mark_time
 						FROM ' . FORUMS_TRACK_TABLE . '
-						WHERE user_id = ' . $this->user->data['user_id'] . '
+						WHERE user_id = ' . (int) $this->user->data['user_id'] . '
 							AND forum_id = ' . $data['forum_id'];
 					$result = $this->db->sql_query($sql);
 					$f_mark_time = (int) $this->db->sql_fetchfield('mark_time');
