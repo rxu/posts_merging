@@ -50,6 +50,7 @@ class listener implements EventSubscriberInterface
 		global $post_data, $phpbb_container, $message_parser;
 
 		$data = $event['data'];
+		$mode = $event['mode'];
 
 		$post_need_approval = (!$this->auth->acl_get('f_noapprove', $data['forum_id']) && !$this->auth->acl_get('m_approve', $data['forum_id'])) ? true : false;
 
@@ -72,6 +73,8 @@ class listener implements EventSubscriberInterface
 				$this->user->setup('posting');
 				trigger_error('NO_POST');
 			}
+
+			$data['post_id'] = $merge_post_id;
 
 			$merge_interval = intval($this->config['merge_interval']) * 3600;
 			$current_time = time();
@@ -342,10 +345,24 @@ class listener implements EventSubscriberInterface
 					));
 
 					$phpbb_notifications = $phpbb_container->get('notification_manager');
-					$phpbb_notifications->add_notifications(array(
-						'quote',
-						'topic',
-					), $notification_data);
+					switch ($mode)
+					{
+						case 'post':
+							$phpbb_notifications->add_notifications(array(
+								'quote',
+								'topic',
+							), $notification_data);
+						break;
+
+						case 'reply':
+						case 'quote':
+							$phpbb_notifications->add_notifications(array(
+								'quote',
+								'bookmark',
+								'post',
+							), $notification_data);
+						break;
+					}
 				}
 
 				//Generate redirection URL and redirecting
