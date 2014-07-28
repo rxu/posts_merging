@@ -24,6 +24,15 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class listener implements EventSubscriberInterface
 {
+	protected $template;
+	protected $user;
+	protected $auth;
+	protected $db;
+	protected $config;
+	protected $phpbb_root_path;
+	protected $php_ext;
+	protected $merge;
+
     public function __construct(\phpbb\config\config $config, \phpbb\db\driver\driver_interface $db, \phpbb\auth\auth $auth, \phpbb\template\template $template, \phpbb\user $user, $phpbb_root_path, $php_ext)
     {
         $this->template = $template;
@@ -166,17 +175,14 @@ class listener implements EventSubscriberInterface
 					'topic_attachment'			=> (!empty($data['attachment_data']) || (isset($merge_post_data['topic_attachment']) && $merge_post_data['topic_attachment'])) ? 1 : 0,
 				);	
 
-				if ($merge_post_data['topic_type'] != POST_GLOBAL)
-				{
-					$sql_data[FORUMS_TABLE]['sql'] = array(
-						'forum_last_post_id'		=> $merge_post_id,
-						'forum_last_post_subject'	=> utf8_normalize_nfc($merge_post_data['post_subject']),
-						'forum_last_post_time'		=> $post_time,
-						'forum_last_poster_id'		=> $poster_id,
-						'forum_last_poster_name'	=> (!$this->user->data['is_registered'] && $event['username']) ? $event['username'] : (($this->user->data['user_id'] != ANONYMOUS) ? $this->user->data['username'] : ''),
-						'forum_last_poster_colour'	=> ($this->user->data['user_id'] != ANONYMOUS) ? $this->user->data['user_colour'] : '',
-					);	
-				}
+				$sql_data[FORUMS_TABLE]['sql'] = array(
+					'forum_last_post_id'		=> $merge_post_id,
+					'forum_last_post_subject'	=> utf8_normalize_nfc($merge_post_data['post_subject']),
+					'forum_last_post_time'		=> $post_time,
+					'forum_last_poster_id'		=> $poster_id,
+					'forum_last_poster_name'	=> (!$this->user->data['is_registered'] && $event['username']) ? $event['username'] : (($this->user->data['user_id'] != ANONYMOUS) ? $this->user->data['username'] : ''),
+					'forum_last_poster_colour'	=> ($this->user->data['user_id'] != ANONYMOUS) ? $this->user->data['user_colour'] : '',
+				);	
 
 				// Update post information - submit merged post
 				$sql = 'UPDATE ' . POSTS_TABLE . ' SET ' . $this->db->sql_build_array('UPDATE', $sql_data[POSTS_TABLE]['sql']) . " WHERE post_id = $merge_post_id";
@@ -188,11 +194,8 @@ class listener implements EventSubscriberInterface
 				$sql = 'UPDATE ' . USERS_TABLE . "	SET user_lastpost_time = $post_time	WHERE user_id = " . (int) $this->user->data['user_id'];
 				$this->db->sql_query($sql);
 
-				if ($merge_post_data['topic_type'] != POST_GLOBAL)
-				{
-					$sql = 'UPDATE ' . FORUMS_TABLE . ' SET ' . $this->db->sql_build_array('UPDATE', $sql_data[FORUMS_TABLE]['sql']) . ' WHERE forum_id = ' . $data['forum_id']; 
-					$this->db->sql_query($sql);
-				}
+				$sql = 'UPDATE ' . FORUMS_TABLE . ' SET ' . $this->db->sql_build_array('UPDATE', $sql_data[FORUMS_TABLE]['sql']) . ' WHERE forum_id = ' . $data['forum_id']; 
+				$this->db->sql_query($sql);
 
 				// Submit Attachments
 				if (!empty($data['attachment_data']))
@@ -291,7 +294,7 @@ class listener implements EventSubscriberInterface
 						trigger_error($error);
 					}
 
-					$search->index('edit', $merge_post_id, $merge_post_data['post_text'], $subject, $poster_id, ($merge_post_data['topic_type'] == POST_GLOBAL) ? 0 : $data['forum_id']);
+					$search->index('edit', $merge_post_id, $merge_post_data['post_text'], $subject, $poster_id, $data['forum_id']);
 				}
 
 				// Mark the post and the topic read
