@@ -186,13 +186,13 @@ class listener implements EventSubscriberInterface
 				$sql = 'UPDATE ' . POSTS_TABLE . ' SET ' . $this->db->sql_build_array('UPDATE', $sql_data[POSTS_TABLE]['sql']) . " WHERE post_id = $merge_post_id";
 				$this->db->sql_query($sql);
 
-				$sql = 'UPDATE ' . TOPICS_TABLE . ' SET ' . $this->db->sql_build_array('UPDATE', $sql_data[TOPICS_TABLE]['sql']) . ' WHERE topic_id = ' . $data['topic_id']; 
+				$sql = 'UPDATE ' . TOPICS_TABLE . ' SET ' . $this->db->sql_build_array('UPDATE', $sql_data[TOPICS_TABLE]['sql']) . ' WHERE topic_id = ' . $data['topic_id'];
 				$this->db->sql_query($sql);
 
 				$sql = 'UPDATE ' . USERS_TABLE . "	SET user_lastpost_time = $post_time	WHERE user_id = " . (int) $this->user->data['user_id'];
 				$this->db->sql_query($sql);
 
-				$sql = 'UPDATE ' . FORUMS_TABLE . ' SET ' . $this->db->sql_build_array('UPDATE', $sql_data[FORUMS_TABLE]['sql']) . ' WHERE forum_id = ' . $data['forum_id']; 
+				$sql = 'UPDATE ' . FORUMS_TABLE . ' SET ' . $this->db->sql_build_array('UPDATE', $sql_data[FORUMS_TABLE]['sql']) . ' WHERE forum_id = ' . $data['forum_id'];
 				$this->db->sql_query($sql);
 
 				// Submit Attachments
@@ -370,7 +370,7 @@ class listener implements EventSubscriberInterface
 				$params = $add_anchor = '';
 				$params .= '&amp;t=' . $data['topic_id'];
 				$params .= '&amp;p=' . $merge_post_id;
-				$add_anchor = '#p' . $merge_post_id;	
+				$add_anchor = '#p' . $merge_post_id;
 				$url = "{$this->phpbb_root_path}viewtopic.$this->php_ext";
 				$url = append_sid($url, 'f=' . $data['forum_id'] . $params) . $add_anchor;
 
