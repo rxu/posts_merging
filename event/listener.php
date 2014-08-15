@@ -399,7 +399,7 @@ class listener implements EventSubscriberInterface
 					'update_search_index',
 					'url',
 				);
-				extract($phpbb_dispatcher->trigger_event('core.submit_post_end', compact($vars)));
+				extract($phpbb_dispatcher->trigger_event('rxu.PostsMerging.posts_merging_end', compact($vars)));
 				
 				trigger_error($message);
 			}
