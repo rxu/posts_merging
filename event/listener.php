@@ -56,7 +56,7 @@ class listener implements EventSubscriberInterface
 
 	public function posts_merging($event)
 	{
-		global $post_data, $phpbb_container, $message_parser;
+		global $post_data, $phpbb_container, $message_parser, $phpbb_dispatcher;
 
 		$mode = $event['mode'];
 		$subject = $event['subject'];
