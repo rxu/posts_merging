@@ -58,8 +58,14 @@ class listener implements EventSubscriberInterface
 	{
 		global $post_data, $phpbb_container, $message_parser;
 
-		$data = $event['data'];
 		$mode = $event['mode'];
+		$subject = $event['subject'];
+		$username = $event['username'];
+		$topic_type = $event['topic_type'];
+		$poll = $event['poll'];
+		$data = $event['data'];
+		$update_message = $event['update_message'];
+		$update_search_index = $event['update_search_index'];
 
 		$post_need_approval = (!$this->auth->acl_get('f_noapprove', $data['forum_id']) && !$this->auth->acl_get('m_approve', $data['forum_id'])) ? true : false;
 
@@ -373,14 +379,28 @@ class listener implements EventSubscriberInterface
 				$params .= '&amp;t=' . $data['topic_id'];
 				$params .= '&amp;p=' . $merge_post_id;
 				$add_anchor = '#p' . $merge_post_id;	
-				$redirect_url = "{$this->phpbb_root_path}viewtopic.$this->php_ext";
-				$redirect_url = append_sid($redirect_url, 'f=' . $data['forum_id'] . $params) . $add_anchor;
+				$url = "{$this->phpbb_root_path}viewtopic.$this->php_ext";
+				$url = append_sid($url, 'f=' . $data['forum_id'] . $params) . $add_anchor;
 
-				meta_refresh(3, $redirect_url);
+				meta_refresh(3, $url);
 
 				$message = (!$this->auth->acl_get('f_noapprove', $merge_post_data['forum_id']) && !$this->auth->acl_get('m_approve', $merge_post_data['forum_id'])) ? 'POST_STORED_MOD' : 'POST_STORED';
-				$message = $this->user->lang[$message] . (($this->auth->acl_get('f_noapprove', $merge_post_data['forum_id']) || $this->auth->acl_get('m_approve', $merge_post_data['forum_id'])) ? '<br /><br />' . sprintf($this->user->lang['VIEW_MESSAGE'], '<a href="' . $redirect_url . '">', '</a>') : '');
+				$message = $this->user->lang[$message] . (($this->auth->acl_get('f_noapprove', $merge_post_data['forum_id']) || $this->auth->acl_get('m_approve', $merge_post_data['forum_id'])) ? '<br /><br />' . sprintf($this->user->lang['VIEW_MESSAGE'], '<a href="' . $url . '">', '</a>') : '');
 				$message .= '<br /><br />' . sprintf($this->user->lang['RETURN_FORUM'], '<a href="' . append_sid("{$this->phpbb_root_path}viewforum.$this->php_ext", 'f=' . $merge_post_data['forum_id']) . '">', '</a>');
+				
+				$vars = array(
+					'mode',
+					'subject',
+					'username',
+					'topic_type',
+					'poll',
+					'data',
+					'update_message',
+					'update_search_index',
+					'url',
+				);
+				extract($phpbb_dispatcher->trigger_event('core.submit_post_end', compact($vars)));
+				
 				trigger_error($message);
 			}
 		}
