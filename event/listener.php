@@ -125,9 +125,6 @@ class listener implements EventSubscriberInterface
 					}
 				}
 
-				// Make sure the message is safe
-				set_var($merge_post_data['post_text'], $merge_post_data['post_text'], 'string', true);
-
 				// Prepare message separator
 				$datetime_new = date_create('@' . (string) $current_time);
 				$datetime_old = date_create('@' . (string) $merge_post_data['post_time']);
@@ -268,8 +265,8 @@ class listener implements EventSubscriberInterface
 
 					if ($space_taken && $files_added)
 					{
-						set_config('upload_dir_size', $this->config['upload_dir_size'] + $space_taken, true);
-						set_config('num_files', $this->config['num_files'] + $files_added, true);
+						$this->config->set('upload_dir_size', $this->config['upload_dir_size'] + $space_taken, true);
+						$this->config->set('num_files', $this->config['num_files'] + $files_added, true);
 					}
 				}
 
@@ -374,16 +371,10 @@ class listener implements EventSubscriberInterface
 				$url = "{$this->phpbb_root_path}viewtopic.$this->php_ext";
 				$url = append_sid($url, 'f=' . $data['forum_id'] . $params) . $add_anchor;
 
-				meta_refresh(3, $url);
-
-				$message = (!$this->auth->acl_get('f_noapprove', $merge_post_data['forum_id']) && !$this->auth->acl_get('m_approve', $merge_post_data['forum_id'])) ? 'POST_STORED_MOD' : 'POST_STORED';
-				$message = $this->user->lang[$message] . (($this->auth->acl_get('f_noapprove', $merge_post_data['forum_id']) || $this->auth->acl_get('m_approve', $merge_post_data['forum_id'])) ? '<br /><br />' . sprintf($this->user->lang['VIEW_MESSAGE'], '<a href="' . $url . '">', '</a>') : '');
-				$message .= '<br /><br />' . sprintf($this->user->lang['RETURN_FORUM'], '<a href="' . append_sid("{$this->phpbb_root_path}viewforum.$this->php_ext", 'f=' . $merge_post_data['forum_id']) . '">', '</a>');
-
 				/**
 				* Modify the data for post submitting
 				*
-				* @event rxu.PostsMerging.posts_merging_end
+				* @event rxu.posts_merging.posts_merging_end
 				* @var	string	mode				Variable containing posting mode value
 				* @var	string	subject				Variable containing post subject value
 				* @var	string	username			Variable containing post author name
@@ -406,7 +397,13 @@ class listener implements EventSubscriberInterface
 					'update_search_index',
 					'url',
 				);
-				extract($phpbb_dispatcher->trigger_event('rxu.PostsMerging.posts_merging_end', compact($vars)));
+				extract($phpbb_dispatcher->trigger_event('rxu.posts_merging.posts_merging_end', compact($vars)));
+
+				meta_refresh(3, $url);
+
+				$message = (!$this->auth->acl_get('f_noapprove', $merge_post_data['forum_id']) && !$this->auth->acl_get('m_approve', $merge_post_data['forum_id'])) ? 'POST_STORED_MOD' : 'POST_STORED';
+				$message = $this->user->lang[$message] . (($this->auth->acl_get('f_noapprove', $merge_post_data['forum_id']) || $this->auth->acl_get('m_approve', $merge_post_data['forum_id'])) ? '<br /><br />' . sprintf($this->user->lang['VIEW_MESSAGE'], '<a href="' . $url . '">', '</a>') : '');
+				$message .= '<br /><br />' . sprintf($this->user->lang['RETURN_FORUM'], '<a href="' . append_sid("{$this->phpbb_root_path}viewforum.$this->php_ext", 'f=' . $merge_post_data['forum_id']) . '">', '</a>');
 
 				trigger_error($message);
 			}

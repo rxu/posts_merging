@@ -16,8 +16,7 @@ class posts_merging_module
 
 	function main($id, $mode)
 	{
-		global $cache, $config, $db, $user, $auth, $template, $request;
-		global $phpbb_root_path, $phpEx, $phpbb_admin_path, $phpbb_container;
+		global $config, $request, $template, $user;
 
 		$this->page_title = 'ACP_POSTS_MERGING';
 		$this->tpl_name = 'acp_posts_merging';
@@ -43,7 +42,7 @@ class posts_merging_module
 		}
 
 		$this->new_config = $config;
-		$cfg_array = (isset($_REQUEST['config'])) ? utf8_normalize_nfc(request_var('config', array('' => ''), true)) : $this->new_config;
+		$cfg_array = (isset($_REQUEST['config'])) ? utf8_normalize_nfc($request->variable('config', array('' => ''), true)) : $this->new_config;
 		$error = array();
 
 		// We validate the complete config if wished
@@ -71,7 +70,7 @@ class posts_merging_module
 
 			if ($submit)
 			{
-				set_config($config_name, $config_value);
+				$config->set($config_name, $config_value);
 			}
 		}
 
