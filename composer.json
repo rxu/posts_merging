@@ -1,5 +1,5 @@
 {
-    "name": "rxu/posts_merging",
+    "name": "rxu/PostsMerging",
     "type": "phpbb-extension",
     "description": "Adds an option to merge current post with previous if the former one is by same author.",
     "homepage": "http://www.phpbbguru.net",

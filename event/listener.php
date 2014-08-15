@@ -1,21 +1,13 @@
 <?php
 /**
  *
- * @package posts_merging
+ * @package PostsMerging
  * @copyright (c) 2014 Ruslan Uzdenov (rxu)
  * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
  *
  */
 
-namespace rxu\posts_merging\event;
-
-/**
-* @ignore
-*/
-if (!defined('IN_PHPBB'))
-{
-    exit;
-}
+namespace rxu\PostsMerging\event;
 
 /**
 * Event listener
@@ -33,17 +25,17 @@ class listener implements EventSubscriberInterface
 	protected $php_ext;
 	protected $merge;
 
-    public function __construct(\phpbb\config\config $config, \phpbb\db\driver\driver_interface $db, \phpbb\auth\auth $auth, \phpbb\template\template $template, \phpbb\user $user, $phpbb_root_path, $php_ext)
-    {
-        $this->template = $template;
-        $this->user = $user;
+	public function __construct(\phpbb\config\config $config, \phpbb\db\driver\driver_interface $db, \phpbb\auth\auth $auth, \phpbb\template\template $template, \phpbb\user $user, $phpbb_root_path, $php_ext)
+	{
+		$this->template = $template;
+		$this->user = $user;
 		$this->auth = $auth;
 		$this->db = $db;
 		$this->config = $config;
 		$this->phpbb_root_path = $phpbb_root_path;
 		$this->php_ext = $php_ext;
 		$this->merge = true;
-    }
+	}
 
 	static public function getSubscribedEvents()
 	{
@@ -104,7 +96,7 @@ class listener implements EventSubscriberInterface
 			// Everything seems to be ok, do merging
 			if ($this->merge && $merge_post_data['poster_id'] == $this->user->data['user_id'] && $this->user->data['is_registered'] && $this->user->data['user_id'] != ANONYMOUS)
 			{
-				$this->user->add_lang_ext('rxu/posts_merging', 'posts_merging');
+				$this->user->add_lang_ext('rxu/PostsMerging', 'posts_merging');
 
 				// Handle old message
 				$message_parser->message = &$merge_post_data['post_text'];
@@ -149,7 +141,7 @@ class listener implements EventSubscriberInterface
 				{
 					$separator .= sprintf($this->user->lang['MERGE_SUBJECT'], $subject);
 				}
-				$options = '';		
+				$options = '';
 
 				// Merge posts
 				$merge_post_data['post_text'] = $merge_post_data['post_text'] . $separator . $data['message'];
@@ -169,7 +161,7 @@ class listener implements EventSubscriberInterface
 					'post_created'		=> ($merge_post_data['post_created']) ? $merge_post_data['post_created'] : $merge_post_data['post_time'],
 					'post_time'			=> $post_time,
 					'post_attachment'	=> (!empty($data['attachment_data'])) ? 1 : ($merge_post_data['post_attachment'] ? 1 : 0),
-				);		
+				);
 
 				$sql_data[TOPICS_TABLE]['sql'] = array(
 					'topic_last_post_id'		=> $merge_post_id,
@@ -179,7 +171,7 @@ class listener implements EventSubscriberInterface
 					'topic_last_post_subject'	=> utf8_normalize_nfc($merge_post_data['post_subject']),
 					'topic_last_post_time'		=> $post_time,
 					'topic_attachment'			=> (!empty($data['attachment_data']) || (isset($merge_post_data['topic_attachment']) && $merge_post_data['topic_attachment'])) ? 1 : 0,
-				);	
+				);
 
 				$sql_data[FORUMS_TABLE]['sql'] = array(
 					'forum_last_post_id'		=> $merge_post_id,
@@ -188,7 +180,7 @@ class listener implements EventSubscriberInterface
 					'forum_last_poster_id'		=> $poster_id,
 					'forum_last_poster_name'	=> (!$this->user->data['is_registered'] && $event['username']) ? $event['username'] : (($this->user->data['user_id'] != ANONYMOUS) ? $this->user->data['username'] : ''),
 					'forum_last_poster_colour'	=> ($this->user->data['user_id'] != ANONYMOUS) ? $this->user->data['user_colour'] : '',
-				);	
+				);
 
 				// Update post information - submit merged post
 				$sql = 'UPDATE ' . POSTS_TABLE . ' SET ' . $this->db->sql_build_array('UPDATE', $sql_data[POSTS_TABLE]['sql']) . " WHERE post_id = $merge_post_id";
@@ -387,7 +379,22 @@ class listener implements EventSubscriberInterface
 				$message = (!$this->auth->acl_get('f_noapprove', $merge_post_data['forum_id']) && !$this->auth->acl_get('m_approve', $merge_post_data['forum_id'])) ? 'POST_STORED_MOD' : 'POST_STORED';
 				$message = $this->user->lang[$message] . (($this->auth->acl_get('f_noapprove', $merge_post_data['forum_id']) || $this->auth->acl_get('m_approve', $merge_post_data['forum_id'])) ? '<br /><br />' . sprintf($this->user->lang['VIEW_MESSAGE'], '<a href="' . $url . '">', '</a>') : '');
 				$message .= '<br /><br />' . sprintf($this->user->lang['RETURN_FORUM'], '<a href="' . append_sid("{$this->phpbb_root_path}viewforum.$this->php_ext", 'f=' . $merge_post_data['forum_id']) . '">', '</a>');
-				
+
+				/**
+				* Modify the data for post submitting
+				*
+				* @event rxu.PostsMerging.posts_merging_end
+				* @var	string	mode				Variable containing posting mode value
+				* @var	string	subject				Variable containing post subject value
+				* @var	string	username			Variable containing post author name
+				* @var	int		topic_type			Variable containing topic type value
+				* @var	array	poll				Array with the poll data for the post
+				* @var	array	data				Array with the data for the post
+				* @var	bool	update_message		Flag indicating if the post will be updated
+				* @var	bool	update_search_index	Flag indicating if the search index will be updated
+				* @var	string	url					The "Return to topic" URL
+				* @since 2.0.0
+				*/
 				$vars = array(
 					'mode',
 					'subject',
@@ -400,7 +407,7 @@ class listener implements EventSubscriberInterface
 					'url',
 				);
 				extract($phpbb_dispatcher->trigger_event('rxu.PostsMerging.posts_merging_end', compact($vars)));
-				
+
 				trigger_error($message);
 			}
 		}

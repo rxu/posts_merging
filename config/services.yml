@@ -1,6 +1,6 @@
 services:
-    rxu.posts_merging.listener:
-        class: rxu\posts_merging\event\listener
+    rxu.PostsMerging.listener:
+        class: rxu\PostsMerging\event\listener
         arguments:
             - @config
             - @dbal.conn

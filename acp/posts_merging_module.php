@@ -1,13 +1,13 @@
 <?php
 /**
 *
-* @package posts_merging
+* @package PostsMerging
 * @copyright (c) 2014 Ruslan Uzdenov (rxu)
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
 */
 
-namespace rxu\posts_merging\acp;
+namespace rxu\PostsMerging\acp;
 
 class posts_merging_module
 {
@@ -32,11 +32,11 @@ class posts_merging_module
 				'legend1'	=> 'ACP_POSTS_MERGING',
 						'merge_interval'		=> array('lang' => 'MERGE_INTERVAL',	'validate' => 'int',	'type' => 'text:3:4', 'explain' => true, 'append' => ' ' . $user->lang['HOURS']),
 						'merge_no_forums'		=> array('lang' => 'MERGE_NO_FORUMS',	'validate' => 'string',	'type' => 'text:5:255', 'explain' => true),
-						'merge_no_topics'		=> array('lang' => 'MERGE_NO_TOPICS',	'validate' => 'string',	'type' => 'text:5:255', 'explain' => true),				
+						'merge_no_topics'		=> array('lang' => 'MERGE_NO_TOPICS',	'validate' => 'string',	'type' => 'text:5:255', 'explain' => true),		
 				'legend2'	=> 'ACP_SUBMIT_CHANGES',
 			),
 		);
-		
+
 		if (isset($display_vars['lang']))
 		{
 			$user->add_lang($display_vars['lang']);

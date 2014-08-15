@@ -1,13 +1,13 @@
 <?php
 /**
 *
-* @package posts_merging
+* @package PostsMerging
 * @copyright (c) 2014 rxu
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
 */
 
-namespace rxu\posts_merging\migrations;
+namespace rxu\PostsMerging\migrations;
 
 class v_2_0_0 extends \phpbb\db\migration\migration
 {
@@ -34,7 +34,7 @@ class v_2_0_0 extends \phpbb\db\migration\migration
 
 	public function revert_schema()
 	{
-		return 	array(	
+		return 	array(
 			'drop_columns' => array(
 				$this->table_prefix . 'posts' => array('post_created'),
 			),
@@ -55,10 +55,10 @@ class v_2_0_0 extends \phpbb\db\migration\migration
 			// Add ACP modules
 			array('module.add', array('acp', 'ACP_CAT_DOT_MODS', 'ACP_POSTS_MERGING')),
 			array('module.add', array('acp', 'ACP_POSTS_MERGING', array(
-					'module_basename'	=> '\rxu\posts_merging\acp\posts_merging_module',
+					'module_basename'	=> '\rxu\PostsMerging\acp\posts_merging_module',
 					'module_langname'	=> 'ACP_POSTS_MERGING',
 					'module_mode'		=> 'config_posts_merging',
-					'module_auth'		=> 'ext_rxu/posts_merging && acl_a_board',
+					'module_auth'		=> 'ext_rxu/PostsMerging && acl_a_board',
 			))),
 		);
 	}
