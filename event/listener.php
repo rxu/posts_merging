@@ -374,7 +374,7 @@ class listener implements EventSubscriberInterface
 				/**
 				* Modify the data for post submitting
 				*
-				* @event rxu.posts_merging.posts_merging_end
+				* @event rxu.postsmerging.posts_merging_end
 				* @var	string	mode				Variable containing posting mode value
 				* @var	string	subject				Variable containing post subject value
 				* @var	string	username			Variable containing post author name
@@ -397,7 +397,7 @@ class listener implements EventSubscriberInterface
 					'update_search_index',
 					'url',
 				);
-				extract($phpbb_dispatcher->trigger_event('rxu.posts_merging.posts_merging_end', compact($vars)));
+				extract($phpbb_dispatcher->trigger_event('rxu.postsmerging.posts_merging_end', compact($vars)));
 
 				meta_refresh(3, $url);
 
