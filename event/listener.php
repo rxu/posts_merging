@@ -59,7 +59,7 @@ class listener implements EventSubscriberInterface
 		$update_message = $event['update_message'];
 		$update_search_index = $event['update_search_index'];
 
-		$post_need_approval = (!$this->auth->acl_get('f_noapprove', $data['forum_id']) && !$this->auth->acl_get('m_approve', $data['forum_id'])) ? true : false;
+		$post_need_approval = ((!$this->auth->acl_get('f_noapprove', $data['forum_id']) && empty($data['force_approved_state'])) || (isset($data['force_approved_state']) && !$data['force_approved_state'])) ? true : false;
 
 		if (!$post_need_approval && ($event['mode'] == 'reply' || $event['mode'] == 'quote') && $this->config['merge_interval'] > 0 && !in_array($data['forum_id'], explode(",", $this->config['merge_no_forums'])) && !in_array($data['topic_id'], explode(",", $this->config['merge_no_topics'])))
 		{
@@ -104,7 +104,7 @@ class listener implements EventSubscriberInterface
 
 				// Decode old message text for update properly
 				$message_parser->decode_message($merge_post_data['bbcode_uid']);
-				$merge_post_data['post_text'] = html_entity_decode($message_parser->message,  ENT_COMPAT, 'UTF-8');
+				$merge_post_data['post_text'] = html_entity_decode($message_parser->message,  ENT_NOQUOTES, 'UTF-8');
 
 				// Handle addon
 				$message_parser->message = &$data['message'];
@@ -112,7 +112,7 @@ class listener implements EventSubscriberInterface
 
 				// Decode addon message text for update properly
 				$message_parser->decode_message($data['bbcode_uid']);
-				$data['message'] = $message_parser->message;
+				$data['message'] = html_entity_decode($message_parser->message,  ENT_NOQUOTES, 'UTF-8');
 
 				unset($message_parser);
 
