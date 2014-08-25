@@ -35,7 +35,7 @@ if (empty($lang) || !is_array($lang))
 // in a url you again do not need to specify an order e.g., 'Click %sHERE%s' is fine
 
 $lang = array_merge($lang, array(
-	'MERGE_SEPARATOR'		=> "\n\n[size=85][color=green]Añadido en %s %s %s:[/color][/size]\n",
+	'MERGE_SEPARATOR'		=> "\n\n[size=85][color=green]Añadido en %s:[/color][/size]\n",
 	'MERGE_SUBJECT'			=> "[size=85][color=green]%s[/color][/size]\n",
 
 	'D_SECONDS'  => array(

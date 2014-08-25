@@ -25,13 +25,15 @@ class listener implements EventSubscriberInterface
 	protected $php_ext;
 	protected $merge;
 
-	public function __construct(\phpbb\config\config $config, \phpbb\db\driver\driver_interface $db, \phpbb\auth\auth $auth, \phpbb\template\template $template, \phpbb\user $user, $phpbb_root_path, $php_ext)
+	public function __construct(\phpbb\config\config $config, \phpbb\db\driver\driver_interface $db, \phpbb\auth\auth $auth, \phpbb\template\template $template, \phpbb\user $user, \phpbb\notification\manager $notification_manager, \phpbb\event\dispatcher_interface $phpbb_dispatcher, $phpbb_root_path, $php_ext)
 	{
 		$this->template = $template;
 		$this->user = $user;
 		$this->auth = $auth;
 		$this->db = $db;
 		$this->config = $config;
+		$this->notification_manager = $notification_manager;
+		$this->phpbb_dispatcher = $phpbb_dispatcher;
 		$this->phpbb_root_path = $phpbb_root_path;
 		$this->php_ext = $php_ext;
 		$this->merge = true;
@@ -48,8 +50,6 @@ class listener implements EventSubscriberInterface
 
 	public function posts_merging($event)
 	{
-		global $post_data, $phpbb_container, $message_parser, $phpbb_dispatcher;
-
 		$mode = $event['mode'];
 		$subject = $event['subject'];
 		$username = $event['username'];
@@ -98,6 +98,10 @@ class listener implements EventSubscriberInterface
 			{
 				$this->user->add_lang_ext('rxu/PostsMerging', 'posts_merging');
 
+				// Create message parser instance
+				include_once($phpbb_root_path . 'includes/message_parser.' . $this->php_ext);
+				$message_parser = new \parse_message();
+
 				// Handle old message
 				$message_parser->message = &$merge_post_data['post_text'];
 				unset($merge_post_data['post_text']);
@@ -130,10 +134,12 @@ class listener implements EventSubscriberInterface
 				$datetime_old = date_create('@' . (string) $merge_post_data['post_time']);
 				$interval = date_diff($datetime_new, $datetime_old);
 
-				$separator = sprintf($this->user->lang['MERGE_SEPARATOR'], $this->user->lang('D_HOURS', $interval->h), $this->user->lang('D_MINUTES', $interval->i), $this->user->lang('D_SECONDS', $interval->s));
+				$time[] = ($interval->h) ? $this->user->lang('D_HOURS', $interval->h) : null;
+				$time[] = ($interval->i) ? $this->user->lang('D_MINUTES', $interval->i) : null;
+				$time[] = ($interval->s) ? $this->user->lang('D_SECONDS', $interval->s) : null;
+				$separator = $this->user->lang('MERGE_SEPARATOR', implode(' ', $time));
 
 				// Merge subject
-				$subject = ($post_data['post_subject']) ? : '';
 				if (!empty($subject) && $subject != $merge_post_data['post_subject'] && $merge_post_data['post_id'] != $merge_post_data['topic_first_post_id'])
 				{
 					$separator .= sprintf($this->user->lang['MERGE_SUBJECT'], $subject);
@@ -342,11 +348,10 @@ class listener implements EventSubscriberInterface
 						'post_subject'		=> $subject,
 					));
 
-					$phpbb_notifications = $phpbb_container->get('notification_manager');
 					switch ($mode)
 					{
 						case 'post':
-							$phpbb_notifications->add_notifications(array(
+							$this->notification_manager->add_notifications(array(
 								'quote',
 								'topic',
 							), $notification_data);
@@ -354,7 +359,7 @@ class listener implements EventSubscriberInterface
 
 						case 'reply':
 						case 'quote':
-							$phpbb_notifications->add_notifications(array(
+							$this->notification_manager->add_notifications(array(
 								'quote',
 								'bookmark',
 								'post',
@@ -397,7 +402,7 @@ class listener implements EventSubscriberInterface
 					'update_search_index',
 					'url',
 				);
-				extract($phpbb_dispatcher->trigger_event('rxu.postsmerging.posts_merging_end', compact($vars)));
+				extract($this->phpbb_dispatcher->trigger_event('rxu.postsmerging.posts_merging_end', compact($vars)));
 
 				meta_refresh(3, $url);
 

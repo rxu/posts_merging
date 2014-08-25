@@ -7,6 +7,8 @@ services:
             - @auth
             - @template
             - @user
+            - @notification_manager
+            - @dispatcher
             - %core.root_path%
             - %core.php_ext%
         tags:
