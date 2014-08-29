@@ -156,14 +156,14 @@ class helper
 		// Create message parser instance
 		include_once($this->phpbb_root_path . 'includes/message_parser.' . $this->php_ext);
 		$message_parser = new \parse_message();
-		$message_parser->message = $data['post_text'];
+		$text = (isset($data['post_text'])) ? $data['post_text'] : $data['message'];
+		$message_parser->message = $text;
 
 		// Decode message text properly
 		$message_parser->decode_message($data['bbcode_uid']);
-		$data['post_text'] = html_entity_decode($message_parser->message,  ENT_NOQUOTES, 'UTF-8');
+		$text = html_entity_decode($message_parser->message,  ENT_NOQUOTES, 'UTF-8');
 
-		unset($message_parser);
-		return;
+		return $text;
 	}
 
 	public function get_time_interval($old_time, $new_time)

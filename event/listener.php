@@ -90,8 +90,8 @@ class listener implements EventSubscriberInterface
 			$merge_post_data['post_attachment'] = ($total_attachments_count) ? 1 : 0;
 
 			// Decode old message and addon
-			$this->helper->prepare_text_for_merge($merge_post_data);
-			$this->helper->prepare_text_for_merge($data);
+			$merge_post_data['post_text'] = $this->helper->prepare_text_for_merge($merge_post_data);
+			$data['message'] = $this->helper->prepare_text_for_merge($data);
 
 			// Handle inline attachments BBCode in old message
 			if ($num_new_attachments)
