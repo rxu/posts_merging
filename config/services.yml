@@ -9,7 +9,18 @@ services:
             - @user
             - @notification_manager
             - @dispatcher
+            - @rxu.PostsMerging.helper
             - %core.root_path%
             - %core.php_ext%
         tags:
             - { name: event.listener }
+    rxu.PostsMerging.helper:
+        class: rxu\PostsMerging\core\helper
+        arguments:
+            - @config
+            - @dbal.conn
+            - @auth
+            - @template
+            - @user
+            - %core.root_path%
+            - %core.php_ext%
