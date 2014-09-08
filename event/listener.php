@@ -16,10 +16,9 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class listener implements EventSubscriberInterface
 {
-	protected $template;
 	protected $user;
 	protected $auth;
-	protected $db;
+	protected $request;
 	protected $config;
 	protected $notification_manager;
 	protected $phpbb_dispatcher;
@@ -27,7 +26,7 @@ class listener implements EventSubscriberInterface
 	protected $phpbb_root_path;
 	protected $php_ext;
 
-	public function __construct(\phpbb\config\config $config, \phpbb\db\driver\driver_interface $db, \phpbb\auth\auth $auth, \phpbb\template\template $template, \phpbb\user $user, \phpbb\notification\manager $notification_manager, \phpbb\event\dispatcher_interface $phpbb_dispatcher, $helper, $phpbb_root_path, $php_ext)
+	public function __construct(\phpbb\config\config $config, \phpbb\auth\auth $auth, \phpbb\request\request_interface $request, \phpbb\user $user, \phpbb\notification\manager $notification_manager, \phpbb\event\dispatcher_interface $phpbb_dispatcher, $helper, $phpbb_root_path, $php_ext)
 	{
 		$this->template = $template;
 		$this->user = $user;
@@ -199,15 +198,19 @@ class listener implements EventSubscriberInterface
 
 	public function modify_viewtopic_rowset($event)
 	{
+		$row = $event['row'];
 		$rowset = $event['rowset_data'];
-		$rowset = array_merge($rowset, array('post_created'	=> $event['row']['post_created']));
+		$rowset = array_merge($rowset, array('post_created'	=> $row['post_created']));
 		$event['rowset_data'] = $rowset;
 	}
 
 	public function modify_viewtopic_postrow($event)
 	{
+		$view = $this->request->variable('view', '');
+		$row = $event['row'];
 		$post_row = $event['post_row'];
-		$post_row['POST_DATE'] = (!$event['row']['post_created']) ? $this->user->format_date($event['row']['post_time']) : $this->user->format_date($event['row']['post_created']);
+		$post_time = ($row['post_created']) ?: $row['post_time'];
+		$post_row['POST_DATE'] = $this->user->format_date($post_time, false, ($view == 'print') ? true : false);
 		$event['post_row'] = $post_row;
 	}
 }

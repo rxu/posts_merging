@@ -3,9 +3,8 @@ services:
         class: rxu\PostsMerging\event\listener
         arguments:
             - @config
-            - @dbal.conn
             - @auth
-            - @template
+            - @request
             - @user
             - @notification_manager
             - @dispatcher
