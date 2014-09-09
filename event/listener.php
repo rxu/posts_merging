@@ -28,10 +28,9 @@ class listener implements EventSubscriberInterface
 
 	public function __construct(\phpbb\config\config $config, \phpbb\auth\auth $auth, \phpbb\request\request_interface $request, \phpbb\user $user, \phpbb\notification\manager $notification_manager, \phpbb\event\dispatcher_interface $phpbb_dispatcher, $helper, $phpbb_root_path, $php_ext)
 	{
-		$this->template = $template;
 		$this->user = $user;
 		$this->auth = $auth;
-		$this->db = $db;
+		$this->request = $request;
 		$this->config = $config;
 		$this->notification_manager = $notification_manager;
 		$this->phpbb_dispatcher = $phpbb_dispatcher;
