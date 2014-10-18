@@ -147,9 +147,9 @@ class listener implements EventSubscriberInterface
 				'post_subject'		=> $subject,
 			));
 			$this->notification_manager->add_notifications(array(
-				'quote',
-				'bookmark',
-				'post',
+				'notification.type.quote',
+				'notification.type.bookmark',
+				'notification.type.post',
 			), $notification_data);
 
 			// Update search index
