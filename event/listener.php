@@ -48,7 +48,7 @@ class listener implements EventSubscriberInterface
 	* Constructor
 	*
 	* @param \phpbb\config\config                 $config                Config object
-	* @param \phpbb\auth\auth                     $auth                  User object
+	* @param \phpbb\auth\auth                     $auth                  Auth object
 	* @param \phpbb\request\request_interface     $request               Request object
 	* @param \phpbb\user                          $user                  User object
 	* @param \phpbb\notification\manager          $notification_manager  Notification manager object
