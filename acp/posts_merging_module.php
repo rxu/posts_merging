@@ -1,9 +1,10 @@
 <?php
 /**
 *
-* @package PostsMerging
-* @copyright (c) 2014 Ruslan Uzdenov (rxu)
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+* Posts Merging extension for the phpBB Forum Software package.
+*
+* @copyright (c) 2013 phpBB Limited <https://www.phpbb.com>
+* @license GNU General Public License, version 2 (GPL-2.0)
 *
 */
 
@@ -29,9 +30,9 @@ class posts_merging_module
 			'title'	=> 'ACP_POSTS_MERGING',
 			'vars'	=> array(
 				'legend1'	=> 'ACP_POSTS_MERGING',
-						'merge_interval'		=> array('lang' => 'MERGE_INTERVAL',	'validate' => 'int',	'type' => 'text:3:4', 'explain' => true, 'append' => ' ' . $user->lang['HOURS']),
-						'merge_no_forums'		=> array('lang' => 'MERGE_NO_FORUMS',	'validate' => 'string',	'type' => 'text:5:255', 'explain' => true),
-						'merge_no_topics'		=> array('lang' => 'MERGE_NO_TOPICS',	'validate' => 'string',	'type' => 'text:5:255', 'explain' => true),
+					'merge_interval'		=> array('lang' => 'MERGE_INTERVAL',	'validate' => 'int',	'type' => 'text:3:4', 'explain' => true, 'append' => ' ' . $user->lang['HOURS']),
+					'merge_no_forums'		=> array('lang' => 'MERGE_NO_FORUMS',	'validate' => 'string',	'type' => 'text:5:255', 'explain' => true),
+					'merge_no_topics'		=> array('lang' => 'MERGE_NO_TOPICS',	'validate' => 'string',	'type' => 'text:5:255', 'explain' => true),
 				'legend2'	=> 'ACP_SUBMIT_CHANGES',
 			),
 		);

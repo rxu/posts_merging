@@ -1,30 +1,52 @@
 <?php
 /**
- *
- * @package PostsMerging
- * @copyright (c) 2014 Ruslan Uzdenov (rxu)
- * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
- *
- */
+*
+* Posts Merging extension for the phpBB Forum Software package.
+*
+* @copyright (c) 2013 phpBB Limited <https://www.phpbb.com>
+* @license GNU General Public License, version 2 (GPL-2.0)
+*
+*/
 
 namespace rxu\PostsMerging\core;
 
 class helper
 {
+	/** @var \phpbb\config\config */
 	protected $config;
+
+	/** @var \phpbb\db\driver\driver_interface */
 	protected $db;
+
+	/** @var \phpbb\auth\auth */
 	protected $auth;
-	protected $template;
+
+	/** @var \phpbb\user */
 	protected $user;
+
+	/** @var string phpbb_root_path */
 	protected $phpbb_root_path;
+
+	/** @var string phpEx */
 	protected $php_ext;
 
-	public function __construct(\phpbb\config\config $config, \phpbb\db\driver\driver_interface $db, \phpbb\auth\auth $auth, \phpbb\template\template $template, \phpbb\user $user, $phpbb_root_path, $php_ext)
+	/**
+	* Constructor
+	*
+	* @param \phpbb\config\config                 $config           Config object
+	* @param \phpbb\db\driver\driver_interface    $db               DBAL object
+	* @param \phpbb\auth\auth                     $auth             User object
+	* @param \phpbb\user                          $user             User object
+	* @param string                               $phpbb_root_path  phpbb_root_path
+	* @param string                               $php_ext          phpEx
+	* @return \rxu\PostsMerging\event\listener
+	* @access public
+	*/
+	public function __construct(\phpbb\config\config $config, \phpbb\db\driver\driver_interface $db, \phpbb\auth\auth $auth, \phpbb\user $user, $phpbb_root_path, $php_ext)
 	{
 		$this->config = $config;
 		$this->db = $db;
 		$this->auth = $auth;
-		$this->template = $template;
 		$this->user = $user;
 		$this->phpbb_root_path = $phpbb_root_path;
 		$this->php_ext = $php_ext;

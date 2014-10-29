@@ -1,9 +1,10 @@
 <?php
 /**
 *
-* @package PostsMerging
-* @copyright (c) 2014 Ruslan Uzdenov (rxu)
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+* Posts Merging extension for the phpBB Forum Software package.
+*
+* @copyright (c) 2013 phpBB Limited <https://www.phpbb.com>
+* @license GNU General Public License, version 2 (GPL-2.0)
 *
 */
 

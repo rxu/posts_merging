@@ -19,7 +19,6 @@ services:
             - @config
             - @dbal.conn
             - @auth
-            - @template
             - @user
             - %core.root_path%
             - %core.php_ext%

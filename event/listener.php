@@ -1,11 +1,12 @@
 <?php
 /**
- *
- * @package PostsMerging
- * @copyright (c) 2014 Ruslan Uzdenov (rxu)
- * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
- *
- */
+*
+* Posts Merging extension for the phpBB Forum Software package.
+*
+* @copyright (c) 2013 phpBB Limited <https://www.phpbb.com>
+* @license GNU General Public License, version 2 (GPL-2.0)
+*
+*/
 
 namespace rxu\PostsMerging\event;
 
@@ -16,16 +17,48 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class listener implements EventSubscriberInterface
 {
-	protected $user;
-	protected $auth;
-	protected $request;
+	/** @var \phpbb\config\config */
 	protected $config;
+
+	/** @var \phpbb\auth\auth */
+	protected $auth;
+
+	/** @var \phpbb\request\request_interface */
+	protected $request;
+
+	/** @var \phpbb\user */
+	protected $user;
+
+	/** @var \phpbb\notification\manager */
 	protected $notification_manager;
+
+	/** @var \phpbb\event\dispatcher_interface */
 	protected $phpbb_dispatcher;
+
+	/** @var rxu\PostsMerging\core\helper */
 	protected $helper;
+
+	/** @var string phpbb_root_path */
 	protected $phpbb_root_path;
+
+	/** @var string phpEx */
 	protected $php_ext;
 
+	/**
+	* Constructor
+	*
+	* @param \phpbb\config\config                 $config                Config object
+	* @param \phpbb\auth\auth                     $auth                  User object
+	* @param \phpbb\request\request_interface     $request               Request object
+	* @param \phpbb\user                          $user                  User object
+	* @param \phpbb\notification\manager          $notification_manager  Notification manager object
+	* @param \phpbb\event\dispatcher_interface    $phpbb_dispatcher      Event dispatcher object
+	* @param rxu\PostsMerging\core\helper         $helper                The extension helper object
+	* @param string                               $phpbb_root_path       phpbb_root_path
+	* @param string                               $php_ext               phpEx
+	* @return \rxu\AdvancedWarnings\event\listener
+	* @access public
+	*/
 	public function __construct(\phpbb\config\config $config, \phpbb\auth\auth $auth, \phpbb\request\request_interface $request, \phpbb\user $user, \phpbb\notification\manager $notification_manager, \phpbb\event\dispatcher_interface $phpbb_dispatcher, $helper, $phpbb_root_path, $php_ext)
 	{
 		$this->user = $user;

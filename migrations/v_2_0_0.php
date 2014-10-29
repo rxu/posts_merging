@@ -1,9 +1,10 @@
 <?php
 /**
 *
-* @package PostsMerging
-* @copyright (c) 2014 rxu
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+* Posts Merging extension for the phpBB Forum Software package.
+*
+* @copyright (c) 2013 phpBB Limited <https://www.phpbb.com>
+* @license GNU General Public License, version 2 (GPL-2.0)
 *
 */
 
@@ -23,12 +24,18 @@ class v_2_0_0 extends \phpbb\db\migration\migration
 
 	public function update_schema()
 	{
-		return 	array(
-			'add_columns' => array(
-				$this->table_prefix . 'posts' => array(
-					'post_created' => array('INT:11', '0'),
+		// If 'post_created' column exists, most likely this is an upgrade from the 3.0 MOD
+		if (!$this->db_tools->sql_column_exists($this->table_prefix . 'posts', 'post_created'))
+		{
+			return 	array(
+				'add_columns' => array(
+					$this->table_prefix . 'posts' => array(
+						'post_created' => array('INT:11', '0'),
+					),
 				),
-			),
+			);
+		}
+		return array(
 		);
 	}
 
