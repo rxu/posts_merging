@@ -11,6 +11,7 @@ services:
             - @rxu.PostsMerging.helper
             - %core.root_path%
             - %core.php_ext%
+            - null
         tags:
             - { name: event.listener }
     rxu.PostsMerging.helper:

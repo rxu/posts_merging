@@ -183,7 +183,7 @@ class helper
 
 		// Decode message text properly
 		$message_parser->decode_message($data['bbcode_uid']);
-		$text = html_entity_decode($message_parser->message,  ENT_NOQUOTES, 'UTF-8');
+		$text = html_entity_decode($message_parser->message,  ENT_COMPAT, 'UTF-8');
 
 		return $text;
 	}

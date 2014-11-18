@@ -45,21 +45,27 @@ class listener implements EventSubscriberInterface
 	protected $php_ext;
 
 	/**
+	* @var	\phpbb\request\type_cast_helper_interface
+	*/
+	protected $type_cast_helper;
+
+	/**
 	* Constructor
 	*
-	* @param \phpbb\config\config                 $config                Config object
-	* @param \phpbb\auth\auth                     $auth                  Auth object
-	* @param \phpbb\request\request_interface     $request               Request object
-	* @param \phpbb\user                          $user                  User object
-	* @param \phpbb\notification\manager          $notification_manager  Notification manager object
-	* @param \phpbb\event\dispatcher_interface    $phpbb_dispatcher      Event dispatcher object
-	* @param rxu\PostsMerging\core\helper         $helper                The extension helper object
-	* @param string                               $phpbb_root_path       phpbb_root_path
-	* @param string                               $php_ext               phpEx
+	* @param \phpbb\config\config                      $config                Config object
+	* @param \phpbb\auth\auth                          $auth                  Auth object
+	* @param \phpbb\request\request_interface          $request               Request object
+	* @param \phpbb\user                               $user                  User object
+	* @param \phpbb\notification\manager               $notification_manager  Notification manager object
+	* @param \phpbb\event\dispatcher_interface         $phpbb_dispatcher      Event dispatcher object
+	* @param rxu\PostsMerging\core\helper              $helper                The extension helper object
+	* @param string                                    $phpbb_root_path       phpbb_root_path
+	* @param string                                    $php_ext               phpEx
+	* @param \phpbb\request\type_cast_helper_interface $type_cast_helper      The type cast helper object
 	* @return \rxu\AdvancedWarnings\event\listener
 	* @access public
 	*/
-	public function __construct(\phpbb\config\config $config, \phpbb\auth\auth $auth, \phpbb\request\request_interface $request, \phpbb\user $user, \phpbb\notification\manager $notification_manager, \phpbb\event\dispatcher_interface $phpbb_dispatcher, $helper, $phpbb_root_path, $php_ext)
+	public function __construct(\phpbb\config\config $config, \phpbb\auth\auth $auth, \phpbb\request\request_interface $request, \phpbb\user $user, \phpbb\notification\manager $notification_manager, \phpbb\event\dispatcher_interface $phpbb_dispatcher, $helper, $phpbb_root_path, $php_ext, \phpbb\request\type_cast_helper_interface $type_cast_helper = null)
 	{
 		$this->user = $user;
 		$this->auth = $auth;
@@ -70,6 +76,15 @@ class listener implements EventSubscriberInterface
 		$this->helper = $helper;
 		$this->phpbb_root_path = $phpbb_root_path;
 		$this->php_ext = $php_ext;
+
+		if ($type_cast_helper)
+		{
+			$this->type_cast_helper = $type_cast_helper;
+		}
+		else
+		{
+			$this->type_cast_helper = new \phpbb\request\type_cast_helper();
+		}
 	}
 
 	static public function getSubscribedEvents()
@@ -147,6 +162,9 @@ class listener implements EventSubscriberInterface
 
 			// Merge posts
 			$merge_post_data['post_text'] = $merge_post_data['post_text'] . $separator . $data['message'];
+
+			// Make sure the message is safe
+			$this->type_cast_helper->recursive_set_var($merge_post_data['post_text'], '', true);
 
 			//Prepare post for submit
 			$options = '';
