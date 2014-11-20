@@ -8,6 +8,7 @@ services:
             - @user
             - @notification_manager
             - @dispatcher
+            - @template
             - @rxu.PostsMerging.helper
             - %core.root_path%
             - %core.php_ext%

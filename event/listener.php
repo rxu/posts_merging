@@ -35,6 +35,9 @@ class listener implements EventSubscriberInterface
 	/** @var \phpbb\event\dispatcher_interface */
 	protected $phpbb_dispatcher;
 
+	/** @var \phpbb\template\template */
+	protected $template;
+
 	/** @var rxu\PostsMerging\core\helper */
 	protected $helper;
 
@@ -49,6 +52,9 @@ class listener implements EventSubscriberInterface
 	*/
 	protected $type_cast_helper;
 
+	/** @var int merge_interval */
+	protected $merge_interval;
+
 	/**
 	* Constructor
 	*
@@ -58,6 +64,7 @@ class listener implements EventSubscriberInterface
 	* @param \phpbb\user                               $user                  User object
 	* @param \phpbb\notification\manager               $notification_manager  Notification manager object
 	* @param \phpbb\event\dispatcher_interface         $phpbb_dispatcher      Event dispatcher object
+	* @param \phpbb\template\template                  $template              Template object
 	* @param rxu\PostsMerging\core\helper              $helper                The extension helper object
 	* @param string                                    $phpbb_root_path       phpbb_root_path
 	* @param string                                    $php_ext               phpEx
@@ -65,7 +72,7 @@ class listener implements EventSubscriberInterface
 	* @return \rxu\AdvancedWarnings\event\listener
 	* @access public
 	*/
-	public function __construct(\phpbb\config\config $config, \phpbb\auth\auth $auth, \phpbb\request\request_interface $request, \phpbb\user $user, \phpbb\notification\manager $notification_manager, \phpbb\event\dispatcher_interface $phpbb_dispatcher, $helper, $phpbb_root_path, $php_ext, \phpbb\request\type_cast_helper_interface $type_cast_helper = null)
+	public function __construct(\phpbb\config\config $config, \phpbb\auth\auth $auth, \phpbb\request\request_interface $request, \phpbb\user $user, \phpbb\notification\manager $notification_manager, \phpbb\event\dispatcher_interface $phpbb_dispatcher, \phpbb\template\template $template, $helper, $phpbb_root_path, $php_ext, \phpbb\request\type_cast_helper_interface $type_cast_helper = null)
 	{
 		$this->user = $user;
 		$this->auth = $auth;
@@ -73,6 +80,7 @@ class listener implements EventSubscriberInterface
 		$this->config = $config;
 		$this->notification_manager = $notification_manager;
 		$this->phpbb_dispatcher = $phpbb_dispatcher;
+		$this->template = $template;
 		$this->helper = $helper;
 		$this->phpbb_root_path = $phpbb_root_path;
 		$this->php_ext = $php_ext;
@@ -85,6 +93,8 @@ class listener implements EventSubscriberInterface
 		{
 			$this->type_cast_helper = new \phpbb\request\type_cast_helper();
 		}
+
+		$this->merge_interval = intval($this->config['merge_interval']) * 3600;
 	}
 
 	static public function getSubscribedEvents()
@@ -93,6 +103,8 @@ class listener implements EventSubscriberInterface
 			'core.modify_submit_post_data'			=> 'posts_merging',
 			'core.viewtopic_post_rowset_data'		=> 'modify_viewtopic_rowset',
 			'core.viewtopic_modify_post_row'		=> 'modify_viewtopic_postrow',
+			'core.posting_modify_template_vars'		=> 'get_posts_merging_option',
+			'core.viewtopic_modify_page_title'		=> 'get_posts_merging_option',
 		);
 	}
 
@@ -107,16 +119,22 @@ class listener implements EventSubscriberInterface
 		$update_message = $event['update_message'];
 		$update_search_index = $event['update_search_index'];
 
-		$merge_interval = intval($this->config['merge_interval']) * 3600;
 		$current_time = time();
 
-		if (!$this->helper->post_needs_approval($data) && in_array($mode, array('reply', 'quote')) && $merge_interval && !$this->helper->excluded_from_merge($data))
+		$do_not_merge_with_previous = $this->request->variable('posts_merging_option', false);
+
+		if (!$do_not_merge_with_previous && !$this->helper->post_needs_approval($data)
+			&& in_array($mode, array('reply', 'quote')) && $this->merge_interval
+			&& !$this->helper->excluded_from_merge($data)
+		)
 		{
 			$merge_post_data = $this->helper->get_last_post_data($data);
 
 			// Do not merge if there's no last post data, the post is locked or allowed merge period has left
 			if (!$merge_post_data || $merge_post_data['post_edit_locked'] ||
-				(($current_time - (int) $merge_post_data['topic_last_post_time']) > $merge_interval) || !$this->user->data['is_registered'])
+				(($current_time - (int) $merge_post_data['topic_last_post_time']) > $this->merge_interval)
+				|| !$this->user->data['is_registered']
+			)
 			{
 				return;
 			}
@@ -127,7 +145,9 @@ class listener implements EventSubscriberInterface
 			$num_old_attachments = $this->helper->count_post_attachments((int) $merge_post_data['post_id']);
 			$num_new_attachments = sizeof($data['attachment_data']);
 			$total_attachments_count = $num_old_attachments + $num_new_attachments;
-			if (($total_attachments_count > $this->config['max_attachments']) && !$this->auth->acl_get('a_') && !$this->auth->acl_get('m_', (int) $data['forum_id']))
+			if (($total_attachments_count > $this->config['max_attachments']) && !$this->auth->acl_get('a_')
+				&& !$this->auth->acl_get('m_', (int) $data['forum_id'])
+			)
 			{
 				return;
 			}
@@ -269,5 +289,23 @@ class listener implements EventSubscriberInterface
 		$post_time = ($row['post_created']) ?: $row['post_time'];
 		$post_row['POST_DATE'] = $this->user->format_date($post_time, false, ($view == 'print') ? true : false);
 		$event['post_row'] = $post_row;
+	}
+
+	public function get_posts_merging_option($event)
+	{
+		$post_data = (isset($event['post_data'])) ? $event['post_data'] : $event['topic_data'];
+		$forum_id = $event['forum_id'];
+		$topic_id = (isset($event['topic_id'])) ? $event['topic_id'] : $post_data['topic_id'];
+
+		if ($this->merge_interval && $this->user->data['is_registered']
+			&& (time() - (int) $post_data['topic_last_post_time']) < $this->merge_interval
+			&& !$this->helper->excluded_from_merge(array('forum_id' => $forum_id, 'topic_id' => $topic_id))
+			&& $post_data['topic_last_poster_id'] == $this->user->data['user_id']
+			&& $this->auth->acl_get('f_noapprove', $forum_id)
+		)
+		{
+			$this->user->add_lang_ext('rxu/PostsMerging', 'posts_merging');
+			$this->template->assign_vars(array('POSTS_MERGING_OPTION' => true));
+		}
 	}
 }

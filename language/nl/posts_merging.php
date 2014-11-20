@@ -33,6 +33,8 @@ if (empty($lang) || !is_array($lang))
 $lang = array_merge($lang, array(
 	'MERGE_SEPARATOR'		=> "\n\n[size=85][color=green]Toegevoegd in %s:[/color][/size]\n",
 	'MERGE_SUBJECT'			=> "[size=85][color=green]%s[/color][/size]\n",
+	'POSTS_MERGING_OPTION'	=> 'Do not merge with previous post',
+
 	'D_SECONDS'  => array(
 		1	=> '%d seconde',
 		2	=> '%d secondes',

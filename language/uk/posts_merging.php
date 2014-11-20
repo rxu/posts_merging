@@ -36,6 +36,7 @@ if (empty($lang) || !is_array($lang))
 $lang = array_merge($lang, array(
 	'MERGE_SEPARATOR'		=> "\n\n[size=85][color=green]Відправлено через %s:[/color][/size]\n",
 	'MERGE_SUBJECT'			=> "[size=85][color=green]%s[/color][/size]\n",
+	'POSTS_MERGING_OPTION'	=> 'Не склеивать с предыдущим сообщением',
 
 	'D_SECONDS'  => array(
 		1	=> '%d секунду',
