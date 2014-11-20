@@ -168,7 +168,14 @@ class listener implements EventSubscriberInterface
 
 			//Prepare post for submit
 			$options = '';
-			generate_text_for_storage($merge_post_data['post_text'], $merge_post_data['bbcode_uid'], $merge_post_data['bbcode_bitfield'], $options, $merge_post_data['enable_bbcode'], $merge_post_data['enable_magic_url'], $merge_post_data['enable_smilies']);
+			$warn_msg = generate_text_for_storage($merge_post_data['post_text'], $merge_post_data['bbcode_uid'], $merge_post_data['bbcode_bitfield'], $options, $merge_post_data['enable_bbcode'], $merge_post_data['enable_magic_url'], $merge_post_data['enable_smilies']);
+
+			// If $warn_msg is not empty, the merged message does not conform some restrictions
+			// In this case we simply don't merge and return back to the function submit_post()
+			if (!empty($warn_msg))
+			{
+				return;
+			}
 
 			// Update post time and submit post to database
 			$merge_post_data['post_time'] = $data['post_time'] = $current_time;
