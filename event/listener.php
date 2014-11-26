@@ -296,8 +296,9 @@ class listener implements EventSubscriberInterface
 		$post_data = (isset($event['post_data'])) ? $event['post_data'] : $event['topic_data'];
 		$forum_id = $event['forum_id'];
 		$topic_id = (isset($event['topic_id'])) ? $event['topic_id'] : $post_data['topic_id'];
+		$mode = (isset($event['mode'])) ? $event['mode'] : false;
 
-		if ($this->merge_interval && $this->user->data['is_registered']
+		if ($this->merge_interval && $this->user->data['is_registered'] && (!$mode || in_array($mode, array('reply', 'quote')))
 			&& (time() - (int) $post_data['topic_last_post_time']) < $this->merge_interval
 			&& !$this->helper->excluded_from_merge(array('forum_id' => $forum_id, 'topic_id' => $topic_id))
 			&& $post_data['topic_last_poster_id'] == $this->user->data['user_id']
