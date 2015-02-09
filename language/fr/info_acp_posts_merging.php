@@ -37,11 +37,11 @@ if (empty($lang) || !is_array($lang))
 
 $lang = array_merge($lang, array(
 	'ACP_POSTS_MERGING'				=> 'Fusion des messages',
-	'ACP_POSTS_MERGING_EXPLAIN'		=> 'Ici vous pouvez appliquer les paramètres de l\'extension "Fusion des messages".',
+	'ACP_POSTS_MERGING_EXPLAIN'		=> 'Ici vous pouvez appliquer les paramètres de l’extension “Fusion des messages”.',
 	'MERGE_INTERVAL'				=> 'Intervalle de fusion des messages',
-	'MERGE_INTERVAL_EXPLAIN'		=> 'Si un utilisateur envoie plus de deux messages dans ce laps de temps, les messages seront fusionnées en un seul message. L\'information concernant le temps écoulé depuis le précédant message envoyé sera ajoutée (pour chaque message). Laissez vide ou à  0 pour désactiver cette fonctionnalité.',
+	'MERGE_INTERVAL_EXPLAIN'		=> 'Si un utilisateur envoie plus de deux messages dans ce laps de temps, les messages seront fusionnés en un seul message. L’information concernant le temps écoulé depuis le précédant message envoyé sera ajoutée (pour chaque message). Laissez vide ou à  0 pour désactiver cette fonctionnalité.',
 	'MERGE_NO_TOPICS'				=> 'Sujets exclus',
-	'MERGE_NO_TOPICS_EXPLAIN'		=> 'Lorsque cette fonctionnalité est activée, listez les IDs des sujets que vous ne souhaitez pas voir fusionnés (séparés par une virgule).',
+	'MERGE_NO_TOPICS_EXPLAIN'		=> 'Si cette fonctionnalité est activée, indiquez les IDs des sujets pour lesquels vous ne souhaitez par activer cette fonctionnalité (séparés par une virgule).',
 	'MERGE_NO_FORUMS'				=> 'Forums exclus',
-	'MERGE_NO_FORUMS_EXPLAIN'		=> 'Lorsque cette fonctionnalité est activée, listez les IDs des forums contenant les sujets que vous ne souhaitez pas voir fusionnés (séparés par une virgule).',
+	'MERGE_NO_FORUMS_EXPLAIN'		=> 'Si cette fonctionnalité est activée, indiquez les IDs des forums contenant les sujets pour lesquels vous ne souhaitez par activer cette fonctionnalité (séparés par une virgule).',
 ));
