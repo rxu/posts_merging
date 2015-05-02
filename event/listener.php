@@ -197,7 +197,9 @@ class listener implements EventSubscriberInterface
 				return;
 			}
 
-			// Update post time and submit post to database
+			// If this is the first merging for current post, save original post time within the post_created field
+			// Update post time with the current time and submit post to the database
+			$merge_post_data['post_created'] = ($merge_post_data['post_created']) ?: $merge_post_data['post_time'];
 			$merge_post_data['post_time'] = $data['post_time'] = $current_time;
 			$this->helper->submit_post_to_database($merge_post_data);
 
@@ -239,7 +241,7 @@ class listener implements EventSubscriberInterface
 			$params .= '&amp;p=' . $data['post_id'];
 			$add_anchor = '#p' . $data['post_id'];
 			$url = "{$this->phpbb_root_path}viewtopic.$this->php_ext";
-			$url = append_sid($url, 'f=' . $data['forum_id'] . $params) . $add_anchor;
+			$url = append_sid($url, 'f=' . (int) $data['forum_id'] . $params) . $add_anchor;
 
 			/**
 			* Modify the data for post submitting
@@ -294,8 +296,8 @@ class listener implements EventSubscriberInterface
 	public function get_posts_merging_option($event)
 	{
 		$post_data = (isset($event['post_data'])) ? $event['post_data'] : $event['topic_data'];
-		$forum_id = $event['forum_id'];
-		$topic_id = (isset($event['topic_id'])) ? $event['topic_id'] : $post_data['topic_id'];
+		$forum_id = (int) $event['forum_id'];
+		$topic_id = (isset($event['topic_id'])) ? (int) $event['topic_id'] : (int) $post_data['topic_id'];
 		$mode = (isset($event['mode'])) ? $event['mode'] : false;
 
 		if ($this->merge_interval && $this->user->data['is_registered'] && (!$mode || in_array($mode, array('reply', 'quote')))

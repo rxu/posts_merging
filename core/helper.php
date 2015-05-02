@@ -54,13 +54,13 @@ class helper
 
 	public function excluded_from_merge($data)
 	{
-		return (in_array($data['forum_id'], explode(",", $this->config['merge_no_forums']))
-			&& in_array($data['topic_id'], explode(",", $this->config['merge_no_topics'])));
+		return (in_array($data['forum_id'], explode(',', $this->config['merge_no_forums']))
+			|| in_array($data['topic_id'], explode(',', $this->config['merge_no_topics'])));
 	}
 
 	public function post_needs_approval($data)
 	{
-		return ((!$this->auth->acl_get('f_noapprove', $data['forum_id'])
+		return ((!$this->auth->acl_get('f_noapprove', (int) $data['forum_id'])
 			&& empty($data['force_approved_state'])) || (isset($data['force_approved_state'])
 			&& !$data['force_approved_state']));
 	}
@@ -212,8 +212,8 @@ class helper
 	public function update_read_tracking($data)
 	{
 		// Mark the post and the topic read
-		markread('post', $data['forum_id'], $data['topic_id'], $data['post_time']);
-		markread('topic', $data['forum_id'], $data['topic_id'], time());
+		markread('post', (int) $data['forum_id'], (int) $data['topic_id'], $data['post_time']);
+		markread('topic', (int) $data['forum_id'], (int) $data['topic_id'], time());
 
 		// Handle read tracking
 		if ($this->config['load_db_lastread'] && $this->user->data['is_registered'])
@@ -221,7 +221,7 @@ class helper
 			$sql = 'SELECT mark_time
 				FROM ' . FORUMS_TRACK_TABLE . '
 				WHERE user_id = ' . (int) $this->user->data['user_id'] . '
-					AND forum_id = ' . $data['forum_id'];
+					AND forum_id = ' . (int) $data['forum_id'];
 			$result = $this->db->sql_query($sql);
 			$f_mark_time = (int) $this->db->sql_fetchfield('mark_time');
 			$this->db->sql_freeresult($result);
@@ -236,12 +236,12 @@ class helper
 			// Update forum info
 			$sql = 'SELECT forum_last_post_time
 				FROM ' . FORUMS_TABLE . '
-				WHERE forum_id = ' . $data['forum_id'];
+				WHERE forum_id = ' . (int) $data['forum_id'];
 			$result = $this->db->sql_query($sql);
 			$forum_last_post_time = (int) $this->db->sql_fetchfield('forum_last_post_time');
 			$this->db->sql_freeresult($result);
 
-			update_forum_tracking_info($data['forum_id'], $forum_last_post_time, $f_mark_time, false);
+			update_forum_tracking_info((int) $data['forum_id'], $forum_last_post_time, $f_mark_time, false);
 		}
 	}
 
@@ -277,7 +277,7 @@ class helper
 			'bbcode_bitfield'	=> $data['bbcode_bitfield'],
 			'post_text'			=> $data['post_text'],
 			'post_checksum'		=> md5($data['post_text']),
-			'post_created'		=> ($data['post_created']) ? $data['post_created'] : $data['post_time'],
+			'post_created'		=> $data['post_created'],
 			'post_time'			=> $data['post_time'],
 			'post_attachment'	=> $data['post_attachment'],
 		);
