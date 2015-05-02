@@ -3,6 +3,7 @@ services:
         class: rxu\PostsMerging\event\listener
         arguments:
             - @config
+            - @config_text
             - @auth
             - @request
             - @user
@@ -12,7 +13,6 @@ services:
             - @rxu.PostsMerging.helper
             - %core.root_path%
             - %core.php_ext%
-            - null
         tags:
             - { name: event.listener }
     rxu.PostsMerging.helper:

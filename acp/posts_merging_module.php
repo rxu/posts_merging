@@ -17,7 +17,9 @@ class posts_merging_module
 
 	function main($id, $mode)
 	{
-		global $config, $request, $template, $user;
+		global $config, $request, $template, $user, $phpbb_container;
+
+		$config_text = $phpbb_container->get('config_text');
 
 		$this->page_title = 'ACP_POSTS_MERGING';
 		$this->tpl_name = 'acp_posts_merging';
@@ -29,11 +31,11 @@ class posts_merging_module
 		$display_vars = array(
 			'title'	=> 'ACP_POSTS_MERGING',
 			'vars'	=> array(
-				'legend1'	=> 'ACP_POSTS_MERGING',
+				'legend1'	=> 'GENERAL_OPTIONS',
 					'merge_interval'		=> array('lang' => 'MERGE_INTERVAL',	'validate' => 'int',	'type' => 'text:3:4', 'explain' => true, 'append' => ' ' . $user->lang['HOURS']),
 					'merge_no_forums'		=> array('lang' => 'MERGE_NO_FORUMS',	'validate' => 'string',	'type' => 'text:5:255', 'explain' => true),
 					'merge_no_topics'		=> array('lang' => 'MERGE_NO_TOPICS',	'validate' => 'string',	'type' => 'text:5:255', 'explain' => true),
-				'legend2'	=> 'ACP_SUBMIT_CHANGES',
+				'legend2'	=> 'ACP_POSTS_MERGING',
 			),
 		);
 
@@ -41,9 +43,11 @@ class posts_merging_module
 		{
 			$user->add_lang($display_vars['lang']);
 		}
+		$user->add_lang(array('posting'));
 
 		$this->new_config = $config;
-		$cfg_array = (isset($_REQUEST['config'])) ? utf8_normalize_nfc($request->variable('config', array('' => ''), true)) : $this->new_config;
+		$cfg_array = (isset($_REQUEST['config'])) ? $request->variable('config', array('' => ''), true) : $this->new_config;
+		$posts_merging_separator_text = $request->variable('posts_merging_separator_text', '', true);
 		$error = array();
 
 		// We validate the complete config if wished
@@ -77,6 +81,8 @@ class posts_merging_module
 
 		if ($submit)
 		{
+			$config_text->set('posts_merging_separator_text', $posts_merging_separator_text);
+
 			trigger_error($user->lang['CONFIG_UPDATED'] . adm_back_link($this->u_action));
 		}
 
@@ -128,5 +134,15 @@ class posts_merging_module
 
 			unset($display_vars['vars'][$config_key]);
 		}
+
+		$posts_merging_separator_text = $config_text->get('posts_merging_separator_text');
+
+		$template->assign_vars(array(
+			'POSTS_MERGING_SEPARATOR_TEXT'	=> $posts_merging_separator_text,
+			'S_SMILIES_ALLOWED'		=> true,
+			'S_BBCODE_IMG'			=> true,
+			'S_BBCODE_FLASH'		=> true,
+			'S_LINKS_ALLOWED'		=> true,
+		));
 	}
 }
