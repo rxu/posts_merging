@@ -44,4 +44,6 @@ $lang = array_merge($lang, array(
 	'MERGE_NO_TOPICS_EXPLAIN'		=> 'Si cette fonctionnalité est activée, indiquez les IDs des sujets pour lesquels vous ne souhaitez par activer cette fonctionnalité (séparés par une virgule).',
 	'MERGE_NO_FORUMS'				=> 'Forums exclus',
 	'MERGE_NO_FORUMS_EXPLAIN'		=> 'Si cette fonctionnalité est activée, indiquez les IDs des forums contenant les sujets pour lesquels vous ne souhaitez par activer cette fonctionnalité (séparés par une virgule).',
+	'MERGE_SEPARATOR'				=> 'Separator',
+	'MERGE_SEPARATOR_EXPLAIN'		=> 'Here you can configure the separator which will appear between the merged message parts.<br />You can use BBCodes which will be parsed in according to the board or message settings.<br /><br />You can also use any language string present in your language/ directory like this: {L_<em>&lt;STRINGNAME&gt;</em>} where <em>&lt;STRINGNAME&gt;</em> is the name of the translated string you want to add. For example, {L_WROTE} will be displayed as “wrote” or its translation according to user’s locale.<br /><br />Use <em>&#37;s</em> placeholder (once) to include the time passed between merging in the separator.',
 ));

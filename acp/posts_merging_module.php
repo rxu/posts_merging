@@ -32,10 +32,10 @@ class posts_merging_module
 			'title'	=> 'ACP_POSTS_MERGING',
 			'vars'	=> array(
 				'legend1'	=> 'GENERAL_OPTIONS',
-					'merge_interval'		=> array('lang' => 'MERGE_INTERVAL',	'validate' => 'int',	'type' => 'text:3:4', 'explain' => true, 'append' => ' ' . $user->lang['HOURS']),
-					'merge_no_forums'		=> array('lang' => 'MERGE_NO_FORUMS',	'validate' => 'string',	'type' => 'text:5:255', 'explain' => true),
+					'merge_interval'		=> array('lang' => 'MERGE_INTERVAL',	'validate' => 'int:0',	'type' => 'number:0:9999', 'explain' => true, 'append' => ' ' . $user->lang['HOURS']),
+					'merge_no_forums'		=> array('lang' => 'MERGE_NO_FORUMS',	'validate' => 'string',	'type' => 'custom', 'method' => 'select_merge_no_forums', 'explain' => true),
 					'merge_no_topics'		=> array('lang' => 'MERGE_NO_TOPICS',	'validate' => 'string',	'type' => 'text:5:255', 'explain' => true),
-				'legend2'	=> 'ACP_POSTS_MERGING',
+				'legend2'	=> 'MERGE_SEPARATOR',
 			),
 		);
 
@@ -47,6 +47,7 @@ class posts_merging_module
 
 		$this->new_config = $config;
 		$cfg_array = (isset($_REQUEST['config'])) ? $request->variable('config', array('' => ''), true) : $this->new_config;
+		$cfg_array['merge_no_forums'] = (isset($_REQUEST['merge_no_forums'])) ? implode(',', $request->variable('merge_no_forums', array('' => ''))) : $cfg_array['merge_no_forums'];
 		$posts_merging_separator_text = $request->variable('posts_merging_separator_text', '', true);
 		$error = array();
 
@@ -144,5 +145,25 @@ class posts_merging_module
 			'S_BBCODE_FLASH'		=> true,
 			'S_LINKS_ALLOWED'		=> true,
 		));
+	}
+
+	function select_merge_no_forums($value, $key)
+	{
+		global $user, $config;
+
+		$merge_no_forums = explode(',', $config['merge_no_forums']);
+		$forum_list = make_forum_select(false, false, true, true, true, false, true);
+
+		// Build forum options
+		$s_forum_options = '<select id="' . $key . '" name="' . $key . '[]" multiple="multiple">';
+		foreach ($forum_list as $f_id => $f_row)
+		{
+			$f_row['selected'] = in_array($f_id, $merge_no_forums);
+
+			$s_forum_options .= '<option value="' . $f_id . '"' . (($f_row['selected']) ? ' selected="selected"' : '') . (($f_row['disabled']) ? ' disabled="disabled" class="disabled-option"' : '') . '>' . $f_row['padding'] . $f_row['forum_name'] . '</option>';
+		}
+		$s_forum_options .= '</select>';
+
+		return $s_forum_options;
 	}
 }
