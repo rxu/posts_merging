@@ -17,7 +17,9 @@ class posts_merging_module
 
 	function main($id, $mode)
 	{
-		global $config, $request, $template, $user;
+		global $config, $request, $template, $user, $phpbb_container;
+
+		$config_text = $phpbb_container->get('config_text');
 
 		$this->page_title = 'ACP_POSTS_MERGING';
 		$this->tpl_name = 'acp_posts_merging';
@@ -29,11 +31,11 @@ class posts_merging_module
 		$display_vars = array(
 			'title'	=> 'ACP_POSTS_MERGING',
 			'vars'	=> array(
-				'legend1'	=> 'ACP_POSTS_MERGING',
-					'merge_interval'		=> array('lang' => 'MERGE_INTERVAL',	'validate' => 'int',	'type' => 'text:3:4', 'explain' => true, 'append' => ' ' . $user->lang['HOURS']),
-					'merge_no_forums'		=> array('lang' => 'MERGE_NO_FORUMS',	'validate' => 'string',	'type' => 'text:5:255', 'explain' => true),
+				'legend1'	=> 'GENERAL_OPTIONS',
+					'merge_interval'		=> array('lang' => 'MERGE_INTERVAL',	'validate' => 'int:0',	'type' => 'number:0:9999', 'explain' => true, 'append' => ' ' . $user->lang['HOURS']),
+					'merge_no_forums'		=> array('lang' => 'MERGE_NO_FORUMS',	'validate' => 'string',	'type' => 'custom', 'method' => 'select_merge_no_forums', 'explain' => true),
 					'merge_no_topics'		=> array('lang' => 'MERGE_NO_TOPICS',	'validate' => 'string',	'type' => 'text:5:255', 'explain' => true),
-				'legend2'	=> 'ACP_SUBMIT_CHANGES',
+				'legend2'	=> 'MERGE_SEPARATOR',
 			),
 		);
 
@@ -41,9 +43,12 @@ class posts_merging_module
 		{
 			$user->add_lang($display_vars['lang']);
 		}
+		$user->add_lang(array('posting'));
 
 		$this->new_config = $config;
-		$cfg_array = (isset($_REQUEST['config'])) ? utf8_normalize_nfc($request->variable('config', array('' => ''), true)) : $this->new_config;
+		$cfg_array = (isset($_REQUEST['config'])) ? $request->variable('config', array('' => ''), true) : $this->new_config;
+		$cfg_array['merge_no_forums'] = (isset($_REQUEST['merge_no_forums'])) ? implode(',', $request->variable('merge_no_forums', array('' => ''))) : $cfg_array['merge_no_forums'];
+		$posts_merging_separator_text = $request->variable('posts_merging_separator_text', '', true);
 		$error = array();
 
 		// We validate the complete config if wished
@@ -77,6 +82,8 @@ class posts_merging_module
 
 		if ($submit)
 		{
+			$config_text->set('posts_merging_separator_text', $posts_merging_separator_text);
+
 			trigger_error($user->lang['CONFIG_UPDATED'] . adm_back_link($this->u_action));
 		}
 
@@ -128,5 +135,35 @@ class posts_merging_module
 
 			unset($display_vars['vars'][$config_key]);
 		}
+
+		$posts_merging_separator_text = $config_text->get('posts_merging_separator_text');
+
+		$template->assign_vars(array(
+			'POSTS_MERGING_SEPARATOR_TEXT'	=> $posts_merging_separator_text,
+			'S_SMILIES_ALLOWED'		=> true,
+			'S_BBCODE_IMG'			=> true,
+			'S_BBCODE_FLASH'		=> true,
+			'S_LINKS_ALLOWED'		=> true,
+		));
+	}
+
+	function select_merge_no_forums($value, $key)
+	{
+		global $user, $config;
+
+		$merge_no_forums = explode(',', $config['merge_no_forums']);
+		$forum_list = make_forum_select(false, false, true, true, true, false, true);
+
+		// Build forum options
+		$s_forum_options = '<select id="' . $key . '" name="' . $key . '[]" multiple="multiple">';
+		foreach ($forum_list as $f_id => $f_row)
+		{
+			$f_row['selected'] = in_array($f_id, $merge_no_forums);
+
+			$s_forum_options .= '<option value="' . $f_id . '"' . (($f_row['selected']) ? ' selected="selected"' : '') . (($f_row['disabled']) ? ' disabled="disabled" class="disabled-option"' : '') . '>' . $f_row['padding'] . $f_row['forum_name'] . '</option>';
+		}
+		$s_forum_options .= '</select>';
+
+		return $s_forum_options;
 	}
 }

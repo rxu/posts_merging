@@ -20,6 +20,9 @@ class listener implements EventSubscriberInterface
 	/** @var \phpbb\config\config */
 	protected $config;
 
+	/** @var \phpbb\config\db_text */
+	protected $config_text;
+
 	/** @var \phpbb\auth\auth */
 	protected $auth;
 
@@ -59,6 +62,7 @@ class listener implements EventSubscriberInterface
 	* Constructor
 	*
 	* @param \phpbb\config\config                      $config                Config object
+	* @param \phpbb\config\db_text                     $config_text           Config_text object
 	* @param \phpbb\auth\auth                          $auth                  Auth object
 	* @param \phpbb\request\request_interface          $request               Request object
 	* @param \phpbb\user                               $user                  User object
@@ -72,12 +76,13 @@ class listener implements EventSubscriberInterface
 	* @return \rxu\AdvancedWarnings\event\listener
 	* @access public
 	*/
-	public function __construct(\phpbb\config\config $config, \phpbb\auth\auth $auth, \phpbb\request\request_interface $request, \phpbb\user $user, \phpbb\notification\manager $notification_manager, \phpbb\event\dispatcher_interface $phpbb_dispatcher, \phpbb\template\template $template, $helper, $phpbb_root_path, $php_ext, \phpbb\request\type_cast_helper_interface $type_cast_helper = null)
+	public function __construct(\phpbb\config\config $config, \phpbb\config\db_text $config_text, \phpbb\auth\auth $auth, \phpbb\request\request_interface $request, \phpbb\user $user, \phpbb\notification\manager $notification_manager, \phpbb\event\dispatcher_interface $phpbb_dispatcher, \phpbb\template\template $template, $helper, $phpbb_root_path, $php_ext, \phpbb\request\type_cast_helper_interface $type_cast_helper = null)
 	{
 		$this->user = $user;
 		$this->auth = $auth;
 		$this->request = $request;
 		$this->config = $config;
+		$this->config_text = $config_text;
 		$this->notification_manager = $notification_manager;
 		$this->phpbb_dispatcher = $phpbb_dispatcher;
 		$this->template = $template;
@@ -166,13 +171,21 @@ class listener implements EventSubscriberInterface
 			}
 
 			// Prepare message separator
+			$separator = (string) $this->config_text->get('posts_merging_separator_text');
 			$this->user->add_lang_ext('rxu/PostsMerging', 'posts_merging');
+
+			// Calculate the time interval
 			$interval = $this->helper->get_time_interval($current_time, $merge_post_data['post_time']);
 			$time = array();
 			$time[] = ($interval->h) ? $this->user->lang('D_HOURS', $interval->h) : null;
 			$time[] = ($interval->i) ? $this->user->lang('D_MINUTES', $interval->i) : null;
 			$time[] = ($interval->s) ? $this->user->lang('D_SECONDS', $interval->s) : null;
-			$separator = $this->user->lang('MERGE_SEPARATOR', implode(' ', $time));
+
+			// Allow using language variables like {L_LANG_VAR}
+			$separator = preg_replace('/{L_([A-Z0-9_]+)}/e', "\$this->user->lang('\$1')", $separator);
+
+			// Eval linefeeds and generate the separator, time interval included
+			$separator = sprintf(str_replace('\n', "\n", $separator), implode(' ', $time));
 
 			// Merge subject
 			if (!empty($subject) && $subject != $merge_post_data['post_subject'] && $merge_post_data['post_id'] != $merge_post_data['topic_first_post_id'])
