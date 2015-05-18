@@ -36,7 +36,7 @@ if (empty($lang) || !is_array($lang))
 $lang = array_merge($lang, array(
 	'MERGE_SEPARATOR'		=> "\n\n[size=85][color=green]Hinzugefügt nach %s:[/color][/size]\n",
 	'MERGE_SUBJECT'			=> "[size=85][color=green]%s[/color][/size]\n",
-	'POSTS_MERGING_OPTION'	=> 'Nicht mit vorangegangenem Post zusammenfügen',
+	'POSTS_MERGING_OPTION'	=> 'Nicht mit vorangegangenem Beitrag zusammenfügen',
 
 	'D_SECONDS'  => array(
 		1	=> '%d Sekunde',
@@ -52,14 +52,14 @@ $lang = array_merge($lang, array(
 	),
 	'D_MDAY'     => array(
 		1	=> '%d Tag',
-		2	=> '%d Tagen',
+		2	=> '%d Tage',
 	),
 	'D_MON'      => array(
 		1	=> '%d Monat',
-		2	=> '%d Monaten',
+		2	=> '%d Monate',
 	),
 	'D_YEAR'     => array(
 		1	=> '%d Jahr',
-		2	=> '%d Jahren',
+		2	=> '%d Jahre',
 	),
 ));
