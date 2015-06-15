@@ -24,6 +24,9 @@ class helper
 	/** @var \phpbb\user */
 	protected $user;
 
+	/** @var \phpbb\event\dispatcher_interface */
+	protected $phpbb_dispatcher;
+
 	/** @var string phpbb_root_path */
 	protected $phpbb_root_path;
 
@@ -37,17 +40,19 @@ class helper
 	* @param \phpbb\db\driver\driver_interface    $db               DBAL object
 	* @param \phpbb\auth\auth                     $auth             User object
 	* @param \phpbb\user                          $user             User object
+	* @param \phpbb\event\dispatcher_interface	  $phpbb_dispatcher	Event dispatcher object
 	* @param string                               $phpbb_root_path  phpbb_root_path
 	* @param string                               $php_ext          phpEx
 	* @return \rxu\PostsMerging\event\listener
 	* @access public
 	*/
-	public function __construct(\phpbb\config\config $config, \phpbb\db\driver\driver_interface $db, \phpbb\auth\auth $auth, \phpbb\user $user, $phpbb_root_path, $php_ext)
+	public function __construct(\phpbb\config\config $config, \phpbb\db\driver\driver_interface $db, \phpbb\auth\auth $auth, \phpbb\user $user, \phpbb\event\dispatcher_interface $phpbb_dispatcher, $phpbb_root_path, $php_ext)
 	{
 		$this->config = $config;
 		$this->db = $db;
 		$this->auth = $auth;
 		$this->user = $user;
+		$this->phpbb_dispatcher = $phpbb_dispatcher;
 		$this->phpbb_root_path = $phpbb_root_path;
 		$this->php_ext = $php_ext;
 	}
@@ -258,7 +263,7 @@ class helper
 			}
 
 			$error = false;
-			$search = new $search_type($error, $this->phpbb_root_path, $this->php_ext, $this->auth, $this->config, $this->db, $this->user);
+			$search = new $search_type($error, $this->phpbb_root_path, $this->php_ext, $this->auth, $this->config, $this->db, $this->user, $this->phpbb_dispatcher);
 
 			if ($error)
 			{
