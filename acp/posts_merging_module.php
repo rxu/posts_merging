@@ -47,7 +47,7 @@ class posts_merging_module
 
 		$this->new_config = $config;
 		$cfg_array = (isset($_REQUEST['config'])) ? $request->variable('config', array('' => ''), true) : $this->new_config;
-		$cfg_array['merge_no_forums'] = (isset($_REQUEST['merge_no_forums'])) ? implode(',', $request->variable('merge_no_forums', array('' => ''))) : $cfg_array['merge_no_forums'];
+		$cfg_array['merge_no_forums'] = ($submit) ? implode(',', $request->variable('merge_no_forums', array('' => ''))) : $cfg_array['merge_no_forums'];
 		$posts_merging_separator_text = $request->variable('posts_merging_separator_text', '', true);
 		$error = array();
 
