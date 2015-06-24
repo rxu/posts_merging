@@ -182,7 +182,11 @@ class listener implements EventSubscriberInterface
 			$time[] = ($interval->s) ? $this->user->lang('D_SECONDS', $interval->s) : null;
 
 			// Allow using language variables like {L_LANG_VAR}
-			$separator = preg_replace('/{L_([A-Z0-9_]+)}/e', "\$this->user->lang('\$1')", $separator);
+			$separator = preg_replace_callback(
+				'/{L_([A-Z0-9_]+)}/',
+				function ($matches) { return $this->user->lang($matches[1]); },
+				$separator
+			);
 
 			// Eval linefeeds and generate the separator, time interval included
 			$separator = sprintf(str_replace('\n', "\n", $separator), implode(' ', $time));
