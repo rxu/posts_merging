@@ -38,27 +38,27 @@ $lang = array_merge($lang, array(
 	'MERGE_SUBJECT'			=> "[size=85][color=green]%s[/color][/size]\n",
 	'POSTS_MERGING_OPTION'	=> 'Não fundir com a mensagem anterior',
 
-	'D_SECONDS'  => array(
+	'D_SECONDS'	=> array(
 		1	=> '%d segundo',
 		2	=> '%d segundos',
 	),
-	'D_MINUTES'  => array(
+	'D_MINUTES'	=> array(
 		1	=> '%d minuto',
 		2	=> '%d minutos',
 	),
-	'D_HOURS'    => array(
+	'D_HOURS'	=> array(
 		1	=> '%d hora',
 		2	=> '%d horas',
 	),
-	'D_MDAY'     => array(
+	'D_MDAY'	=> array(
 		1	=> '%d dia',
 		2	=> '%d dias',
 	),
-	'D_MON'      => array(
+	'D_MON'		=> array(
 		1	=> '%d mês',
 		2	=> '%d meses',
 	),
-	'D_YEAR'     => array(
+	'D_YEAR'	=> array(
 		1	=> '%d ano',
 		2	=> '%d anos',
 	),
