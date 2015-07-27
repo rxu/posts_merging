@@ -162,7 +162,11 @@ class posts_merging_module
 		// Allow using language variables like {L_LANG_VAR}
 		$posts_merging_separator_text_prewiew = preg_replace_callback(
 			'/{L_([A-Z0-9_]+)}/',
-			function ($matches) {global $user; return $user->lang($matches[1]); },
+			function ($matches)
+			{
+				global $user;
+				return $user->lang($matches[1]);
+			},
 			$posts_merging_separator_text
 		);
 
