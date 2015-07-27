@@ -36,6 +36,7 @@ if (empty($lang) || !is_array($lang))
 $lang = array_merge($lang, array(
 	'ACP_POSTS_MERGING'				=> 'Posts merging',
 	'ACP_POSTS_MERGING_EXPLAIN'		=> 'Here you can apply settings for Posts merging extension.',
+	'ACP_POSTS_MERGING_SEPARATOR_PREVIEW'	=> 'Separator preview',
 	'MERGE_INTERVAL'				=> 'Posts merging interval',
 	'MERGE_INTERVAL_EXPLAIN'		=> 'If a user submit more than 2 posts in this time period, posts will be merged into one post. Information about the time passed from the previous post submitting will be added (for each post). Leave blank or set 0 to disable posts merging.',
 	'MERGE_NO_TOPICS'				=> 'Excluded topics',

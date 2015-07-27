@@ -36,6 +36,7 @@ if (empty($lang) || !is_array($lang))
 $lang = array_merge($lang, array(
 	'ACP_POSTS_MERGING'				=> 'Beiträge zusammenfügen',
 	'ACP_POSTS_MERGING_EXPLAIN'		=> 'Hier kannst du Einstellungen für die "Beiträge zusammenführen Erweiterung" vornehmen.',
+	'ACP_POSTS_MERGING_SEPARATOR_PREVIEW'	=> 'Separator preview',
 	'MERGE_INTERVAL'				=> 'Zeitraum in dem Beiträge zusammengefügt werden können ',
 	'MERGE_INTERVAL_EXPLAIN'		=> 'Wenn ein User mehr als 2 Beiträge innerhalb dieses Zeitraums erstellt, werden die Beiträge zu einem Beitrag zusammengefasst. Informationen über die vergangene Zeit seit dem letzten Beitrag werden hinzugefügt (für jeden Beitrag). Leer lassen oder auf 0 setzen um das Zusammenfügen zu deaktivieren.',
 	'MERGE_NO_TOPICS'				=> 'Ausgeschlossene Themen',

@@ -14,12 +14,12 @@
 */
 if (!defined('IN_PHPBB'))
 {
-exit;
+	exit;
 }
 
 if (empty($lang) || !is_array($lang))
 {
-$lang = array();
+	$lang = array();
 }
 
 // DEVELOPERS PLEASE NOTE
@@ -37,6 +37,7 @@ $lang = array();
 $lang = array_merge($lang, array(
 	'ACP_POSTS_MERGING'				=>'Spajanje postova',
 	'ACP_POSTS_MERGING_EXPLAIN'		=>'Ovdje možeš podesiti postavke ekstenzije “Spajanje postova”.',
+	'ACP_POSTS_MERGING_SEPARATOR_PREVIEW'	=> 'Separator preview',
 	'MERGE_INTERVAL'				=>'Interval spajanja postova',
 	'MERGE_INTERVAL_EXPLAIN'		=>'Ukoliko korisnik/ca posta više od dva uzastopna posta, u postavljenom vremenskom intervalu, isti će biti spojeni u jedan post.<br />Za svaki [prethodni] post, prilikom spajanja postova, bit će dodano (i) proteklo vrijeme od postanja prethodnog posta.<br /> Za onemogućavanje spajanja postova, vrijednost postavi na 0 ili ostavi praznim.',
 	'MERGE_NO_TOPICS'				=>'Izuzete teme',

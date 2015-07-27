@@ -36,6 +36,7 @@ if (empty($lang) || !is_array($lang))
 $lang = array_merge($lang, array(
 	'ACP_POSTS_MERGING'				=> 'Cклеювання повідомлень',
 	'ACP_POSTS_MERGING_EXPLAIN'		=> 'Тут можна налаштувати параметри розширення для склеювання повідомлень.',
+	'ACP_POSTS_MERGING_SEPARATOR_PREVIEW'	=> 'Separator preview',
 	'MERGE_INTERVAL'				=> 'Інтервал склеювання повідомлень',
 	'MERGE_INTERVAL_EXPLAIN'		=> 'Кількість годин, протягом якого повідомлення користувача будуть склеєні з його останнім повідомленням теми. Залиште поле порожнім або встановіть 0 для вимкнення цієї функції.',
 	'MERGE_NO_TOPICS'				=> 'Теми без склеювання',
