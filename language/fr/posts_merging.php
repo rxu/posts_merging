@@ -2,16 +2,15 @@
 /**
 *
 * Posts Merging extension for the phpBB Forum Software package.
-*
-* @copyright (c) 2013 phpBB Limited <https://www.phpbb.com>
-* @license GNU General Public License, version 2 (GPL-2.0)
-*
 * French translation by Galixte (http://www.galixte.com)
+*
+* @copyright (c) 2015 phpBB Limited <https://www.phpbb.com>
+* @license GNU General Public License, version 2 (GPL-2.0)
 *
 */
 
 /**
-* @ignore
+* DO NOT CHANGE
 */
 if (!defined('IN_PHPBB'))
 {
@@ -34,11 +33,15 @@ if (empty($lang) || !is_array($lang))
 // You do not need this where single placeholders are used, e.g. 'Message %d' is fine
 // equally where a string contains only two placeholders which are used to wrap text
 // in a url you again do not need to specify an order e.g., 'Click %sHERE%s' is fine
+//
+// Some characters you may want to copy&paste:
+// ’ « » “ ” …
+//
 
 $lang = array_merge($lang, array(
 	'MERGE_SEPARATOR'		=> "\n\n[size=85][color=green]Ajouté %s après :[/color][/size]\n",
 	'MERGE_SUBJECT'			=> "[size=85][color=green]%s[/color][/size]\n",
-	'POSTS_MERGING_OPTION'	=> 'Ne pas fusionner avec le message précédant',
+	'POSTS_MERGING_OPTION'	=> 'Ne pas fusionner avec le message précédent',
 
 	'D_SECONDS'  => array(
 		1	=> '%d seconde',
