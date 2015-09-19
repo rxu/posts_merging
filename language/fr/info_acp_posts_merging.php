@@ -40,14 +40,14 @@ if (empty($lang) || !is_array($lang))
 
 $lang = array_merge($lang, array(
 	'ACP_POSTS_MERGING'				=> 'Fusion des messages',
-	'ACP_POSTS_MERGING_EXPLAIN'		=> 'Ici vous pouvez appliquer les paramètres de l’extension « Fusion des messages ».',
+	'ACP_POSTS_MERGING_EXPLAIN'		=> 'Sur cette page il est possible modifier les paramètres de l’extension « Fusion des messages ».',
 	'ACP_POSTS_MERGING_SEPARATOR_PREVIEW'	=> 'Aperçu',
 	'MERGE_INTERVAL'				=> 'Intervalle de fusion des messages',
-	'MERGE_INTERVAL_EXPLAIN'		=> 'Si un utilisateur envoie plus de deux messages dans ce laps de temps, les messages seront fusionnés en un seul message. L’information concernant le temps écoulé depuis le précédant message envoyé sera ajoutée (pour chaque message). Laissez vide ou à  0 pour désactiver cette fonctionnalité.',
+	'MERGE_INTERVAL_EXPLAIN'		=> 'Lorsque un utilisateur envoie plus de deux messages durant ce laps de temps, les messages sont fusionnés en un seul message. Le texte séparateur, information concernant le temps écoulé depuis le précédant message envoyé est affichée (pour chaque message). Laisser vide ou à 0 pour désactiver cette fonctionnalité.',
 	'MERGE_NO_TOPICS'				=> 'Sujets exclus',
-	'MERGE_NO_TOPICS_EXPLAIN'		=> 'Si cette fonctionnalité est activée, indiquez les IDs des sujets pour lesquels vous ne souhaitez par activer cette fonctionnalité (séparés par une virgule).',
+	'MERGE_NO_TOPICS_EXPLAIN'		=> 'Permet d’indiquer les IDs des sujets (séparés par une virgule) exclus de cette fonctionnalité.',
 	'MERGE_NO_FORUMS'				=> 'Forums exclus',
-	'MERGE_NO_FORUMS_EXPLAIN'		=> 'La fonctionnalité de fusion des messages <strong>sera désactivée dans les forums sélectionnés</strong>. Sélectionner aucun forum pour utiliser la fonctionnalité de fusion des messages dans tous les forums.<br />Pour sélectionner / désélectionner plusieurs forums utiliser la combinaison de la touche <samp>CTRL</samp> tout en cliquant.',
+	'MERGE_NO_FORUMS_EXPLAIN'		=> 'Permet de sélectionner les forums <strong>exclus de cette fonctionnalité</strong>. Sélectionner aucun forum pour utiliser la fonctionnalité de fusion des messages dans tous les forums.<br />Pour sélectionner / désélectionner plusieurs forums, utiliser la combinaison de la touche <samp>CTRL</samp> tout en cliquant.',
 	'MERGE_SEPARATOR'				=> 'Séparateur',
-	'MERGE_SEPARATOR_EXPLAIN'		=> 'Ici vous pouvez configurer le séparateur qui apparaitra entre les parties des messages fusionnés.<br />Vous pouvez utiliser les BBCodes qui seront analysés en fonction des paramètres du forum ou des messages.<br /><br />Vous pouvez également utiliser une clé de langue présente dans le répertoire de votre langue comme ceci : {L_<em>&lt;NOMDELACLE&gt;</em>} où <em>&lt;NOMDELACLE&gt;</em> est le nom de la clé traduite que vous souhaitez ajouter. Par exemple, {L_WROTE} sera affichée en tant que « Écrire » ou sa traduction en fonction de la langue utilisée par l’utilisateur.<br /><br />Utiliser <em>&#37;s</em> afin d’inclure dans le séparateur le temps écoulé entre les fusions.',
+	'MERGE_SEPARATOR_EXPLAIN'		=> 'Permet de configurer le texte séparateur qui sera affiché entre chaque message fusionné.<br />Il est possible d’utiliser les BBCodes qui seront analysés en fonction des paramètres du forum ou des messages.<br /><br />Il est également possible d’utiliser une clé de langue présente dans le répertoire de la langue utilisée, telle que : {L_<em>&lt;NOMDELACLE&gt;</em>} où <em>&lt;NOMDELACLE&gt;</em> est le nom de la clé de langue que l’on souhaite afficher. Par exemple, {L_WROTE} affiche le mot « Écrire » ou sa traduction en fonction de la langue utilisée par l’utilisateur.<br /><br />Utiliser <em>&#37;s</em> afin d’inclure dans le texte séparateur le temps écoulé entre les messages fusionnés.',
 ));
