@@ -2,24 +2,24 @@
 /**
 *
 * Posts Merging extension for the phpBB Forum Software package.
-* French translation by Galixte (http://www.galixte.com)
 *
-* @copyright (c) 2015 phpBB Limited <https://www.phpbb.com>
+* @copyright (c) 2013 phpBB Limited <https://www.phpbb.com>
 * @license GNU General Public License, version 2 (GPL-2.0)
 *
+* Croatian translation by Ančica Sečan (http://ancica.sunceko.net)
 */
 
 /**
-* DO NOT CHANGE
+* @ignore
 */
 if (!defined('IN_PHPBB'))
 {
-	exit;
+exit;
 }
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+$lang = array();
 }
 
 // DEVELOPERS PLEASE NOTE
@@ -33,38 +33,34 @@ if (empty($lang) || !is_array($lang))
 // You do not need this where single placeholders are used, e.g. 'Message %d' is fine
 // equally where a string contains only two placeholders which are used to wrap text
 // in a url you again do not need to specify an order e.g., 'Click %sHERE%s' is fine
-//
-// Some characters you may want to copy&paste:
-// ’ « » “ ” …
-//
 
 $lang = array_merge($lang, array(
-	'MERGE_SEPARATOR'		=> "\n\n[size=85][color=green]Ajouté %s après :[/color][/size]\n",
+	'MERGE_SEPARATOR'		=> "\n\n[size=85][color=green]Postano nakon %s:[/color][/size]\n",
 	'MERGE_SUBJECT'			=> "[size=85][color=green]%s[/color][/size]\n",
-	'POSTS_MERGING_OPTION'	=> 'Ne pas fusionner avec le message précédent',
+	'POSTS_MERGING_OPTION'	=> 'Ne spajaj s prethodnim postom',
 
-	'D_SECONDS'  => array(
-		1	=> '%d seconde',
-		2	=> '%d secondes',
+	'D_SECONDS'	=> array(
+		1	=> '%d sekunde',
+		2	=> 'sekundi %d',
 	),
-	'D_MINUTES'  => array(
+	'D_MINUTES'	=> array(
 		1	=> '%d minute',
-		2	=> '%d minutes',
+		2	=> 'minuta %d',
 	),
-	'D_HOURS'    => array(
-		1	=> '%d heure',
-		2	=> '%d heures',
+	'D_HOURS'	=> array(
+		1	=> '%d sata',
+		2	=> 'sati %d',
 	),
-	'D_MDAY'     => array(
-		1	=> '%d jour',
-		2	=> '%d jours',
+	'D_MDAY'	=> array(
+		1	=> '%d dana',
+		2	=> '%d dana',
 	),
-	'D_MON'      => array(
-		1	=> '%d mois',
-		2	=> '%d mois',
+	'D_MON'		=> array(
+		1	=> '%d mjeseca',
+		2	=> 'mjeseci %d',
 	),
-	'D_YEAR'     => array(
-		1	=> '%d année',
-		2	=> '%d années',
+	'D_YEAR'	=> array(
+		1	=> '%d godine',
+		2	=> 'godina %d',
 	),
 ));

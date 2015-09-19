@@ -37,6 +37,7 @@ if (empty($lang) || !is_array($lang))
 $lang = array_merge($lang, array(
 	'ACP_POSTS_MERGING'				=> 'دمج المشاركات ',
 	'ACP_POSTS_MERGING_EXPLAIN'		=> 'تستطيع هنا ضبط الإعدادات لهذه الإضافة.',
+	'ACP_POSTS_MERGING_SEPARATOR_PREVIEW'	=> 'Separator preview',
 	'MERGE_INTERVAL'				=> 'الفترة الفاصلة للدمج ',
 	'MERGE_INTERVAL_EXPLAIN'		=> 'سيتم دمج المشاركات إلى مشاركة واحدة في حالة أن العضو أضاف أكثر من 2 مواضيع حلال هذه الفترة. سيتم ذكر الوقت الذي استغرق منذ المشاركة السابقة ( لكل مشاركة على حدة ). القيمة صفر أو تركه فارغاً يعني تعطيل هذا الخيار.',
 	'MERGE_NO_TOPICS'				=> 'استبعاد المواضيع ',

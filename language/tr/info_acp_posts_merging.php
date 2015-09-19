@@ -36,6 +36,7 @@ if (empty($lang) || !is_array($lang))
 $lang = array_merge($lang, array(
 	'ACP_POSTS_MERGING'				=> 'Gönderi birleştirme',
 	'ACP_POSTS_MERGING_EXPLAIN'		=> 'Buradan gönderi birleştirme eklentisinin ayarlarını düzenleyebilirsiniz.',
+	'ACP_POSTS_MERGING_SEPARATOR_PREVIEW'	=> 'Separator preview',
 	'MERGE_INTERVAL'				=> 'Gönderi birleştirme aralığı',
 	'MERGE_INTERVAL_EXPLAIN'		=> 'Eğer bir kullanıcı bu periyod içinde 2den fazla mesaj gönderirse gönderiler bir gönderide birleştirilecek. Bir önceki mesaj gönderimi hakkındaki bilgi eklenecek(her gönderi için). Gönderi birleştirmeyi kapatmak için 0 yazın veya boş bırakın.',
 	'MERGE_NO_TOPICS'				=> 'Hariç tutulan konular',

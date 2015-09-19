@@ -36,6 +36,7 @@ if (empty($lang) || !is_array($lang))
 $lang = array_merge($lang, array(
 	'ACP_POSTS_MERGING'				=> 'Slučování příspěvků',
 	'ACP_POSTS_MERGING_EXPLAIN'		=> 'Zde můžete zvolit nastavení rozšíření Slučování příspěvků.',
+	'ACP_POSTS_MERGING_SEPARATOR_PREVIEW'	=> 'Separator preview',
 	'MERGE_INTERVAL'				=> 'Interval pro sloučení',
 	'MERGE_INTERVAL_EXPLAIN'		=> 'Pokud uživatel v zadaném intervalu odešle do stejného tématu další příspěvek, je jeho obsah sloučen s prvním příspěvkem. Do příspěvku bude také přidána informace o tom, jak dlouhá doba uběhla mezi odesláním původního a nového příspěvku. Pokud chcete tuto funkcionalitu vypnout, nechte pole prázné, nebo zadejte 0.',
 	'MERGE_NO_TOPICS'				=> 'Vyloučená témata',

@@ -36,6 +36,7 @@ if (empty($lang) || !is_array($lang))
 $lang = array_merge($lang, array(
 	'ACP_POSTS_MERGING'				=> 'Fusionar mensajes',
 	'ACP_POSTS_MERGING_EXPLAIN'		=> 'Aqúi puede aplicar los ajustes para la extensión Fusionar mensajes.',
+	'ACP_POSTS_MERGING_SEPARATOR_PREVIEW'	=> 'Separator preview',
 	'MERGE_INTERVAL'				=> 'Intervalo de fusión de mensajes',
 	'MERGE_INTERVAL_EXPLAIN'		=> 'Si un usuario envía más de 2 mensajes en este período de tiempo, los mensajes se fusionarán en un solo mensaje. La información sobre el tiempo transcurrido desde el mensaje anterior se añadirá (para cada mensaje). Dejar en blanco o establecer 0 para desactivar la Fusión de mensajes.',
 	'MERGE_NO_TOPICS'				=> 'Temas excluidos',

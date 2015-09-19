@@ -18,6 +18,7 @@ class posts_merging_module
 	function main($id, $mode)
 	{
 		global $config, $request, $template, $user, $phpbb_container;
+		global $phpbb_root_path, $phpEx;
 
 		$config_text = $phpbb_container->get('config_text');
 
@@ -25,6 +26,7 @@ class posts_merging_module
 		$this->tpl_name = 'acp_posts_merging';
 
 		$submit = (isset($_POST['submit'])) ? true : false;
+		$preview = (isset($_POST['preview'])) ? true : false;
 		$form_key = 'config_posts_merging';
 		add_form_key($form_key);
 
@@ -136,7 +138,53 @@ class posts_merging_module
 			unset($display_vars['vars'][$config_key]);
 		}
 
-		$posts_merging_separator_text = $config_text->get('posts_merging_separator_text');
+		$posts_merging_separator_text = ($posts_merging_separator_text) ?: $config_text->get('posts_merging_separator_text');
+
+		include_once($phpbb_root_path . 'includes/functions_display.' . $phpEx);
+
+		/*
+		* Constant preview
+		*/
+		include_once($phpbb_root_path . 'includes/message_parser.' . $phpEx);
+
+		// Prepare message separator
+		$user->add_lang_ext('rxu/PostsMerging', 'posts_merging');
+
+		// Calculate the time interval
+		$helper = $phpbb_container->get('rxu.PostsMerging.helper');
+		$current_time = time();
+		$interval = $helper->get_time_interval(strtotime('3 hours 17 minutes 56 seconds'), $current_time);
+		$time = array();
+		$time[] = ($interval->h) ? $user->lang('D_HOURS', $interval->h) : null;
+		$time[] = ($interval->i) ? $user->lang('D_MINUTES', $interval->i) : null;
+		$time[] = ($interval->s) ? $user->lang('D_SECONDS', $interval->s) : null;
+
+		// Allow using language variables like {L_LANG_VAR}
+		$posts_merging_separator_text_prewiew = preg_replace_callback(
+			'/{L_([A-Z0-9_]+)}/',
+			function ($matches)
+			{
+				global $user;
+				return $user->lang($matches[1]);
+			},
+			$posts_merging_separator_text
+		);
+
+		// Eval linefeeds and generate the separator, time interval included
+		$posts_merging_separator_text_prewiew = sprintf(str_replace('\n', "\n", $posts_merging_separator_text_prewiew), implode(' ', $time));
+
+		$message_parser = new \parse_message($posts_merging_separator_text_prewiew);
+		// Allowing Quote BBCode
+		$message_parser->parse(true, true, true, true, true, true, true, true);
+		// Now parse it for displaying
+		$separator_preview = $message_parser->format_display(true, true, true, false);
+		unset($message_parser);
+		$template->assign_vars(array(
+			'SEPARATOR_PREVIEW'	=> $separator_preview,
+		));
+		/*
+		* Constant preview end
+		*/
 
 		$template->assign_vars(array(
 			'POSTS_MERGING_SEPARATOR_TEXT'	=> $posts_merging_separator_text,
@@ -144,7 +192,11 @@ class posts_merging_module
 			'S_BBCODE_IMG'			=> true,
 			'S_BBCODE_FLASH'		=> true,
 			'S_LINKS_ALLOWED'		=> true,
+			'U_ACTION'				=> $this->u_action,
 		));
+
+		// Assigning custom bbcodes
+		display_custom_bbcodes();
 	}
 
 	function select_merge_no_forums($value, $key)

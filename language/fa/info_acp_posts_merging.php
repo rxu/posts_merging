@@ -36,6 +36,7 @@ if (empty($lang) || !is_array($lang))
 $lang = array_merge($lang, array(
 	'ACP_POSTS_MERGING'				=> 'پیوند ارسالها',
 	'ACP_POSTS_MERGING_EXPLAIN'		=> 'اینجا مکانی است برای اعمال تنظیمات بر روی افزونه پیوند ارسالها',
+	'ACP_POSTS_MERGING_SEPARATOR_PREVIEW'	=> 'Separator preview',
 	'MERGE_INTERVAL'				=> 'فاصله پیوند ارسالها',
 	'MERGE_INTERVAL_EXPLAIN'		=> 'در صورت ارسال 2 نوشته در این بازه زمانی هر دو به یک ارسال پیوند خواهند شد. اطلاعات زمانی مربوط به زمان نوشته ارسال شده قبلی نمایش داده خواهد شد(برای هر دو ارسال). برای غیرفعال سازی پیوند ارسال 0 یا خالی بگذارید.',
 	'MERGE_NO_TOPICS'				=> 'موضوع های جداشده',

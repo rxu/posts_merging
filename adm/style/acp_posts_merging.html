@@ -45,6 +45,14 @@
 <!-- END options -->
 
 	<p>{L_MERGE_SEPARATOR_EXPLAIN}</p>
+
+	<!-- IF SEPARATOR_PREVIEW -->
+		<fieldset>
+			<legend>{L_ACP_POSTS_MERGING_SEPARATOR_PREVIEW}</legend>
+			<p>{SEPARATOR_PREVIEW}</p>
+		</fieldset>
+	<!-- ENDIF -->
+
 	<!-- INCLUDE acp_posting_buttons.html -->
 
 	<dl class="responsive-columns">
@@ -59,6 +67,7 @@
 <legend>{L_ACP_SUBMIT_CHANGES}</legend>
 	<p class="submit-buttons">
 		<input class="button1" type="submit" id="submit" name="submit" value="{L_SUBMIT}" />&nbsp;
+		<input class="button2" type="submit" id="preview "name="preview" value="{L_PREVIEW}" />&nbsp;
 		<input class="button2" type="reset" id="reset" name="reset" value="{L_RESET}" />
 	</p>
 	{S_FORM_TOKEN}

@@ -7,6 +7,7 @@
 * @license GNU General Public License, version 2 (GPL-2.0)
 *
 */
+
 /**
 * @ignore
 */
@@ -14,10 +15,12 @@ if (!defined('IN_PHPBB'))
 {
 	exit;
 }
+
 if (empty($lang) || !is_array($lang))
 {
 	$lang = array();
 }
+
 // DEVELOPERS PLEASE NOTE
 //
 // All language files should use UTF-8 as their encoding and the files must not contain a BOM.
@@ -29,9 +32,11 @@ if (empty($lang) || !is_array($lang))
 // You do not need this where single placeholders are used, e.g. 'Message %d' is fine
 // equally where a string contains only two placeholders which are used to wrap text
 // in a url you again do not need to specify an order e.g., 'Click %sHERE%s' is fine
+
 $lang = array_merge($lang, array(
 	'ACP_POSTS_MERGING'				=> 'Postituste ühendamine',
 	'ACP_POSTS_MERGING_EXPLAIN'		=> 'Siin saad seadistada laienduse "Postituste Ühendamine" seadeid.',
+	'ACP_POSTS_MERGING_SEPARATOR_PREVIEW'	=> 'Separator preview',
 	'MERGE_INTERVAL'				=> 'Postituste ühendamise ajavahemik',
 	'MERGE_INTERVAL_EXPLAIN'		=> 'Kui kasutaja sisestab rohkem kui 2 postitust sama aja sees, siis need ühendatakse üheks postituseks. Jäta tühjaks või kirjuta väärtuseks "0", et keelata postituste ühendamine.',
 	'MERGE_NO_TOPICS'				=> 'Välistatud teemad',

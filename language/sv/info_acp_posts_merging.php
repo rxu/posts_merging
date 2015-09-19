@@ -37,6 +37,7 @@ if (empty($lang) || !is_array($lang))
 $lang = array_merge($lang, array(
 	'ACP_POSTS_MERGING'				=> 'Sammanslagning av inlägg',
 	'ACP_POSTS_MERGING_EXPLAIN'		=> 'Här kan du ändra inställningarna för automatisk sammanslagning av inlägg.',
+	'ACP_POSTS_MERGING_SEPARATOR_PREVIEW'	=> 'Separator preview',
 	'MERGE_INTERVAL'				=> 'Intervall för sammanslagning av inlägg',
 	'MERGE_INTERVAL_EXPLAIN'		=> 'Om en medlem skickar fler än 2 på varandra följande inlägg inom denna tidsperiod så kommer dessa inlägg att läggas ihop till ett inlägg. Information om tiden mellan inläggen kommer att läggas till (för varje inlägg). Lämna fältet tomt eller ange 0 för att deaktivera sammanslagning av inlägg.',
 	'MERGE_NO_TOPICS'				=> 'Uteslutna trådar',

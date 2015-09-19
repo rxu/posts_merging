@@ -11,14 +11,17 @@
 /**
 * @ignore
 */
+
 if (!defined('IN_PHPBB'))
 {
 	exit;
 }
+
 if (empty($lang) || !is_array($lang))
 {
 	$lang = array();
 }
+
 // DEVELOPERS PLEASE NOTE
 //
 // All language files should use UTF-8 as their encoding and the files must not contain a BOM.
@@ -30,9 +33,11 @@ if (empty($lang) || !is_array($lang))
 // You do not need this where single placeholders are used, e.g. 'Message %d' is fine
 // equally where a string contains only two placeholders which are used to wrap text
 // in a url you again do not need to specify an order e.g., 'Click %sHERE%s' is fine
+
 $lang = array_merge($lang, array(
 	'ACP_POSTS_MERGING'				=> 'Berichten samenvoegen',
 	'ACP_POSTS_MERGING_EXPLAIN'		=> 'Hier kun je de instellingen beheren voor de "Berichten samenvoegen" extensie.',
+	'ACP_POSTS_MERGING_SEPARATOR_PREVIEW'	=> 'Separator preview',
 	'MERGE_INTERVAL'				=> 'Berichten samenvoegen interval',
 	'MERGE_INTERVAL_EXPLAIN'		=> 'Als een gebruiker meer dan 2 berichten plaatst binnen deze tijd, zullen de berichten worden samengevoegd tot 1 bericht. Informatie over de tijd van het vorige bericht zal bij het bericht worden geplaatst (voor elk bericht). Laat open of vul 0 in om uit te schakelen.',
 	'MERGE_NO_TOPICS'				=> 'Onderwerpen uitsluiten',

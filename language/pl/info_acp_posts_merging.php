@@ -37,6 +37,7 @@ if (empty($lang) || !is_array($lang))
 $lang = array_merge($lang, array(
 	'ACP_POSTS_MERGING'				=> 'Łączenie postów',
 	'ACP_POSTS_MERGING_EXPLAIN'		=> 'Ustawienia automatycznego łączenia postów.',
+	'ACP_POSTS_MERGING_SEPARATOR_PREVIEW'	=> 'Separator preview',
 	'MERGE_INTERVAL'				=> 'Odstęp czasowy między postami',
 	'MERGE_INTERVAL_EXPLAIN'		=> 'Jeżeli użytkownik napisze więcej niż dwa posty w danym czasie, zostaną one połączone ze sobą. Wpisz 0, aby wyłączyć',
 	'MERGE_NO_TOPICS'				=> 'Wykluczone tematy',
