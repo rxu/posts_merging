@@ -110,6 +110,7 @@ class listener implements EventSubscriberInterface
 			'core.viewtopic_modify_post_row'		=> 'modify_viewtopic_postrow',
 			'core.posting_modify_template_vars'		=> 'get_posts_merging_option',
 			'core.viewtopic_modify_page_title'		=> 'get_posts_merging_option',
+			'core.permissions'						=> 'add_permission',
 		);
 	}
 
@@ -126,9 +127,10 @@ class listener implements EventSubscriberInterface
 
 		$current_time = time();
 
-		$do_not_merge_with_previous = $this->request->variable('posts_merging_option', false);
+		$do_not_merge_with_previous = $this->request->is_set_post('posts_merging_option', false)
+			&& $this->auth->acl_get('u_postsmerging') && $this->auth->acl_get('u_postsmerging_ignore');
 
-		if (!$do_not_merge_with_previous && !$this->helper->post_needs_approval($data)
+		if ($this->auth->acl_get('u_postsmerging') && !$do_not_merge_with_previous && !$this->helper->post_needs_approval($data)
 			&& in_array($mode, array('reply', 'quote')) && $this->merge_interval
 			&& !$this->helper->excluded_from_merge($data)
 		)
@@ -182,11 +184,20 @@ class listener implements EventSubscriberInterface
 			$time[] = ($interval->s) ? $this->user->lang('D_SECONDS', $interval->s) : null;
 
 			// Allow using language variables like {L_LANG_VAR}
-			$separator = preg_replace_callback(
-				'/{L_([A-Z0-9_]+)}/',
-				function ($matches) { return $this->user->lang($matches[1]); },
-				$separator
-			);
+			// Since /e modifier is deprecated since PHP 5.5.0, use new way
+			// But for PHP 5.4.0 only as earlier don't support $this closure in anonymous functions
+			if (version_compare(PHP_VERSION, '5.4.0', '>='))
+			{
+				$separator = preg_replace_callback(
+					'/{L_([A-Z0-9_]+)}/',
+					function ($matches) { return $this->user->lang($matches[1]); },
+					$separator
+				);
+			}
+			else
+			{
+				$separator = preg_replace('/{L_([A-Z0-9_]+)}/e', "\$this->user->lang('\$1')", $separator);
+			}
 
 			// Eval linefeeds and generate the separator, time interval included
 			$separator = sprintf(str_replace('\n', "\n", $separator), implode(' ', $time));
@@ -317,7 +328,8 @@ class listener implements EventSubscriberInterface
 		$topic_id = (isset($event['topic_id'])) ? (int) $event['topic_id'] : (int) $post_data['topic_id'];
 		$mode = (isset($event['mode'])) ? $event['mode'] : false;
 
-		if ($this->merge_interval && $this->user->data['is_registered'] && (!$mode || in_array($mode, array('reply', 'quote')))
+		if ($this->auth->acl_get('u_postsmerging') && $this->auth->acl_get('u_postsmerging_ignore')
+			&& $this->merge_interval && $this->user->data['is_registered'] && (!$mode || in_array($mode, array('reply', 'quote')))
 			&& (time() - (int) $post_data['topic_last_post_time']) < $this->merge_interval
 			&& !$this->helper->excluded_from_merge(array('forum_id' => $forum_id, 'topic_id' => $topic_id))
 			&& $post_data['topic_last_poster_id'] == $this->user->data['user_id']
@@ -327,5 +339,13 @@ class listener implements EventSubscriberInterface
 			$this->user->add_lang_ext('rxu/PostsMerging', 'posts_merging');
 			$this->template->assign_vars(array('POSTS_MERGING_OPTION' => true));
 		}
+	}
+
+	public function add_permission($event)
+	{
+		$permissions = $event['permissions'];
+		$permissions['u_postsmerging'] = array('lang' => 'ACL_U_POSTSMERGING', 'cat' => 'post');
+		$permissions['u_postsmerging_ignore'] = array('lang' => 'ACL_U_POSTSMERGING_IGNORE', 'cat' => 'post');
+		$event['permissions'] = $permissions;
 	}
 }
