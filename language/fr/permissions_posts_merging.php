@@ -1,9 +1,10 @@
 <?php
 /**
 *
-* Board Rules extension for the phpBB Forum Software package.
+* Posts Merging extension for the phpBB Forum Software package.
+* French translation by Galixte (http://www.galixte.com)
 *
-* @copyright (c) 2014 phpBB Limited <https://www.phpbb.com>
+* @copyright (c) 2015 phpBB Limited <https://www.phpbb.com>
 * @license GNU General Public License, version 2 (GPL-2.0)
 *
 */
@@ -34,10 +35,10 @@ if (empty($lang) || !is_array($lang))
 // in a url you again do not need to specify an order e.g., 'Click %sHERE%s' is fine
 //
 // Some characters you may want to copy&paste:
-// ’ » “ ” …
+// ’ « » “ ” …
 //
 
 $lang = array_merge($lang, array(
-	'ACL_U_POSTSMERGING'			=> 'Can use posts merging',
-	'ACL_U_POSTSMERGING_IGNORE'		=> 'Can ignore posts merging<br /><em>Users, who have this permission, can use the “Do not merge with previous post” option.</em>',
+	'ACL_U_POSTSMERGING'			=> 'Peut utiliser la fusion des messages.',
+	'ACL_U_POSTSMERGING_IGNORE'		=> 'Peut ignorer la fusion des messages.<br /><em>Les utilisateurs ayant cette permission peuvent utiliser l’option « Ne pas fusionner avec le message précédent ».</em>',
 ));
