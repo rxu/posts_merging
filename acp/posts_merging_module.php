@@ -143,7 +143,7 @@ class posts_merging_module
 		include_once($phpbb_root_path . 'includes/functions_display.' . $phpEx);
 
 		/*
-		* Constant preview
+		* Constant merge separator preview
 		*/
 		include_once($phpbb_root_path . 'includes/message_parser.' . $phpEx);
 
@@ -162,9 +162,8 @@ class posts_merging_module
 		// Allow using language variables like {L_LANG_VAR}
 		$posts_merging_separator_text_prewiew = preg_replace_callback(
 			'/{L_([A-Z0-9_]+)}/',
-			function ($matches)
+			function ($matches) use ($user)
 			{
-				global $user;
 				return $user->lang($matches[1]);
 			},
 			$posts_merging_separator_text
@@ -183,7 +182,7 @@ class posts_merging_module
 			'SEPARATOR_PREVIEW'	=> $separator_preview,
 		));
 		/*
-		* Constant preview end
+		* Constant merge separator preview end
 		*/
 
 		$template->assign_vars(array(
