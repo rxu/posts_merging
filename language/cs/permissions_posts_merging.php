@@ -38,6 +38,6 @@ if (empty($lang) || !is_array($lang))
 //
 
 $lang = array_merge($lang, array(
-	'ACL_U_POSTSMERGING'			=> 'Can use posts merging',
-	'ACL_U_POSTSMERGING_IGNORE'		=> 'Can ignore posts merging<br /><em>Users, who have this permission, can use the “Do not merge with previous post” option.</em>',
+	'ACL_U_POSTSMERGING'			=> 'Lze slučovat příspěvky',
+	'ACL_U_POSTSMERGING_IGNORE'		=> 'Lze zamezit slučování příspěvků<br /><em>Uživatelé s tímto oprávněním mohou používat volbu „Neslučovat s předchozím příspěvkem“.</em>',
 ));
