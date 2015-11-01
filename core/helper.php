@@ -78,19 +78,18 @@ class helper
 		$sql_array = array(
 			'SELECT'	=> 'f.enable_indexing, f.forum_id, p.bbcode_bitfield, p.bbcode_uid, p.post_created,
 				p.enable_bbcode,  p.enable_magic_url, p.enable_smilies, p.poster_id, p.post_attachment,
-				p.post_edit_locked, p.post_id, p.post_subject, p.post_text, p.post_time, t.topic_attachment,
+				p.post_edit_locked, p.post_id, p.post_subject, p.post_text, p.post_time, p.post_visibility, t.topic_attachment,
 				t.topic_first_post_id, t.topic_id, t.topic_last_post_time',
 			'FROM'		=> array(FORUMS_TABLE => 'f', POSTS_TABLE => 'p', TOPICS_TABLE => 't'),
 			'WHERE'		=> "p.post_id = t.topic_last_post_id
+				AND t.topic_posts_unapproved = 0
 				AND t.topic_id = $topic_id
-				AND p.post_visibility = " . ITEM_APPROVED . "
-				AND p.poster_id = $user_id
 				AND (f.forum_id = t.forum_id 
 					OR f.forum_id = $forum_id)",
 		);
 
 		$sql = $this->db->sql_build_query('SELECT', $sql_array);
-		$result = $this->db->sql_query($sql);
+		$result = $this->db->sql_query_limit($sql, 1);
 		$last_post_data = $this->db->sql_fetchrow($result);
 		$this->db->sql_freeresult($result);
 

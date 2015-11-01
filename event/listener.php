@@ -127,6 +127,8 @@ class listener implements EventSubscriberInterface
 
 		$current_time = time();
 
+		// Preliminary checks if the post-based post merging option was checked,
+		// and user has permission for merging or ignoring merging
 		$do_not_merge_with_previous = $this->request->is_set_post('posts_merging_option', false)
 			&& $this->auth->acl_get('u_postsmerging') && $this->auth->acl_get('u_postsmerging_ignore');
 
@@ -137,10 +139,12 @@ class listener implements EventSubscriberInterface
 		{
 			$merge_post_data = $this->helper->get_last_post_data($data);
 
-			// Do not merge if there's no last post data, the post is locked or allowed merge period has left
-			if (!$merge_post_data || $merge_post_data['post_edit_locked'] ||
-				(($current_time - (int) $merge_post_data['topic_last_post_time']) > $this->merge_interval)
-				|| !$this->user->data['is_registered']
+			// Do not merge if there's no last post data, the poster is not current user, user is not registered,or
+			// the post is locked, has not yet been approved or allowed merge period has left
+			if (!$merge_post_data || ($merge_post_data['poster_id'] != $this->user->data['user_id']) || $merge_post_data['post_edit_locked'] ||
+				(int) $merge_post_data['post_visibility'] == ITEM_UNAPPROVED ||
+				(($current_time - (int) $merge_post_data['topic_last_post_time']) > $this->merge_interval) ||
+				!$this->user->data['is_registered']
 			)
 			{
 				return;
