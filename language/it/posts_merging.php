@@ -36,7 +36,7 @@ if (empty($lang) || !is_array($lang))
 $lang = array_merge($lang, array(
 	'MERGE_SEPARATOR'		=> "\n\n[size=85][color=green]Ha scritto dopo %s:[/color][/size]\n",
 	'MERGE_SUBJECT'			=> "[size=85][color=green]%s[/color][/size]\n",
-	'POSTS_MERGING_OPTION'	=> 'Non unirlo con i precedenti messaggi',
+	'POSTS_MERGING_OPTION'	=> 'Non unire al messaggio precedente',
 
 	'D_SECONDS'  => array(
 		1	=> '%d secondo',

@@ -38,6 +38,6 @@ if (empty($lang) || !is_array($lang))
 //
 
 $lang = array_merge($lang, array(
-	'ACL_U_POSTSMERGING'			=> 'Can use posts merging',
-	'ACL_U_POSTSMERGING_IGNORE'		=> 'Can ignore posts merging<br /><em>Users, who have this permission, can use the “Do not merge with previous post” option.</em>',
+	'ACL_U_POSTSMERGING'			=> 'Può usare l’unione dei messaggi',
+	'ACL_U_POSTSMERGING_IGNORE'		=> 'Può evitare l’unione dei messaggi<br /><em>Gli utenti con questo permesso potranno far uso dell’opzione “Non unire al messaggio precedente”.</em>',
 ));
