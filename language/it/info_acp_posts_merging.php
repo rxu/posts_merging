@@ -34,15 +34,15 @@ if (empty($lang) || !is_array($lang))
 // in a url you again do not need to specify an order e.g., 'Click %sHERE%s' is fine
 
 $lang = array_merge($lang, array(
-	'ACP_POSTS_MERGING'				=> 'Unione dei messaggi',
-	'ACP_POSTS_MERGING_EXPLAIN'		=> 'Qui puoi modificare le impostazioni per l\'estensione Post merging.',
-	'ACP_POSTS_MERGING_SEPARATOR_PREVIEW'	=> 'Anteprima Separatore',
-	'MERGE_INTERVAL'				=> 'Intervallo per l\'unione dei messaggi',
-	'MERGE_INTERVAL_EXPLAIN'		=> 'Se un utente invia più di due messaggi in questo periodo di tempo, i messaggi verranno uniti in un unico messaggio. Le informazioni riguardo al periodo di tempo passato dal precedente messaggio inviato verranno aggiunte (per ogni messaggio). Lascia bianco o impostalo a 0 per disabilitare l\'unione dei messaggi.',
+	'ACP_POSTS_MERGING'				=> 'Unione messaggi',
+	'ACP_POSTS_MERGING_EXPLAIN'		=> 'Qui è possibile modificare le impostazioni per l’estensione <em>Unione messaggi</em>.',
+	'ACP_POSTS_MERGING_SEPARATOR_PREVIEW'	=> 'Anteprima separatore',
+	'MERGE_INTERVAL'				=> 'Intervallo unione messaggi',
+	'MERGE_INTERVAL_EXPLAIN'		=> 'Se un utente scrive più di due messaggi in questo lasso di tempo, i messaggi saranno uniti in uno; Le informazioni sull’ora di scrittura del messaggio saranno sovrascritte con quelle dell’ultimo messaggio inviato. Lasciare il campo vuoto (o a 0) per disabilitare l’unione dei messaggi.',
 	'MERGE_NO_TOPICS'				=> 'Argomenti esclusi',
-	'MERGE_NO_TOPICS_EXPLAIN'		=> 'Un elenco separato dalle virgole degli argomenti dove l\'unione dei messaggi non dovrebbe essere applicata, quando questa funzione è abilitata.',
+	'MERGE_NO_TOPICS_EXPLAIN'		=> 'Quest’elenco di ID argomenti separati da virgola sarà escluso dalle impostazioni di unione messaggi se l’estensione è abilitata.',
 	'MERGE_NO_FORUMS'				=> 'Forum esclusi',
-	'MERGE_NO_FORUMS_EXPLAIN'		=> 'La funzione di unione dei messaggi <strong>verrà disabilitata nei forum selezionati</strong>. Nel caso nessun forum sia selezionato, la funzionalità verrà utilizzata in tutti i forum.<br />Puoi selezionare o deselezionare più forum tenendo premuto <samp>CTRL</samp> e cliccando.',
+	'MERGE_NO_FORUMS_EXPLAIN'		=> 'L’unione dei messaggi <strong>sarà disabilitata nei forum selezionati</strong>. Non selezionare alcun forum per usare le impostazioni di unione messaggi in tutti i forum.<br />Selezionare/Deselezionare più forum tenendo premuto il tasto <samp>CTRL</samp> e cliccando sui forum.',
 	'MERGE_SEPARATOR'				=> 'Separatore',
-	'MERGE_SEPARATOR_EXPLAIN'		=> 'Qui puoi configurare il separatore che apparirà tra le due parti unite del messaggio.<br />PUoi usare i BBCode, che saranno elaborati in base alle impostazioni della Board o delle impostazioni dei messaggi.<br /><br />Qui puoi anche utilizzare ogni stringa linguistica presente nella tua cartella language/, ad esempio: {L_<em>&lt;STRINGNAME&gt;</em>} dove <em>&lt;STRINGNAME&gt;</em> è il nome della stringa tradotta che vuoi aggiungere. Per esempio, {L_WROTE} verrà visualizzata come "ha scritto" o la relativa traduzione della lingua in uso da parte dell\'utente.<br /><br />Usa il placeholder <em>&#37;s</em> per includere il tempo passato tra i messaggi uniti nel separatore.',
+	'MERGE_SEPARATOR_EXPLAIN'		=> 'Qui è possibile configurare il separatore che apparirà tra le parti unite del messaggio.<br />È possibile far uso di BBCode che saranno interpretati secondo le impostazioni messaggi della board.<br /><br />È anche possibile usare le linee di traduzione della propria cartella di lingua (es.: <samp>it/</samp>) così: {L_<em>&lt;STRINGNAME&gt;</em>} dove <em>&lt;STRINGNAME&gt;</em> è il nome della riga di traduzione che si vuole aggiungere.Per esempio, {L_WROTE} sarà mostrata come “wrote” o nella sua forma tradotta in base alla lingua impostata dall’utente.<br /><br />Usare (una volta) il segnaposto <em>&#37;s</em> per aggiungere il tempo passato tra le due unioni nel separatore.',
 ));
