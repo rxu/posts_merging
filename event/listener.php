@@ -173,7 +173,11 @@ class listener implements EventSubscriberInterface
 			// Handle inline attachments BBCode in old message
 			if ($num_new_attachments)
 			{
-				$merge_post_data['post_text'] = preg_replace('#\[attachment=([0-9]+)\](.*?)\[\/attachment\]#e', "'[attachment='.(\\1 + $num_new_attachments).']\\2[/attachment]'", $merge_post_data['post_text']);
+				$merge_post_data['post_text'] = preg_replace_callback(
+					'#\[attachment=([0-9]+)\](.*?)\[\/attachment\]#',
+					function ($match) { return '[attachment='.($match[1] + $num_new_attachments).']' . $match[2] . '[/attachment]'; },
+					$separator
+				);
 			}
 
 			// Prepare message separator
