@@ -176,7 +176,7 @@ class listener implements EventSubscriberInterface
 				$merge_post_data['post_text'] = preg_replace_callback(
 					'#\[attachment=([0-9]+)\](.*?)\[\/attachment\]#',
 					function ($match) { return '[attachment='.($match[1] + $num_new_attachments).']' . $match[2] . '[/attachment]'; },
-					$separator
+					$merge_post_data['post_text']
 				);
 			}
 
