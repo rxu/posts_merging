@@ -187,6 +187,9 @@ class listener implements EventSubscriberInterface
 			// Calculate the time interval
 			$interval = $this->helper->get_time_interval($current_time, $merge_post_data['post_time']);
 			$time = array();
+//Dook			
+			$time[] = ($interval->d) ? $this->user->lang('D_MDAY', $interval->d) : null;
+//Dook			
 			$time[] = ($interval->h) ? $this->user->lang('D_HOURS', $interval->h) : null;
 			$time[] = ($interval->i) ? $this->user->lang('D_MINUTES', $interval->i) : null;
 			$time[] = ($interval->s) ? $this->user->lang('D_SECONDS', $interval->s) : null;
@@ -235,7 +238,9 @@ class listener implements EventSubscriberInterface
 
 			// If this is the first merging for current post, save original post time within the post_created field
 			// Update post time with the current time and submit post to the database
-			$merge_post_data['post_created'] = ($merge_post_data['post_created']) ?: $merge_post_data['post_time'];
+//Dook (my wish). Date of post must be changed.
+// $merge_post_data['post_created'] = ($merge_post_data['post_created']) ?: $merge_post_data['post_time'];
+//Dook
 			$merge_post_data['post_time'] = $data['post_time'] = $current_time;
 			$this->helper->submit_post_to_database($merge_post_data);
 
@@ -249,7 +254,9 @@ class listener implements EventSubscriberInterface
 			// Doing it this way we can use "...post by guest-username..." in notifications when
 			// "guest-username" is supplied or ommit the username if it is not.
 			$username = ($username !== '' || !$this->user->data['is_registered']) ? $username : $this->user->data['username'];
-
+//Dook
+			$this->helper->del_notifications_dook($data); 
+//Dook			
 			// Send Notifications
 			// Despite the post_id is the same and users who've been already notified
 			// won't be notified again about the same post_id, we send notifications

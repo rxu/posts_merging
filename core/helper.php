@@ -57,6 +57,14 @@ class helper
 		$this->php_ext = $php_ext;
 	}
 
+//Dook
+	public function del_notifications_dook($data)
+	{
+			$sql = "DELETE FROM " . NOTIFICATIONS_TABLE . " WHERE item_id = " . $data['post_id'] . " AND notification_read = 1 AND notification_type_id IN (SELECT notification_type_id FROM phpbb_notification_types WHERE (notification_type_name='notification.type.post') OR (notification_type_name='notification.type.bookmark') OR (notification_type_name='notification.type.quote') )";
+			$this->db->sql_query($sql);
+	}
+//Dook	
+	
 	public function excluded_from_merge($data)
 	{
 		return (in_array($data['forum_id'], explode(',', $this->config['merge_no_forums']))
