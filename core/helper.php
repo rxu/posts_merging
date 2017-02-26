@@ -206,7 +206,8 @@ class helper
 		$sql = 'SELECT attach_id, COUNT(*) as num_attachments
 			FROM ' . ATTACHMENTS_TABLE . "
 			WHERE post_msg_id = $post_id
-				AND in_message = 0";
+				AND in_message = 0
+			GROUP BY attach_id";
 		$result = $this->db->sql_query($sql);
 		$num_attachments = (int) $this->db->sql_fetchfield('num_attachments');
 
