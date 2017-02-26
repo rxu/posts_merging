@@ -187,6 +187,9 @@ class listener implements EventSubscriberInterface
 			// Calculate the time interval
 			$interval = $this->helper->get_time_interval($current_time, $merge_post_data['post_time']);
 			$time = array();
+			$time[] = ($interval->y) ? $this->user->lang('D_YEAR', $interval->y) : null;
+			$time[] = ($interval->m) ? $this->user->lang('D_MON', $interval->m) : null;
+			$time[] = ($interval->d) ? $this->user->lang('D_MDAY', $interval->d) : null;
 			$time[] = ($interval->h) ? $this->user->lang('D_HOURS', $interval->h) : null;
 			$time[] = ($interval->i) ? $this->user->lang('D_MINUTES', $interval->i) : null;
 			$time[] = ($interval->s) ? $this->user->lang('D_SECONDS', $interval->s) : null;
