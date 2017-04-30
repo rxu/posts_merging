@@ -203,11 +203,11 @@ class helper
 
 	public function count_post_attachments($post_id)
 	{
-		$sql = 'SELECT attach_id, COUNT(*) as num_attachments
+		$sql = 'SELECT COUNT(*) as num_attachments
 			FROM ' . ATTACHMENTS_TABLE . "
 			WHERE post_msg_id = $post_id
 				AND in_message = 0
-			GROUP BY attach_id";
+			GROUP BY post_msg_id";
 		$result = $this->db->sql_query($sql);
 		$num_attachments = (int) $this->db->sql_fetchfield('num_attachments');
 

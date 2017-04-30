@@ -154,7 +154,7 @@ class listener implements EventSubscriberInterface
 			// In this case, also don't merge posts and return
 			// Exceptions are administrators and forum moderators
 			$num_old_attachments = $this->helper->count_post_attachments((int) $merge_post_data['post_id']);
-			$num_new_attachments = sizeof($data['attachment_data']);
+			$num_new_attachments = count($data['attachment_data']);
 			$total_attachments_count = $num_old_attachments + $num_new_attachments;
 			if (($total_attachments_count > $this->config['max_attachments']) && !$this->auth->acl_get('a_')
 				&& !$this->auth->acl_get('m_', (int) $data['forum_id'])
@@ -175,7 +175,7 @@ class listener implements EventSubscriberInterface
 			{
 				$merge_post_data['post_text'] = preg_replace_callback(
 					'#\[attachment=([0-9]+)\](.*?)\[\/attachment\]#',
-					function ($match) { return '[attachment='.($match[1] + $num_new_attachments).']' . $match[2] . '[/attachment]'; },
+					function ($match) use ($num_new_attachments) {return '[attachment='.($match[1] + $num_new_attachments).']' . $match[2] . '[/attachment]'; },
 					$merge_post_data['post_text']
 				);
 			}
