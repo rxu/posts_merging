@@ -155,15 +155,15 @@ class helper
 				$files_added++;
 
 				$attach_sql = array(
-					'post_msg_id'		=> $data['post_id'],
-					'topic_id'			=> $data['topic_id'],
+					'post_msg_id'		=> (int) $data['post_id'],
+					'topic_id'			=> (int) $data['topic_id'],
 					'is_orphan'			=> 0,
 					'poster_id'			=> (int) $this->user->data['user_id'],
 					'attach_comment'	=> $attach_row['attach_comment'],
 				);
 
 				$sql = 'UPDATE ' . ATTACHMENTS_TABLE . ' SET ' . $this->db->sql_build_array('UPDATE', $attach_sql) . '
-					WHERE attach_id = ' . $attach_row['attach_id'] . '
+					WHERE attach_id = ' . (int) $attach_row['attach_id'] . '
 						AND is_orphan = 1
 						AND poster_id = ' . (int) $this->user->data['user_id'];
 				$this->db->sql_query($sql);
