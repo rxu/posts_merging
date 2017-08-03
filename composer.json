@@ -3,8 +3,8 @@
     "type": "phpbb-extension",
     "description": "Adds an option to merge current post with previous if the former one is by same author.",
     "homepage": "http://www.phpbbguru.net",
-    "version": "2.0.3-dev",
-    "time": "2015-05-02",
+    "version": "2.1.0",
+    "time": "2017-08-04",
     "license": "GPL-2.0",
     "authors": [
         {
@@ -14,8 +14,7 @@
         }
     ],
     "require": {
-        "php": ">=5.3.3",
-        "composer/installers": "~1.0"
+        "php": ">=5.3.3"
     },
    "require-dev": {
       "phing/phing": "2.4.*"
@@ -23,7 +22,7 @@
     "extra": {
         "display-name": "Posts merging",
         "soft-require": {
-           "phpbb/phpbb": "3.1.*@dev"
+           "phpbb/phpbb": ">=3.1.0"
         },
         "version-check": {
             "host": "rxu.github.io",
