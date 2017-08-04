@@ -43,6 +43,7 @@ env:
     - EPV="1"              # Should we run EPV (Extension Pre Validator) on your code?
     - PHPBB_BRANCH="3.2.x"
 
+branches:
   only:
     - master
     - develop
