@@ -2,26 +2,26 @@ services:
     rxu.PostsMerging.listener:
         class: rxu\PostsMerging\event\listener
         arguments:
-            - @config
-            - @config_text
-            - @auth
-            - @request
-            - @user
-            - @notification_manager
-            - @dispatcher
-            - @template
-            - @rxu.PostsMerging.helper
-            - %core.root_path%
-            - %core.php_ext%
+            - '@config'
+            - '@config_text'
+            - '@auth'
+            - '@request'
+            - '@user'
+            - '@notification_manager'
+            - '@dispatcher'
+            - '@template'
+            - '@rxu.PostsMerging.helper'
+            - '%core.root_path%'
+            - '%core.php_ext%'
         tags:
             - { name: event.listener }
     rxu.PostsMerging.helper:
         class: rxu\PostsMerging\core\helper
         arguments:
-            - @config
-            - @dbal.conn
-            - @auth
-            - @user
-            - @dispatcher
-            - %core.root_path%
-            - %core.php_ext%
+            - '@config'
+            - '@dbal.conn'
+            - '@auth'
+            - '@user'
+            - '@dispatcher'
+            - '%core.root_path%'
+            - '%core.php_ext%'
