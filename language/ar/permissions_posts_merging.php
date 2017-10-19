@@ -6,6 +6,7 @@
 * @copyright (c) 2015 phpBB Limited <https://www.phpbb.com>
 * @license GNU General Public License, version 2 (GPL-2.0)
 *
+* Translated By : Bassel Taha Alhitary - www.alhitary.net
 */
 
 /**
@@ -38,6 +39,6 @@ if (empty($lang) || !is_array($lang))
 //
 
 $lang = array_merge($lang, array(
-	'ACL_U_POSTSMERGING'			=> 'Can use posts merging',
-	'ACL_U_POSTSMERGING_IGNORE'		=> 'Can ignore posts merging<br /><em>Users, who have this permission, can use the “Do not merge with previous post” option.</em>',
+	'ACL_U_POSTSMERGING'			=> 'يستطيع دمج المُشاركات',
+	'ACL_U_POSTSMERGING_IGNORE'		=> 'يستطيع تجاهل دمج المُشاركات<br /><em>الأعضاء الذين يمتلكون هذه الصلاحية يستطيعون استخدام الخيار “لا تدمج مع المُشاركة السابقة”.</em>',
 ));

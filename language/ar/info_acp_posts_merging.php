@@ -6,7 +6,7 @@
 * @copyright (c) 2013 phpBB Limited <https://www.phpbb.com>
 * @license GNU General Public License, version 2 (GPL-2.0)
 *
- * Translated By : Basil Taha Alhitary - www.alhitary.net
+* Translated By : Bassel Taha Alhitary - www.alhitary.net
 */
 
 /**
@@ -36,14 +36,14 @@ if (empty($lang) || !is_array($lang))
 
 $lang = array_merge($lang, array(
 	'ACP_POSTS_MERGING'				=> 'دمج المشاركات ',
-	'ACP_POSTS_MERGING_EXPLAIN'		=> 'تستطيع هنا ضبط الإعدادات لهذه الإضافة.',
-	'ACP_POSTS_MERGING_SEPARATOR_PREVIEW'	=> 'Separator preview',
-	'MERGE_INTERVAL'				=> 'الفترة الفاصلة للدمج ',
-	'MERGE_INTERVAL_EXPLAIN'		=> 'سيتم دمج المشاركات إلى مشاركة واحدة في حالة أن العضو أضاف أكثر من 2 مواضيع حلال هذه الفترة. سيتم ذكر الوقت الذي استغرق منذ المشاركة السابقة ( لكل مشاركة على حدة ). القيمة صفر أو تركه فارغاً يعني تعطيل هذا الخيار.',
+	'ACP_POSTS_MERGING_EXPLAIN'		=> 'من هنا تستطيع ضبط الإعدادات لهذه الإضافة.',
+	'ACP_POSTS_MERGING_SEPARATOR_PREVIEW'	=> 'استعراض ',
+	'MERGE_INTERVAL'				=> 'الفترة ',
+	'MERGE_INTERVAL_EXPLAIN'		=> 'سيتم دمج المُشاركات إلى مُشاركة واحدة في حالة أن العضو أضاف أكثر من 2 مُشاركات خلال هذه الفترة التي تحددها هُنا. سيتم أيضاً إضافة المعلومات حول الوقت الذي اُستغرق منذ المُشاركة السابقة ( كُل مُشاركة على حدة ). اتركه فارغاً أو اكتب القيمة صفر لتعطيل عملية دمج المُشاركات.',
 	'MERGE_NO_TOPICS'				=> 'استبعاد المواضيع ',
-	'MERGE_NO_TOPICS_EXPLAIN'		=> 'اكتب العلامة الفاصلة ", " بين أرقام المواضيع التي لا تريد دمج المشاركات فيها.',
+	'MERGE_NO_TOPICS_EXPLAIN'		=> 'اكتب العلامة الفاصلة , بين أرقام المواضيع التي لا تريد دمج المُشاركات فيها.',
 	'MERGE_NO_FORUMS'				=> 'استبعاد المنتديات ',
-	'MERGE_NO_FORUMS_EXPLAIN'		=> 'اكتب العلامة الفاصلة ", " بين أرقام المنتديات التي لا تريد دمج المشاركات فيها.',
-	'MERGE_SEPARATOR'				=> 'Separator',
-	'MERGE_SEPARATOR_EXPLAIN'		=> 'Here you can configure the separator which will appear between the merged message parts.<br />You can use BBCodes which will be parsed in according to the board or message settings.<br /><br />You can also use any language string present in your language/ directory like this: {L_<em>&lt;STRINGNAME&gt;</em>} where <em>&lt;STRINGNAME&gt;</em> is the name of the translated string you want to add. For example, {L_WROTE} will be displayed as “wrote” or its translation according to user’s locale.<br /><br />Use <em>&#37;s</em> placeholder (once) to include the time passed between merging in the separator.',
+	'MERGE_NO_FORUMS_EXPLAIN'		=> 'عملية دمج المُشاركات <strong>لن تعمل في المنتديات التي تختارها هنا</strong>. سيتم دمج المُشاركات في جميع المنتديات في حالة عدم اختيارك لأي منتدى.<br />تحديد/إلغاء التحديد لأكثر من منتدى يكون بواسطة النقر مُطولاً على زر الكنترول <samp>CTRL</samp> والنقر بالفارة ( الماوس ) على المنتديات الذي تريدها.',
+	'MERGE_SEPARATOR'				=> 'الفاصل ',
+	'MERGE_SEPARATOR_EXPLAIN'		=> 'من هنا تستطيع إعداد الفاصل الذي سيظهر بين المُشاركات التي تم دمجها.<br />تستطيع استخدام أكواد الكتابة BBCodes التي سيتم تحليلها بحسب إعدادات المنتدى أو المُشاركة.<br /><br />تستطيع أيضاً استخدام أي سلسلة لغة موجودة في مجلد اللغة لديك مثل هذا : {L_<em>&lt;STRINGNAME&gt;</em>} حيث أن الـ <em>&lt;STRINGNAME&gt;</em> هو إسم السلسلة المُترجمة التي تريد إضافتها. على سبيل المثال : {L_WROTE} سوف تظهر كـ “كتب” أو الكلمة المُترجمة بحسب اللغة المُستخدمة بواسطة العضو.<br /><br />استخدم العنصر <em>&#37;s</em> ( مرة واحدة ) لإضافة الوقت الذي مر بين الدمج في الفاصل.',
 ));
