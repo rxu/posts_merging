@@ -6,7 +6,7 @@
 * @copyright (c) 2013 phpBB Limited <https://www.phpbb.com>
 * @license GNU General Public License, version 2 (GPL-2.0)
 *
- * Translated By : Basil Taha Alhitary - www.alhitary.net
+* Translated By : Bassel Taha Alhitary - www.alhitary.net
 */
 
 /**
@@ -35,9 +35,9 @@ if (empty($lang) || !is_array($lang))
 // in a url you again do not need to specify an order e.g., 'Click %sHERE%s' is fine
 
 $lang = array_merge($lang, array(
-	'MERGE_SEPARATOR'		=> "\n\n[size=85][color=green]تمت الإضافة في %s :[/color][/size]\n",
+	'MERGE_SEPARATOR'		=> "\n\n[size=85][color=green]تمت الإضافة في %s:[/color][/size]\n",
 	'MERGE_SUBJECT'			=> "[size=85][color=green]%s[/color][/size]\n",
-	'POSTS_MERGING_OPTION'	=> 'لا تدمج مع المشاركة السابقة',
+	'POSTS_MERGING_OPTION'	=> 'لا تدمج مع المُشاركة السابقة',
 
 	'D_SECONDS'  => array(
 		1	=> '%d ثانية',
