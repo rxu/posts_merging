@@ -37,10 +37,13 @@ if (empty($lang) || !is_array($lang))
 $lang = array_merge($lang, array(
 	'ACP_POSTS_MERGING'				=> 'Sammanslagning av inlägg',
 	'ACP_POSTS_MERGING_EXPLAIN'		=> 'Här kan du ändra inställningarna för automatisk sammanslagning av inlägg.',
+	'ACP_POSTS_MERGING_SEPARATOR_PREVIEW'	=> 'Separator preview',
 	'MERGE_INTERVAL'				=> 'Intervall för sammanslagning av inlägg',
 	'MERGE_INTERVAL_EXPLAIN'		=> 'Om en medlem skickar fler än 2 på varandra följande inlägg inom denna tidsperiod så kommer dessa inlägg att läggas ihop till ett inlägg. Information om tiden mellan inläggen kommer att läggas till (för varje inlägg). Lämna fältet tomt eller ange 0 för att deaktivera sammanslagning av inlägg.',
 	'MERGE_NO_TOPICS'				=> 'Uteslutna trådar',
 	'MERGE_NO_TOPICS_EXPLAIN'		=> 'Komma-separerad lista med ämnes-IDn där sammanslagning ej bör utföras när denna funktion har aktiverats.',
 	'MERGE_NO_FORUMS'				=> 'Uteslutna forum',
 	'MERGE_NO_FORUMS_EXPLAIN'		=> 'Komma-separerad lista med forum-IDn där sammanslagning ej bör utföras när denna funktion har aktiverats.',
+	'MERGE_SEPARATOR'				=> 'Separator',
+	'MERGE_SEPARATOR_EXPLAIN'		=> 'Här kan du konfigurera separatorn som kommer att visas mellan de sammanslagna inläggen.<br />Du kan använda BBCodes som kommer att parsas enligt forumets inställningar.<br /><br />Du kan även använda textsträngar: {L_<em>&lt;STRINGNAME&gt;</em>} där <em>&lt;STRINGNAME&gt;</em> är namnet på den översatta textsträng som du vill använda. Exempel: {L_WROTE} kommer att visa “wrote” eller dess översättning.<br /><br />Använd platshållaren <em>&#37;s</em> (en gång) för att infoga tiden som gått i separatorn.',
 ));

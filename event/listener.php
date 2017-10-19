@@ -20,6 +20,9 @@ class listener implements EventSubscriberInterface
 	/** @var \phpbb\config\config */
 	protected $config;
 
+	/** @var \phpbb\config\db_text */
+	protected $config_text;
+
 	/** @var \phpbb\auth\auth */
 	protected $auth;
 
@@ -59,6 +62,7 @@ class listener implements EventSubscriberInterface
 	* Constructor
 	*
 	* @param \phpbb\config\config                      $config                Config object
+	* @param \phpbb\config\db_text                     $config_text           Config_text object
 	* @param \phpbb\auth\auth                          $auth                  Auth object
 	* @param \phpbb\request\request_interface          $request               Request object
 	* @param \phpbb\user                               $user                  User object
@@ -72,12 +76,13 @@ class listener implements EventSubscriberInterface
 	* @return \rxu\AdvancedWarnings\event\listener
 	* @access public
 	*/
-	public function __construct(\phpbb\config\config $config, \phpbb\auth\auth $auth, \phpbb\request\request_interface $request, \phpbb\user $user, \phpbb\notification\manager $notification_manager, \phpbb\event\dispatcher_interface $phpbb_dispatcher, \phpbb\template\template $template, $helper, $phpbb_root_path, $php_ext, \phpbb\request\type_cast_helper_interface $type_cast_helper = null)
+	public function __construct(\phpbb\config\config $config, \phpbb\config\db_text $config_text, \phpbb\auth\auth $auth, \phpbb\request\request_interface $request, \phpbb\user $user, \phpbb\notification\manager $notification_manager, \phpbb\event\dispatcher_interface $phpbb_dispatcher, \phpbb\template\template $template, $helper, $phpbb_root_path, $php_ext, \phpbb\request\type_cast_helper_interface $type_cast_helper = null)
 	{
 		$this->user = $user;
 		$this->auth = $auth;
 		$this->request = $request;
 		$this->config = $config;
+		$this->config_text = $config_text;
 		$this->notification_manager = $notification_manager;
 		$this->phpbb_dispatcher = $phpbb_dispatcher;
 		$this->template = $template;
@@ -105,6 +110,7 @@ class listener implements EventSubscriberInterface
 			'core.viewtopic_modify_post_row'		=> 'modify_viewtopic_postrow',
 			'core.posting_modify_template_vars'		=> 'get_posts_merging_option',
 			'core.viewtopic_modify_page_title'		=> 'get_posts_merging_option',
+			'core.permissions'						=> 'add_permission',
 		);
 	}
 
@@ -121,19 +127,24 @@ class listener implements EventSubscriberInterface
 
 		$current_time = time();
 
-		$do_not_merge_with_previous = $this->request->variable('posts_merging_option', false);
+		// Preliminary checks if the post-based post merging option was checked,
+		// and user has permission for merging or ignoring merging
+		$do_not_merge_with_previous = $this->request->is_set_post('posts_merging_option', false)
+			&& $this->auth->acl_get('u_postsmerging') && $this->auth->acl_get('u_postsmerging_ignore');
 
-		if (!$do_not_merge_with_previous && !$this->helper->post_needs_approval($data)
+		if ($this->auth->acl_get('u_postsmerging') && !$do_not_merge_with_previous && !$this->helper->post_needs_approval($data)
 			&& in_array($mode, array('reply', 'quote')) && $this->merge_interval
 			&& !$this->helper->excluded_from_merge($data)
 		)
 		{
 			$merge_post_data = $this->helper->get_last_post_data($data);
 
-			// Do not merge if there's no last post data, the post is locked or allowed merge period has left
-			if (!$merge_post_data || $merge_post_data['post_edit_locked'] ||
-				(($current_time - (int) $merge_post_data['topic_last_post_time']) > $this->merge_interval)
-				|| !$this->user->data['is_registered']
+			// Do not merge if there's no last post data, the poster is not current user, user is not registered,or
+			// the post is locked, has not yet been approved or allowed merge period has left
+			if (!$merge_post_data || ($merge_post_data['poster_id'] != $this->user->data['user_id']) || $merge_post_data['post_edit_locked'] ||
+				(int) $merge_post_data['post_visibility'] == ITEM_UNAPPROVED ||
+				(($current_time - (int) $merge_post_data['topic_last_post_time']) > $this->merge_interval) ||
+				!$this->user->data['is_registered']
 			)
 			{
 				return;
@@ -143,7 +154,7 @@ class listener implements EventSubscriberInterface
 			// In this case, also don't merge posts and return
 			// Exceptions are administrators and forum moderators
 			$num_old_attachments = $this->helper->count_post_attachments((int) $merge_post_data['post_id']);
-			$num_new_attachments = sizeof($data['attachment_data']);
+			$num_new_attachments = count($data['attachment_data']);
 			$total_attachments_count = $num_old_attachments + $num_new_attachments;
 			if (($total_attachments_count > $this->config['max_attachments']) && !$this->auth->acl_get('a_')
 				&& !$this->auth->acl_get('m_', (int) $data['forum_id'])
@@ -162,17 +173,45 @@ class listener implements EventSubscriberInterface
 			// Handle inline attachments BBCode in old message
 			if ($num_new_attachments)
 			{
-				$merge_post_data['post_text'] = preg_replace('#\[attachment=([0-9]+)\](.*?)\[\/attachment\]#e', "'[attachment='.(\\1 + $num_new_attachments).']\\2[/attachment]'", $merge_post_data['post_text']);
+				$merge_post_data['post_text'] = preg_replace_callback(
+					'#\[attachment=([0-9]+)\](.*?)\[\/attachment\]#',
+					function ($match) use ($num_new_attachments) {return '[attachment='.($match[1] + $num_new_attachments).']' . $match[2] . '[/attachment]'; },
+					$merge_post_data['post_text']
+				);
 			}
 
 			// Prepare message separator
+			$separator = (string) $this->config_text->get('posts_merging_separator_text');
 			$this->user->add_lang_ext('rxu/PostsMerging', 'posts_merging');
+
+			// Calculate the time interval
 			$interval = $this->helper->get_time_interval($current_time, $merge_post_data['post_time']);
 			$time = array();
+			$time[] = ($interval->y) ? $this->user->lang('D_YEAR', $interval->y) : null;
+			$time[] = ($interval->m) ? $this->user->lang('D_MON', $interval->m) : null;
+			$time[] = ($interval->d) ? $this->user->lang('D_MDAY', $interval->d) : null;
 			$time[] = ($interval->h) ? $this->user->lang('D_HOURS', $interval->h) : null;
 			$time[] = ($interval->i) ? $this->user->lang('D_MINUTES', $interval->i) : null;
 			$time[] = ($interval->s) ? $this->user->lang('D_SECONDS', $interval->s) : null;
-			$separator = $this->user->lang('MERGE_SEPARATOR', implode(' ', $time));
+
+			// Allow using language variables like {L_LANG_VAR}
+			// Since /e modifier is deprecated since PHP 5.5.0, use new way
+			// But for PHP 5.4.0 only as earlier don't support $this closure in anonymous functions
+			if (version_compare(PHP_VERSION, '5.4.0', '>='))
+			{
+				$separator = preg_replace_callback(
+					'/{L_([A-Z0-9_]+)}/',
+					function ($matches) { return $this->user->lang($matches[1]); },
+					$separator
+				);
+			}
+			else
+			{
+				$separator = preg_replace('/{L_([A-Z0-9_]+)}/e', "\$this->user->lang('\$1')", $separator);
+			}
+
+			// Eval linefeeds and generate the separator, time interval included
+			$separator = sprintf(str_replace('\n', "\n", $separator), implode(' ', $time));
 
 			// Merge subject
 			if (!empty($subject) && $subject != $merge_post_data['post_subject'] && $merge_post_data['post_id'] != $merge_post_data['topic_first_post_id'])
@@ -197,7 +236,9 @@ class listener implements EventSubscriberInterface
 				return;
 			}
 
-			// Update post time and submit post to database
+			// If this is the first merging for current post, save original post time within the post_created field
+			// Update post time with the current time and submit post to the database
+			$merge_post_data['post_created'] = ($merge_post_data['post_created']) ?: $merge_post_data['post_time'];
 			$merge_post_data['post_time'] = $data['post_time'] = $current_time;
 			$this->helper->submit_post_to_database($merge_post_data);
 
@@ -239,7 +280,7 @@ class listener implements EventSubscriberInterface
 			$params .= '&amp;p=' . $data['post_id'];
 			$add_anchor = '#p' . $data['post_id'];
 			$url = "{$this->phpbb_root_path}viewtopic.$this->php_ext";
-			$url = append_sid($url, 'f=' . $data['forum_id'] . $params) . $add_anchor;
+			$url = append_sid($url, 'f=' . (int) $data['forum_id'] . $params) . $add_anchor;
 
 			/**
 			* Modify the data for post submitting
@@ -294,11 +335,12 @@ class listener implements EventSubscriberInterface
 	public function get_posts_merging_option($event)
 	{
 		$post_data = (isset($event['post_data'])) ? $event['post_data'] : $event['topic_data'];
-		$forum_id = $event['forum_id'];
-		$topic_id = (isset($event['topic_id'])) ? $event['topic_id'] : $post_data['topic_id'];
+		$forum_id = (int) $event['forum_id'];
+		$topic_id = (isset($event['topic_id'])) ? (int) $event['topic_id'] : (int) $post_data['topic_id'];
 		$mode = (isset($event['mode'])) ? $event['mode'] : false;
 
-		if ($this->merge_interval && $this->user->data['is_registered'] && (!$mode || in_array($mode, array('reply', 'quote')))
+		if ($this->auth->acl_get('u_postsmerging') && $this->auth->acl_get('u_postsmerging_ignore')
+			&& $this->merge_interval && $this->user->data['is_registered'] && (!$mode || in_array($mode, array('reply', 'quote')))
 			&& (time() - (int) $post_data['topic_last_post_time']) < $this->merge_interval
 			&& !$this->helper->excluded_from_merge(array('forum_id' => $forum_id, 'topic_id' => $topic_id))
 			&& $post_data['topic_last_poster_id'] == $this->user->data['user_id']
@@ -308,5 +350,13 @@ class listener implements EventSubscriberInterface
 			$this->user->add_lang_ext('rxu/PostsMerging', 'posts_merging');
 			$this->template->assign_vars(array('POSTS_MERGING_OPTION' => true));
 		}
+	}
+
+	public function add_permission($event)
+	{
+		$permissions = $event['permissions'];
+		$permissions['u_postsmerging'] = array('lang' => 'ACL_U_POSTSMERGING', 'cat' => 'post');
+		$permissions['u_postsmerging_ignore'] = array('lang' => 'ACL_U_POSTSMERGING_IGNORE', 'cat' => 'post');
+		$event['permissions'] = $permissions;
 	}
 }

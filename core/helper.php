@@ -24,6 +24,9 @@ class helper
 	/** @var \phpbb\user */
 	protected $user;
 
+	/** @var \phpbb\event\dispatcher_interface */
+	protected $phpbb_dispatcher;
+
 	/** @var string phpbb_root_path */
 	protected $phpbb_root_path;
 
@@ -37,30 +40,32 @@ class helper
 	* @param \phpbb\db\driver\driver_interface    $db               DBAL object
 	* @param \phpbb\auth\auth                     $auth             User object
 	* @param \phpbb\user                          $user             User object
+	* @param \phpbb\event\dispatcher_interface	  $phpbb_dispatcher	Event dispatcher object
 	* @param string                               $phpbb_root_path  phpbb_root_path
 	* @param string                               $php_ext          phpEx
 	* @return \rxu\PostsMerging\event\listener
 	* @access public
 	*/
-	public function __construct(\phpbb\config\config $config, \phpbb\db\driver\driver_interface $db, \phpbb\auth\auth $auth, \phpbb\user $user, $phpbb_root_path, $php_ext)
+	public function __construct(\phpbb\config\config $config, \phpbb\db\driver\driver_interface $db, \phpbb\auth\auth $auth, \phpbb\user $user, \phpbb\event\dispatcher_interface $phpbb_dispatcher, $phpbb_root_path, $php_ext)
 	{
 		$this->config = $config;
 		$this->db = $db;
 		$this->auth = $auth;
 		$this->user = $user;
+		$this->phpbb_dispatcher = $phpbb_dispatcher;
 		$this->phpbb_root_path = $phpbb_root_path;
 		$this->php_ext = $php_ext;
 	}
 
 	public function excluded_from_merge($data)
 	{
-		return (in_array($data['forum_id'], explode(",", $this->config['merge_no_forums']))
-			&& in_array($data['topic_id'], explode(",", $this->config['merge_no_topics'])));
+		return (in_array($data['forum_id'], explode(',', $this->config['merge_no_forums']))
+			|| in_array($data['topic_id'], explode(',', $this->config['merge_no_topics'])));
 	}
 
 	public function post_needs_approval($data)
 	{
-		return ((!$this->auth->acl_get('f_noapprove', $data['forum_id'])
+		return ((!$this->auth->acl_get('f_noapprove', (int) $data['forum_id'])
 			&& empty($data['force_approved_state'])) || (isset($data['force_approved_state'])
 			&& !$data['force_approved_state']));
 	}
@@ -73,19 +78,18 @@ class helper
 		$sql_array = array(
 			'SELECT'	=> 'f.enable_indexing, f.forum_id, p.bbcode_bitfield, p.bbcode_uid, p.post_created,
 				p.enable_bbcode,  p.enable_magic_url, p.enable_smilies, p.poster_id, p.post_attachment,
-				p.post_edit_locked, p.post_id, p.post_subject, p.post_text, p.post_time, t.topic_attachment,
+				p.post_edit_locked, p.post_id, p.post_subject, p.post_text, p.post_time, p.post_visibility, t.topic_attachment,
 				t.topic_first_post_id, t.topic_id, t.topic_last_post_time',
 			'FROM'		=> array(FORUMS_TABLE => 'f', POSTS_TABLE => 'p', TOPICS_TABLE => 't'),
 			'WHERE'		=> "p.post_id = t.topic_last_post_id
+				AND t.topic_posts_unapproved = 0
 				AND t.topic_id = $topic_id
-				AND p.post_visibility = " . ITEM_APPROVED . "
-				AND p.poster_id = $user_id
 				AND (f.forum_id = t.forum_id 
 					OR f.forum_id = $forum_id)",
 		);
 
 		$sql = $this->db->sql_build_query('SELECT', $sql_array);
-		$result = $this->db->sql_query($sql);
+		$result = $this->db->sql_query_limit($sql, 1);
 		$last_post_data = $this->db->sql_fetchrow($result);
 		$this->db->sql_freeresult($result);
 
@@ -151,15 +155,15 @@ class helper
 				$files_added++;
 
 				$attach_sql = array(
-					'post_msg_id'		=> $data['post_id'],
-					'topic_id'			=> $data['topic_id'],
+					'post_msg_id'		=> (int) $data['post_id'],
+					'topic_id'			=> (int) $data['topic_id'],
 					'is_orphan'			=> 0,
 					'poster_id'			=> (int) $this->user->data['user_id'],
 					'attach_comment'	=> $attach_row['attach_comment'],
 				);
 
 				$sql = 'UPDATE ' . ATTACHMENTS_TABLE . ' SET ' . $this->db->sql_build_array('UPDATE', $attach_sql) . '
-					WHERE attach_id = ' . $attach_row['attach_id'] . '
+					WHERE attach_id = ' . (int) $attach_row['attach_id'] . '
 						AND is_orphan = 1
 						AND poster_id = ' . (int) $this->user->data['user_id'];
 				$this->db->sql_query($sql);
@@ -199,10 +203,11 @@ class helper
 
 	public function count_post_attachments($post_id)
 	{
-		$sql = 'SELECT attach_id, COUNT(*) as num_attachments
+		$sql = 'SELECT COUNT(*) as num_attachments
 			FROM ' . ATTACHMENTS_TABLE . "
 			WHERE post_msg_id = $post_id
-				AND in_message = 0";
+				AND in_message = 0
+			GROUP BY post_msg_id";
 		$result = $this->db->sql_query($sql);
 		$num_attachments = (int) $this->db->sql_fetchfield('num_attachments');
 
@@ -212,8 +217,8 @@ class helper
 	public function update_read_tracking($data)
 	{
 		// Mark the post and the topic read
-		markread('post', $data['forum_id'], $data['topic_id'], $data['post_time']);
-		markread('topic', $data['forum_id'], $data['topic_id'], time());
+		markread('post', (int) $data['forum_id'], (int) $data['topic_id'], $data['post_time']);
+		markread('topic', (int) $data['forum_id'], (int) $data['topic_id'], time());
 
 		// Handle read tracking
 		if ($this->config['load_db_lastread'] && $this->user->data['is_registered'])
@@ -221,7 +226,7 @@ class helper
 			$sql = 'SELECT mark_time
 				FROM ' . FORUMS_TRACK_TABLE . '
 				WHERE user_id = ' . (int) $this->user->data['user_id'] . '
-					AND forum_id = ' . $data['forum_id'];
+					AND forum_id = ' . (int) $data['forum_id'];
 			$result = $this->db->sql_query($sql);
 			$f_mark_time = (int) $this->db->sql_fetchfield('mark_time');
 			$this->db->sql_freeresult($result);
@@ -236,12 +241,12 @@ class helper
 			// Update forum info
 			$sql = 'SELECT forum_last_post_time
 				FROM ' . FORUMS_TABLE . '
-				WHERE forum_id = ' . $data['forum_id'];
+				WHERE forum_id = ' . (int) $data['forum_id'];
 			$result = $this->db->sql_query($sql);
 			$forum_last_post_time = (int) $this->db->sql_fetchfield('forum_last_post_time');
 			$this->db->sql_freeresult($result);
 
-			update_forum_tracking_info($data['forum_id'], $forum_last_post_time, $f_mark_time, false);
+			update_forum_tracking_info((int) $data['forum_id'], $forum_last_post_time, $f_mark_time, false);
 		}
 	}
 
@@ -258,7 +263,7 @@ class helper
 			}
 
 			$error = false;
-			$search = new $search_type($error, $this->phpbb_root_path, $this->php_ext, $this->auth, $this->config, $this->db, $this->user);
+			$search = new $search_type($error, $this->phpbb_root_path, $this->php_ext, $this->auth, $this->config, $this->db, $this->user, $this->phpbb_dispatcher);
 
 			if ($error)
 			{
@@ -277,7 +282,7 @@ class helper
 			'bbcode_bitfield'	=> $data['bbcode_bitfield'],
 			'post_text'			=> $data['post_text'],
 			'post_checksum'		=> md5($data['post_text']),
-			'post_created'		=> ($data['post_created']) ? $data['post_created'] : $data['post_time'],
+			'post_created'		=> $data['post_created'],
 			'post_time'			=> $data['post_time'],
 			'post_attachment'	=> $data['post_attachment'],
 		);
@@ -289,6 +294,11 @@ class helper
 
 		$sql_data[FORUMS_TABLE]['sql'] = array(
 			'forum_last_post_time'		=> $data['post_time'],
+			'forum_last_post_id'		=> $data['post_id'],
+			'forum_last_post_subject'	=> $this->db->sql_escape($data['post_subject']),
+			'forum_last_poster_id'		=> (int) $this->user->data['user_id'],
+			'forum_last_poster_name'	=> $this->db->sql_escape($this->user->data['username']),
+			'forum_last_poster_colour'	=> $this->db->sql_escape($this->user->data['user_colour']),
 		);
 
 		$sql_data[USERS_TABLE]['sql'] = array(
