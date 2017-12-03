@@ -5,7 +5,7 @@
 * Brazilian Portuguese translation by vinny and update by eunaumtenhoid (c) 2017 [ver 2.1.0] (https://github.com/phpBBTraducoes)
 * @copyright (c) 2013 phpBB Limited <https://www.phpbb.com>
 * @license GNU General Public License, version 2 (GPL-2.0)
-* 
+*
 */
 
 /**
