@@ -1,15 +1,13 @@
 <?php
 /**
 *
-* Posts merging extension for the phpBB Forum Software package.
-*
-* @copyright (c) 2015 phpBB Limited <https://www.phpbb.com>
+* Posts Merging extension for the phpBB Forum Software package.
+* @copyright (c) 2013 phpBB Limited <https://www.phpbb.com>
 * @license GNU General Public License, version 2 (GPL-2.0)
-*
 */
 
 /**
-* DO NOT CHANGE
+* @ignore
 */
 if (!defined('IN_PHPBB'))
 {
@@ -32,12 +30,13 @@ if (empty($lang) || !is_array($lang))
 // You do not need this where single placeholders are used, e.g. 'Message %d' is fine
 // equally where a string contains only two placeholders which are used to wrap text
 // in a url you again do not need to specify an order e.g., 'Click %sHERE%s' is fine
-//
-// Some characters you may want to copy&paste:
-// ’ » “ ” …
-//
 
 $lang = array_merge($lang, array(
-	'ACL_U_POSTSMERGING'			=> 'Pode usar postagens mescladas',
-	'ACL_U_POSTSMERGING_IGNORE'		=> 'Pode ignorar a mesclagem de posts<br /><em>Os usuários, que têm essa permissão, podem usar a opção "Não mesclar com postagem anterior".</em>',
+	'ACP_POSTS_MERGING_EXPLAIN'		=> 'Aqui você pode aplicar as configurações da extensão Posts merging.',
+	'ACP_POSTS_MERGING_SEPARATOR_PREVIEW'	=> 'Prever separador',
+	'MERGE_INTERVAL'				=> 'Intervalo',
+	'MERGE_NO_TOPICS'				=> 'Deletar estes tópicos',
+	'MERGE_NO_FORUMS'				=> 'Deletar estes fóruns',
+	'MERGE_NO_FORUMS_EXPLAIN'		=> 'Este recurso <strong>será desativado nos fóruns selecionados</strong>. Selecione nenhum para usar este recurso em todos os fóruns.<br />Selecione ou desmarque múltiplos fóruns pressionando <samp>CTRL</samp> e clicando.',
+	'MERGE_SEPARATOR'				=> 'Separador',
 ));
