@@ -2,7 +2,7 @@
 /**
 *
 * Posts Merging extension for the phpBB Forum Software package.
-*
+* Brazilian Portuguese translation by vinny and update by eunaumtenhoid (c) 2017 [ver 2.1.0] (https://github.com/phpBBTraducoes)
 * @copyright (c) 2013 phpBB Limited <https://www.phpbb.com>
 * @license GNU General Public License, version 2 (GPL-2.0)
 *
@@ -36,7 +36,7 @@ if (empty($lang) || !is_array($lang))
 $lang = array_merge($lang, array(
 	'MERGE_SEPARATOR'		=> "\n\n[size=85][color=green]Adicionado a %s:[/color][/size]\n",
 	'MERGE_SUBJECT'			=> "[size=85][color=green]%s[/color][/size]\n",
-	'POSTS_MERGING_OPTION'	=> 'Não fundir com a mensagem anterior',
+	'POSTS_MERGING_OPTION'	=> 'Não mesclar com o post anterior',
 
 	'D_SECONDS'	=> array(
 		1	=> '%d segundo',
