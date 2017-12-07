@@ -39,5 +39,5 @@ if (empty($lang) || !is_array($lang))
 
 $lang = array_merge($lang, array(
 	'ACL_U_POSTSMERGING'			=> 'Pode usar Mesclar postagens',
-	'ACL_U_POSTSMERGING_IGNORE'		=> 'Pode ignorar a mesclagem de posts<br /><em>Os usuários, que têm essa permissão, podem usar a opção "Não mesclar com o post anterior".</em>',
+	'ACL_U_POSTSMERGING_IGNORE'		=> 'Pode ignorar a mesclagem de posts <br /><em>Os usuários, que têm essa permissão, podem usar a opção "Não mesclar com o post anterior".</em>',
 ));
