@@ -257,12 +257,9 @@ class listener implements EventSubscriberInterface
 			// Despite the post_id is the same and users who've been already notified
 			// won't be notified again about the same post_id, we send notifications
 			// for new users possibly subscribed to it
-			$notification_data = array_merge($data, array(
-				'topic_title'		=> (isset($data['topic_title'])) ? $data['topic_title'] : $subject,
+			$notification_data = array_merge($merge_post_data, array(
+				'topic_title'		=> (isset($merge_post_data['topic_title'])) ? $merge_post_data['topic_title'] : $subject,
 				'post_username'		=> $username,
-				'poster_id'			=> (int) $data['poster_id'],
-				'post_text'			=> $data['message'],
-				'post_time'			=> $merge_post_data['post_time'],
 				'post_subject'		=> $subject,
 			));
 			$this->notification_manager->add_notifications(array(
