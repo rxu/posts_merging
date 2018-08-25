@@ -105,7 +105,7 @@ class listener implements EventSubscriberInterface
 	static public function getSubscribedEvents()
 	{
 		return array(
-			'core.modify_submit_post_data'			=> 'posts_merging',
+			'core.modify_submit_post_data'			=> array('posts_merging', -5),
 			'core.viewtopic_post_rowset_data'		=> 'modify_viewtopic_rowset',
 			'core.viewtopic_modify_post_row'		=> 'modify_viewtopic_postrow',
 			'core.posting_modify_template_vars'		=> 'get_posts_merging_option',
@@ -138,6 +138,7 @@ class listener implements EventSubscriberInterface
 		)
 		{
 			$merge_post_data = $this->helper->get_last_post_data($data);
+			$post_visibility = $merge_post_data['post_visibility'];
 
 			// Do not merge if there's no last post data, the poster is not current user, user is not registered,or
 			// the post is locked, has not yet been approved or allowed merge period has left
@@ -289,10 +290,12 @@ class listener implements EventSubscriberInterface
 			* @var	int		topic_type			Variable containing topic type value
 			* @var	array	poll				Array with the poll data for the post
 			* @var	array	data				Array with the data for the post
+			* @var	int		post_visibility		Variable containing the post visibility
 			* @var	bool	update_message		Flag indicating if the post will be updated
 			* @var	bool	update_search_index	Flag indicating if the search index will be updated
 			* @var	string	url					The "Return to topic" URL
 			* @since 2.0.0
+			* @changed 2.1.1					Add post_visibility variable
 			*/
 			$vars = array(
 				'mode',
@@ -301,6 +304,7 @@ class listener implements EventSubscriberInterface
 				'topic_type',
 				'poll',
 				'data',
+				'post_visibility',
 				'update_message',
 				'update_search_index',
 				'url',
