@@ -278,7 +278,7 @@ class helper
 	{
 		// Prepare post data for update
 		$sql_data[POSTS_TABLE]['sql'] = array(
-			'bbcode_uid'		=> substr(base_convert(unique_id(), 16, 36), 0, BBCODE_UID_LEN), //$data['bbcode_uid'],
+			'bbcode_uid'		=> substr(base_convert(unique_id(), 16, 36), 0, BBCODE_UID_LEN),
 			'bbcode_bitfield'	=> $data['bbcode_bitfield'],
 			'post_text'			=> $data['post_text'],
 			'post_checksum'		=> md5($data['post_text']),
