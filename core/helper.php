@@ -295,10 +295,10 @@ class helper
 		$sql_data[FORUMS_TABLE]['sql'] = array(
 			'forum_last_post_time'		=> $data['post_time'],
 			'forum_last_post_id'		=> $data['post_id'],
-			'forum_last_post_subject'	=> $this->db->sql_escape($data['post_subject']),
+			'forum_last_post_subject'	=> $data['post_subject'],
 			'forum_last_poster_id'		=> (int) $this->user->data['user_id'],
-			'forum_last_poster_name'	=> $this->db->sql_escape($this->user->data['username']),
-			'forum_last_poster_colour'	=> $this->db->sql_escape($this->user->data['user_colour']),
+			'forum_last_poster_name'	=> $this->user->data['username'],
+			'forum_last_poster_colour'	=> $this->user->data['user_colour'],
 		);
 
 		$sql_data[USERS_TABLE]['sql'] = array(
