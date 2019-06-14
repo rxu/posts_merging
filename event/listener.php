@@ -349,7 +349,6 @@ class listener implements EventSubscriberInterface
 		)
 		{
 			$this->user->add_lang_ext('rxu/PostsMerging', 'posts_merging');
-			$this->user->add_lang_ext('rxu/PostsMerging', 'posts_merging');
 			$this->template->assign_vars(array(
 				'POSTS_MERGING_OPTION'				=> true,
 				'S_POSTS_MERGING_OPTION_CHECKED'	=> $this->request->is_set_post('posts_merging_option', false) ? ' checked="checked"' : '',
