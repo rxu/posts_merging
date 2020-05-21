@@ -30,7 +30,7 @@ class posts_merging_test extends \phpbb_functional_test_case
 		// Now test actual posts merging
 		$crawler = self::request('GET', "posting.php?mode=reply&f=2&t={$post['topic_id']}&sid={$this->sid}");
 		$form = $crawler->selectButton('Submit')->form();
-		$form->setValues(array('message' => 'This is a post which SHOULD BE merged with the previous one.'));
+		$form->setValues(['message' => 'This is a post which SHOULD BE merged with the previous one.']);
 		$crawler = self::submit($form);
 
 		$this->assertContains('Added in', $crawler->filter('html')->text());
@@ -48,9 +48,13 @@ class posts_merging_test extends \phpbb_functional_test_case
 		$this->assertContains('Do not merge with previous post', $crawler->filter('html')->text());
 
 		// Test option to ignore merging posts
-		$post2 = $this->create_post(2, $post['topic_id'], 'Re: Test Topic 2', 'This is a post which should NOT be merged with the previous one.', array('posts_merging_option' => true));
+		$form = $crawler->selectButton('Submit')->form();
+		$form->setValues([
+			'message' => 'This is a post which SHOULD NOT BE merged with the previous one.',
+			'posts_merging_option' => true,
+		]);
+		$crawler = self::submit($form);
 
-		$crawler = self::request('GET', "viewtopic.php?t={$post2['topic_id']}&sid={$this->sid}");
 		$this->assertNotContains('Added in', $crawler->filter('html')->text());
 	}
 }
