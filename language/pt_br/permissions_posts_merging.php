@@ -1,12 +1,14 @@
 <?php
 /**
-*
-* Posts merging extension for the phpBB Forum Software package.
-* Brazilian Portuguese translation by eunaumtenhoid (c) 2017 [ver 2.1.0] (https://github.com/phpBBTraducoes)
-* @copyright (c) 2015 phpBB Limited <https://www.phpbb.com>
-* @license GNU General Public License, version 2 (GPL-2.0)
-*
-*/
+ *
+ * Posts Merging extension for the phpBB Forum Software package.
+ *
+ * @copyright (c) 2020, rxu, https://www.phpbbguru.net
+ * @license GNU General Public License, version 2 (GPL-2.0)
+ *
+ * Brazilian Portuguese translation by vinny and update by eunaumtenhoid (c) 2017 [ver 2.1.0] (https://github.com/phpBBTraducoes)
+ *
+ */
 
 /**
 * DO NOT CHANGE
@@ -18,7 +20,7 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
 // DEVELOPERS PLEASE NOTE
@@ -37,7 +39,7 @@ if (empty($lang) || !is_array($lang))
 // ’ » “ ” …
 //
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ACL_U_POSTSMERGING'			=> 'Pode usar Mesclar postagens',
 	'ACL_U_POSTSMERGING_IGNORE'		=> 'Pode ignorar a mesclagem de posts <br /><em>Os usuários, que têm essa permissão, podem usar a opção "Não mesclar com o post anterior".</em>',
-));
+]);

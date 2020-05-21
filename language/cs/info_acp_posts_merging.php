@@ -1,12 +1,12 @@
 <?php
 /**
-*
-* Posts Merging extension for the phpBB Forum Software package.
-*
-* @copyright (c) 2015 phpBB Limited <https://www.phpbb.com>
-* @license GNU General Public License, version 2 (GPL-2.0)
-*
-*/
+ *
+ * Posts Merging extension for the phpBB Forum Software package.
+ *
+ * @copyright (c) 2020, rxu, https://www.phpbbguru.net
+ * @license GNU General Public License, version 2 (GPL-2.0)
+ *
+ */
 
 /**
 * @ignore
@@ -18,7 +18,7 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
 // DEVELOPERS PLEASE NOTE
@@ -33,7 +33,7 @@ if (empty($lang) || !is_array($lang))
 // equally where a string contains only two placeholders which are used to wrap text
 // in a url you again do not need to specify an order e.g., 'Click %sHERE%s' is fine
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ACP_POSTS_MERGING'				=> 'Slučování příspěvků',
 	'ACP_POSTS_MERGING_EXPLAIN'		=> 'Zde můžete zvolit nastavení rozšíření Slučování příspěvků.',
 	'ACP_POSTS_MERGING_SEPARATOR_PREVIEW'	=> 'Náhled oddělovače',
@@ -45,4 +45,4 @@ $lang = array_merge($lang, array(
 	'MERGE_NO_FORUMS_EXPLAIN'		=> 'Seznam ID fór, ve kterých nebude slučování aplikováno (oddělujte čárkou).',
 	'MERGE_SEPARATOR'				=> 'Oddělovač',
 	'MERGE_SEPARATOR_EXPLAIN'		=> 'Zde můžete nastavit podobu oddělovače, který bude zobrazen mezi sloučenými příspěvky.<br />Můžete používat tagy BBCode.<br /><br />Můžete také použít jakékoliv řetězce jazykových lokalizací ve složce language/ následujícím způsobem: {L_<em>&lt;ŘETĚZEC&gt;</em>} kde <em>&lt;ŘETĚZEC&gt;</em> je název přeloženého řetězce, který chcete přidat. Příklad: {L_WROTE} bude v příspěvku zobrazeno jako „napsal“ v závislosti na uživatelově nastavení jazyka.<br /><br />Pro zobrazení doby uplynulé mezi sloučením můžete použít následující zástupný symbol: <em>&#37;s</em> (jen jeden).',
-));
+]);

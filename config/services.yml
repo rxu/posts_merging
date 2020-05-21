@@ -1,22 +1,27 @@
+imports:
+    - { resource: tables.yml }
+
 services:
-    rxu.PostsMerging.listener:
-        class: rxu\PostsMerging\event\listener
+    rxu.postsmerging.listener:
+        class: rxu\postsmerging\event\listener
         arguments:
+            - '@auth'
             - '@config'
             - '@config_text'
-            - '@auth'
-            - '@request'
-            - '@user'
-            - '@notification_manager'
             - '@dispatcher'
+            - '@notification_manager'
+            - '@language'
+            - '@request'
             - '@template'
-            - '@rxu.PostsMerging.helper'
+            - '@user'
+            - '@rxu.postsmerging.helper'
+            - '%tables.postsmerging%'
             - '%core.root_path%'
             - '%core.php_ext%'
         tags:
             - { name: event.listener }
-    rxu.PostsMerging.helper:
-        class: rxu\PostsMerging\core\helper
+    rxu.postsmerging.helper:
+        class: rxu\postsmerging\core\helper
         arguments:
             - '@config'
             - '@dbal.conn'
@@ -25,3 +30,4 @@ services:
             - '@dispatcher'
             - '%core.root_path%'
             - '%core.php_ext%'
+            - '%tables.postsmerging%'

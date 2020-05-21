@@ -1,13 +1,13 @@
 <?php
 /**
-*
-* Posts Merging extension for the phpBB Forum Software package.
-*
-* @copyright (c) 2013 phpBB Limited <https://www.phpbb.com>
-* @license GNU General Public License, version 2 (GPL-2.0)
-*
-* Translated By : Bassel Taha Alhitary - www.alhitary.net
-*/
+ *
+ * Posts Merging extension for the phpBB Forum Software package.
+ *
+ * @copyright (c) 2020, rxu, https://www.phpbbguru.net
+ * @license GNU General Public License, version 2 (GPL-2.0)
+ *
+ * Translated By : Bassel Taha Alhitary - www.alhitary.net
+ */
 
 /**
 * @ignore
@@ -19,7 +19,7 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
 // DEVELOPERS PLEASE NOTE
@@ -34,7 +34,7 @@ if (empty($lang) || !is_array($lang))
 // equally where a string contains only two placeholders which are used to wrap text
 // in a url you again do not need to specify an order e.g., 'Click %sHERE%s' is fine
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'MERGE_SEPARATOR'		=> "\n\n[size=85][color=green]تمت الإضافة في %s:[/color][/size]\n",
 	'MERGE_SUBJECT'			=> "[size=85][color=green]%s[/color][/size]\n",
 	'POSTS_MERGING_OPTION'	=> 'لا تدمج مع المُشاركة السابقة',
@@ -63,4 +63,4 @@ $lang = array_merge($lang, array(
 		1	=> '%d سنة',
 		2	=> '%d سنوات',
 	),
-));
+]);

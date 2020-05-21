@@ -1,13 +1,13 @@
 <?php
 /**
-*
-* Posts Merging extension for the phpBB Forum Software package.
-*
-* @copyright (c) 2013 phpBB Limited <https://www.phpbb.com>
-* @license GNU General Public License, version 2 (GPL-2.0)
-*
-* Croatian translation by Ančica Sečan (http://ancica.sunceko.net)
-*/
+ *
+ * Posts Merging extension for the phpBB Forum Software package.
+ *
+ * @copyright (c) 2020, rxu, https://www.phpbbguru.net
+ * @license GNU General Public License, version 2 (GPL-2.0)
+ *
+ * Croatian translation by Ančica Sečan (http://ancica.sunceko.net)
+ */
 
 /**
 * @ignore
@@ -19,7 +19,7 @@ exit;
 
 if (empty($lang) || !is_array($lang))
 {
-$lang = array();
+$lang = [];
 }
 
 // DEVELOPERS PLEASE NOTE
@@ -34,7 +34,7 @@ $lang = array();
 // equally where a string contains only two placeholders which are used to wrap text
 // in a url you again do not need to specify an order e.g., 'Click %sHERE%s' is fine
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'MERGE_SEPARATOR'		=> "\n\n[size=85][color=green]Postano nakon %s:[/color][/size]\n",
 	'MERGE_SUBJECT'			=> "[size=85][color=green]%s[/color][/size]\n",
 	'POSTS_MERGING_OPTION'	=> 'Ne spajaj s prethodnim postom',
@@ -63,4 +63,4 @@ $lang = array_merge($lang, array(
 		1	=> '%d godine',
 		2	=> 'godina %d',
 	),
-));
+]);

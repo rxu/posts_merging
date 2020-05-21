@@ -1,14 +1,14 @@
 <?php
 /**
  *
- * My new great extension. An extension for the phpBB Forum Software package.
+ * Posts Merging extension for the phpBB Forum Software package.
  *
- * @copyright (c) 2017, rxu, www.phpbbguru.net
+ * @copyright (c) 2020, rxu, https://www.phpbbguru.net
  * @license GNU General Public License, version 2 (GPL-2.0)
  *
  */
 
-namespace rxu\PostsMerging\tests\functional;
+namespace rxu\postsmerging\tests\functional;
 
 /**
  * @group functional
@@ -17,7 +17,7 @@ class posts_merging_test extends \phpbb_functional_test_case
 {
 	static protected function setup_extensions()
 	{
-		return array('rxu/PostsMerging');
+		return array('rxu/postsmerging');
 	}
 
 	public function test_merging_posts()

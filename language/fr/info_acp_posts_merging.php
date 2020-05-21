@@ -1,13 +1,14 @@
 <?php
 /**
-*
-* Posts Merging extension for the phpBB Forum Software package.
-* French translation by Galixte (http://www.galixte.com)
-*
-* @copyright (c) 2015 phpBB Limited <https://www.phpbb.com>
-* @license GNU General Public License, version 2 (GPL-2.0)
-*
-*/
+ *
+ * Posts Merging extension for the phpBB Forum Software package.
+ *
+ * @copyright (c) 2020, rxu, https://www.phpbbguru.net
+ * @license GNU General Public License, version 2 (GPL-2.0)
+ *
+ * French translation by Galixte (http://www.galixte.com)
+ *
+ */
 
 /**
 * DO NOT CHANGE
@@ -19,7 +20,7 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
 // DEVELOPERS PLEASE NOTE
@@ -38,7 +39,7 @@ if (empty($lang) || !is_array($lang))
 // ’ « » “ ” …
 //
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ACP_POSTS_MERGING'				=> 'Fusion des messages',
 	'ACP_POSTS_MERGING_EXPLAIN'		=> 'Sur cette page il est possible modifier les paramètres de l’extension « Fusion des messages ».',
 	'ACP_POSTS_MERGING_SEPARATOR_PREVIEW'	=> 'Aperçu',
@@ -50,4 +51,4 @@ $lang = array_merge($lang, array(
 	'MERGE_NO_FORUMS_EXPLAIN'		=> 'Permet de sélectionner les forums <strong>exclus de cette fonctionnalité</strong>. Sélectionner aucun forum pour utiliser la fonctionnalité de fusion des messages dans tous les forums.<br />Pour sélectionner / désélectionner plusieurs forums, utiliser la combinaison de la touche <samp>CTRL</samp> tout en cliquant.',
 	'MERGE_SEPARATOR'				=> 'Séparateur',
 	'MERGE_SEPARATOR_EXPLAIN'		=> 'Permet de configurer le texte séparateur qui sera affiché entre chaque message fusionné.<br />Il est possible d’utiliser les BBCodes qui seront analysés en fonction des paramètres du forum ou des messages.<br /><br />Il est également possible d’utiliser une clé de langue présente dans le répertoire de la langue utilisée, telle que : {L_<em>&lt;NOMDELACLE&gt;</em>} où <em>&lt;NOMDELACLE&gt;</em> est le nom de la clé de langue que l’on souhaite afficher. Par exemple, {L_WROTE} affiche le mot « Écrire » ou sa traduction en fonction de la langue utilisée par l’utilisateur.<br /><br />Utiliser <em>&#37;s</em> afin d’inclure dans le texte séparateur le temps écoulé entre les messages fusionnés.',
-));
+]);

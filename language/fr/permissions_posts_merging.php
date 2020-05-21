@@ -1,13 +1,14 @@
 <?php
 /**
-*
-* Posts Merging extension for the phpBB Forum Software package.
-* French translation by Galixte (http://www.galixte.com)
-*
-* @copyright (c) 2015 phpBB Limited <https://www.phpbb.com>
-* @license GNU General Public License, version 2 (GPL-2.0)
-*
-*/
+ *
+ * Posts Merging extension for the phpBB Forum Software package.
+ *
+ * @copyright (c) 2020, rxu, https://www.phpbbguru.net
+ * @license GNU General Public License, version 2 (GPL-2.0)
+ *
+ * French translation by Galixte (http://www.galixte.com)
+ *
+ */
 
 /**
 * DO NOT CHANGE
@@ -19,7 +20,7 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
 // DEVELOPERS PLEASE NOTE
@@ -38,7 +39,7 @@ if (empty($lang) || !is_array($lang))
 // ’ « » “ ” …
 //
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ACL_U_POSTSMERGING'			=> 'Peut utiliser la fusion des messages.',
 	'ACL_U_POSTSMERGING_IGNORE'		=> 'Peut ignorer la fusion des messages.<br /><em>Les utilisateurs ayant cette permission peuvent utiliser l’option « Ne pas fusionner avec le message précédent ».</em>',
-));
+]);

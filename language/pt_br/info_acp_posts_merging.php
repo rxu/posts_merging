@@ -1,12 +1,14 @@
 <?php
 /**
-*
-* Posts Merging extension for the phpBB Forum Software package.
-* Brazilian Portuguese translation by vinny and update by eunaumtenhoid (c) 2017 [ver 2.1.0] (https://github.com/phpBBTraducoes)
-* @copyright (c) 2013 phpBB Limited <https://www.phpbb.com>
-* @license GNU General Public License, version 2 (GPL-2.0)
-*
-*/
+ *
+ * Posts Merging extension for the phpBB Forum Software package.
+ *
+ * @copyright (c) 2020, rxu, https://www.phpbbguru.net
+ * @license GNU General Public License, version 2 (GPL-2.0)
+ *
+ * Brazilian Portuguese translation by vinny and update by eunaumtenhoid (c) 2017 [ver 2.1.0] (https://github.com/phpBBTraducoes)
+ *
+ */
 
 /**
 * @ignore
@@ -18,7 +20,7 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
 // DEVELOPERS PLEASE NOTE
@@ -33,7 +35,7 @@ if (empty($lang) || !is_array($lang))
 // equally where a string contains only two placeholders which are used to wrap text
 // in a url you again do not need to specify an order e.g., 'Click %sHERE%s' is fine
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ACP_POSTS_MERGING'				=> 'Mesclar postagens',
 	'ACP_POSTS_MERGING_EXPLAIN'		=> 'Aqui você pode aplicar as configurações da extensão Posts merging.',
 	'ACP_POSTS_MERGING_SEPARATOR_PREVIEW'	=> 'Prever separador',
@@ -45,4 +47,4 @@ $lang = array_merge($lang, array(
 	'MERGE_NO_FORUMS_EXPLAIN'		=> 'Este recurso <strong>será desativado nos fóruns selecionados</strong>. Selecione nenhum para usar este recurso em todos os fóruns.<br />Selecione ou desmarque múltiplos fóruns pressionando <samp>CTRL</samp> e clicando.',
 	'MERGE_SEPARATOR'				=> 'Separador',
 	'MERGE_SEPARATOR_EXPLAIN'		=> 'Aqui você pode configurar o separador que será exibido entre os posts mesclados.<br />Você poderá usar BBCodes de acordo com as configurações do fórum ou configuração de mensagens.<br /><br />Você também pode usar qualquer string de idioma dos arquivos do pacote de idioma: {L_<em>&lt;STRINGNAME&gt;</em>} onde <em>&lt;STRINGNAME&gt;</em> é o nome da string traduzida que você quer adicionar. Por exemplo, {L_WROTE} será exibido como “escreveu”.<br /><br />Use o marcador <em>&#37;s</em> (apenas uma vez) para incluir o horário entre o separador de posts mesclados.',
-));
+]);

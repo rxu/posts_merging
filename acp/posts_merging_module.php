@@ -1,67 +1,86 @@
 <?php
 /**
-*
-* Posts Merging extension for the phpBB Forum Software package.
-*
-* @copyright (c) 2013 phpBB Limited <https://www.phpbb.com>
-* @license GNU General Public License, version 2 (GPL-2.0)
-*
-*/
+ *
+ * Posts Merging extension for the phpBB Forum Software package.
+ *
+ * @copyright (c) 2020, rxu, https://www.phpbbguru.net
+ * @license GNU General Public License, version 2 (GPL-2.0)
+ *
+ */
 
-namespace rxu\PostsMerging\acp;
+namespace rxu\postsmerging\acp;
 
 class posts_merging_module
 {
 	var $u_action;
-	var $new_config = array();
+	var $new_config = [];
 
 	function main($id, $mode)
 	{
-		global $config, $request, $template, $user, $phpbb_container;
-		global $phpbb_root_path, $phpEx;
+		global $phpbb_container;
 
+		/** @var \phpbb\config\config $config */
+		$config = $phpbb_container->get('config');
+
+		/** @var \phpbb\config\db_text $config_text */
 		$config_text = $phpbb_container->get('config_text');
+
+		/** @var \phpbb\language\language $language */
+		$language = $phpbb_container->get('language');
+
+		/** @var \phpbb\request\request $request */
+		$request  = $phpbb_container->get('request');
+
+		/** @var \phpbb\template\template $template */
+		$template = $phpbb_container->get('template');
+
+		/** @var string $php_ext php_ext */
+		$php_ext = $phpbb_container->getParameter('core.php_ext');
+
+		/** @var string $phpbb_root_path */
+		$phpbb_root_path = $phpbb_container->getParameter('core.root_path');
 
 		$this->page_title = 'ACP_POSTS_MERGING';
 		$this->tpl_name = 'acp_posts_merging';
 
-		$submit = (isset($_POST['submit'])) ? true : false;
-		$preview = (isset($_POST['preview'])) ? true : false;
-		$form_key = 'config_posts_merging';
-		add_form_key($form_key);
+		$submit = $request->is_set_post('submit');
+		$preview = $request->is_set_post('preview');
 
-		$display_vars = array(
+		add_form_key('config_posts_merging');
+
+		$display_vars = [
 			'title'	=> 'ACP_POSTS_MERGING',
-			'vars'	=> array(
+			'vars'	=> [
 				'legend1'	=> 'GENERAL_OPTIONS',
-					'merge_interval'		=> array('lang' => 'MERGE_INTERVAL',	'validate' => 'int:0',	'type' => 'number:0:9999', 'explain' => true, 'append' => ' ' . $user->lang['HOURS']),
-					'merge_no_forums'		=> array('lang' => 'MERGE_NO_FORUMS',	'validate' => 'string',	'type' => 'custom', 'method' => 'select_merge_no_forums', 'explain' => true),
-					'merge_no_topics'		=> array('lang' => 'MERGE_NO_TOPICS',	'validate' => 'string',	'type' => 'text:5:255', 'explain' => true),
+					'merge_interval'	=> ['lang' => 'MERGE_INTERVAL', 'validate' => 'int:0', 'type' => 'number:0:9999', 'explain' => true, 'append' => ' ' . $language->lang('HOURS')],
+					'merge_no_forums'	=> ['lang' => 'MERGE_NO_FORUMS', 'validate' => 'string', 'type' => 'custom', 'method' => 'select_merge_no_forums', 'explain' => true],
+					'merge_no_topics'	=> ['lang' => 'MERGE_NO_TOPICS', 'validate' => 'string', 'type' => 'text:5:255', 'explain' => true],
 				'legend2'	=> 'MERGE_SEPARATOR',
-			),
-		);
+			],
+		];
 
 		if (isset($display_vars['lang']))
 		{
-			$user->add_lang($display_vars['lang']);
+			$language->add_lang($display_vars['lang']);
 		}
-		$user->add_lang(array('posting'));
+		$language->add_lang(['posting']);
 
 		$this->new_config = $config;
-		$cfg_array = (isset($_REQUEST['config'])) ? $request->variable('config', array('' => ''), true) : $this->new_config;
-		$cfg_array['merge_no_forums'] = ($submit) ? implode(',', $request->variable('merge_no_forums', array('' => ''))) : $cfg_array['merge_no_forums'];
+		$cfg_array = $request->is_set('config') ? $request->variable('config', ['' => ''], true) : $this->new_config;
+		$cfg_array['merge_no_forums'] = ($submit) ? implode(',', $request->variable('merge_no_forums', ['' => ''])) : $cfg_array['merge_no_forums'];
 		$posts_merging_separator_text = $request->variable('posts_merging_separator_text', '', true);
-		$error = array();
+		$error = [];
 
 		// We validate the complete config if wished
 		validate_config_vars($display_vars['vars'], $cfg_array, $error);
 
-		if ($submit && !check_form_key($form_key))
+		if ($submit && !check_form_key('config_posts_merging'))
 		{
-			$error[] = $user->lang['FORM_INVALID'];
+			$error[] = $language->lang('FORM_INVALID');
 		}
+
 		// Do not write values if there is an error
-		if (sizeof($error))
+		if (count($error))
 		{
 			$submit = false;
 		}
@@ -86,7 +105,7 @@ class posts_merging_module
 		{
 			$config_text->set('posts_merging_separator_text', $posts_merging_separator_text);
 
-			trigger_error($user->lang['CONFIG_UPDATED'] . adm_back_link($this->u_action));
+			trigger_error($language->lang('CONFIG_UPDATED') . adm_back_link($this->u_action));
 		}
 
 		// Output relevant page
@@ -99,10 +118,10 @@ class posts_merging_module
 
 			if (strpos($config_key, 'legend') !== false)
 			{
-				$template->assign_block_vars('options', array(
-					'S_LEGEND'		=> true,
-					'LEGEND'		=> (isset($user->lang[$vars])) ? $user->lang[$vars] : $vars)
-				);
+				$template->assign_block_vars('options', [
+					'S_LEGEND'	=> true,
+					'LEGEND'	=> $language->lang($vars),
+				]);
 
 				continue;
 			}
@@ -112,11 +131,11 @@ class posts_merging_module
 			$l_explain = '';
 			if ($vars['explain'] && isset($vars['lang_explain']))
 			{
-				$l_explain = (isset($user->lang[$vars['lang_explain']])) ? $user->lang[$vars['lang_explain']] : $vars['lang_explain'];
+				$l_explain = $language->lang($vars['lang_explain']);
 			}
 			else if ($vars['explain'])
 			{
-				$l_explain = (isset($user->lang[$vars['lang'] . '_EXPLAIN'])) ? $user->lang[$vars['lang'] . '_EXPLAIN'] : '';
+				$l_explain = $language->lang($vars['lang'] . '_EXPLAIN');
 			}
 
 			$content = build_cfg_template($type, $config_key, $this->new_config, $config_key, $vars);
@@ -126,45 +145,44 @@ class posts_merging_module
 				continue;
 			}
 
-			$template->assign_block_vars('options', array(
+			$template->assign_block_vars('options', [
 				'KEY'			=> $config_key,
-				'TITLE'			=> (isset($user->lang[$vars['lang']])) ? $user->lang[$vars['lang']] : $vars['lang'],
+				'TITLE'			=> $language->lang($vars['lang']),
 				'S_EXPLAIN'		=> $vars['explain'],
 				'TITLE_EXPLAIN'	=> $l_explain,
 				'CONTENT'		=> $content,
-				)
-			);
+			]);
 
 			unset($display_vars['vars'][$config_key]);
 		}
 
 		$posts_merging_separator_text = ($posts_merging_separator_text) ?: $config_text->get('posts_merging_separator_text');
 
-		include_once($phpbb_root_path . 'includes/functions_display.' . $phpEx);
+		include_once($phpbb_root_path . 'includes/functions_display.' . $php_ext);
 
 		/*
 		* Constant merge separator preview
 		*/
-		include_once($phpbb_root_path . 'includes/message_parser.' . $phpEx);
+		include_once($phpbb_root_path . 'includes/message_parser.' . $php_ext);
 
 		// Prepare message separator
-		$user->add_lang_ext('rxu/PostsMerging', 'posts_merging');
+		$language->add_lang('posts_merging', 'rxu/postsmerging');
 
 		// Calculate the time interval
-		$helper = $phpbb_container->get('rxu.PostsMerging.helper');
+		$helper = $phpbb_container->get('rxu.postsmerging.helper');
 		$current_time = time();
 		$interval = $helper->get_time_interval(strtotime('3 hours 17 minutes 56 seconds'), $current_time);
-		$time = array();
-		$time[] = ($interval->h) ? $user->lang('D_HOURS', $interval->h) : null;
-		$time[] = ($interval->i) ? $user->lang('D_MINUTES', $interval->i) : null;
-		$time[] = ($interval->s) ? $user->lang('D_SECONDS', $interval->s) : null;
+		$time = [];
+		$time[] = ($interval->h) ? $language->lang('D_HOURS', $interval->h) : null;
+		$time[] = ($interval->i) ? $language->lang('D_MINUTES', $interval->i) : null;
+		$time[] = ($interval->s) ? $language->lang('D_SECONDS', $interval->s) : null;
 
 		// Allow using language variables like {L_LANG_VAR}
 		$posts_merging_separator_text_prewiew = preg_replace_callback(
 			'/{L_([A-Z0-9_]+)}/',
-			function ($matches) use ($user)
+			function ($matches) use ($language)
 			{
-				return $user->lang($matches[1]);
+				return $language->lang($matches[1]);
 			},
 			$posts_merging_separator_text
 		);
@@ -178,21 +196,19 @@ class posts_merging_module
 		// Now parse it for displaying
 		$separator_preview = $message_parser->format_display(true, true, true, false);
 		unset($message_parser);
-		$template->assign_vars(array(
-			'SEPARATOR_PREVIEW'	=> $separator_preview,
-		));
+		$template->assign_var('SEPARATOR_PREVIEW', $separator_preview);
 		/*
 		* Constant merge separator preview end
 		*/
 
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'POSTS_MERGING_SEPARATOR_TEXT'	=> $posts_merging_separator_text,
 			'S_SMILIES_ALLOWED'		=> true,
 			'S_BBCODE_IMG'			=> true,
 			'S_BBCODE_FLASH'		=> true,
 			'S_LINKS_ALLOWED'		=> true,
 			'U_ACTION'				=> $this->u_action,
-		));
+		]);
 
 		// Assigning custom bbcodes
 		display_custom_bbcodes();
@@ -200,7 +216,10 @@ class posts_merging_module
 
 	function select_merge_no_forums($value, $key)
 	{
-		global $user, $config;
+		global $phpbb_container;
+
+		/** @var \phpbb\config\config $config */
+		$config = $phpbb_container->get('config');
 
 		$merge_no_forums = explode(',', $config['merge_no_forums']);
 		$forum_list = make_forum_select(false, false, true, true, true, false, true);

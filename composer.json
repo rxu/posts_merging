@@ -1,10 +1,10 @@
 {
-    "name": "rxu/PostsMerging",
+    "name": "rxu/postsmerging",
     "type": "phpbb-extension",
     "description": "Adds an option to merge current post with previous if the former one is by same author.",
     "homepage": "http://www.phpbbguru.net",
-    "version": "2.1.1-dev",
-    "time": "2017-08-04",
+    "version": "3.0.0-dev",
+    "time": "2020-05-20",
     "license": "GPL-2.0-only",
     "authors": [
         {
@@ -14,7 +14,7 @@
         }
     ],
     "require": {
-        "php": ">=5.3.3"
+        "php": ">=5.4.0"
     },
    "require-dev": {
       "phing/phing": "2.4.*"
@@ -22,7 +22,7 @@
     "extra": {
         "display-name": "Posts merging",
         "soft-require": {
-           "phpbb/phpbb": ">=3.1.0"
+           "phpbb/phpbb": ">=3.2.0"
         },
         "version-check": {
             "host": "rxu.github.io",

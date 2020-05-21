@@ -1,13 +1,13 @@
 <?php
 /**
-*
-* Posts merging extension for the phpBB Forum Software package.
-*
-* @copyright (c) 2015 phpBB Limited <https://www.phpbb.com>
-* @license GNU General Public License, version 2 (GPL-2.0)
-*
-* Translated By : Bassel Taha Alhitary - www.alhitary.net
-*/
+ *
+ * Posts Merging extension for the phpBB Forum Software package.
+ *
+ * @copyright (c) 2020, rxu, https://www.phpbbguru.net
+ * @license GNU General Public License, version 2 (GPL-2.0)
+ *
+ * Translated By : Bassel Taha Alhitary - www.alhitary.net
+ */
 
 /**
 * DO NOT CHANGE
@@ -19,7 +19,7 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
 // DEVELOPERS PLEASE NOTE
@@ -38,7 +38,7 @@ if (empty($lang) || !is_array($lang))
 // ’ » “ ” …
 //
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ACL_U_POSTSMERGING'			=> 'يستطيع دمج المُشاركات',
 	'ACL_U_POSTSMERGING_IGNORE'		=> 'يستطيع تجاهل دمج المُشاركات<br /><em>الأعضاء الذين يمتلكون هذه الصلاحية يستطيعون استخدام الخيار “لا تدمج مع المُشاركة السابقة”.</em>',
-));
+]);

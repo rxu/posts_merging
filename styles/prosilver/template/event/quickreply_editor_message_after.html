@@ -1,3 +1,5 @@
-<!-- IF POSTS_MERGING_OPTION -->
-	<div><label for="posts_merging_option"><input type="checkbox" name="posts_merging_option" id="posts_merging_option"{S_POSTS_MERGING_OPTION_CHECKED} /> {L_POSTS_MERGING_OPTION}</label></div>
-<!-- ENDIF -->
+{% if POSTS_MERGING_OPTION %}
+	<div>
+		<label for="posts_merging_option"><input type="checkbox" name="posts_merging_option" id="posts_merging_option"{{ S_POSTS_MERGING_OPTION_CHECKED }} /> {{ lang('POSTS_MERGING_OPTION') }}</label>
+	</div>
+{% endif %}

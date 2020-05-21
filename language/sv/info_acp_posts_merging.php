@@ -1,13 +1,14 @@
 <?php
 /**
-*
-* Posts Merging extension for the phpBB Forum Software package.
-*
-* @copyright (c) 2013 phpBB Limited <https://www.phpbb.com>
-* @license GNU General Public License, version 2 (GPL-2.0)
-* Swedish translation by Holger (http://www.maskinisten.net)
-*
-*/
+ *
+ * Posts Merging extension for the phpBB Forum Software package.
+ *
+ * @copyright (c) 2020, rxu, https://www.phpbbguru.net
+ * @license GNU General Public License, version 2 (GPL-2.0)
+ *
+ * Swedish translation by Holger (http://www.maskinisten.net)
+ *
+ */
 
 /**
 * @ignore
@@ -19,7 +20,7 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
 // DEVELOPERS PLEASE NOTE
@@ -34,7 +35,7 @@ if (empty($lang) || !is_array($lang))
 // equally where a string contains only two placeholders which are used to wrap text
 // in a url you again do not need to specify an order e.g., 'Click %sHERE%s' is fine
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ACP_POSTS_MERGING'				=> 'Sammanslagning av inlägg',
 	'ACP_POSTS_MERGING_EXPLAIN'		=> 'Här kan du ändra inställningarna för automatisk sammanslagning av inlägg.',
 	'ACP_POSTS_MERGING_SEPARATOR_PREVIEW'	=> 'Separator preview',
@@ -46,4 +47,4 @@ $lang = array_merge($lang, array(
 	'MERGE_NO_FORUMS_EXPLAIN'		=> 'Komma-separerad lista med forum-IDn där sammanslagning ej bör utföras när denna funktion har aktiverats.',
 	'MERGE_SEPARATOR'				=> 'Separator',
 	'MERGE_SEPARATOR_EXPLAIN'		=> 'Här kan du konfigurera separatorn som kommer att visas mellan de sammanslagna inläggen.<br />Du kan använda BBCodes som kommer att parsas enligt forumets inställningar.<br /><br />Du kan även använda textsträngar: {L_<em>&lt;STRINGNAME&gt;</em>} där <em>&lt;STRINGNAME&gt;</em> är namnet på den översatta textsträng som du vill använda. Exempel: {L_WROTE} kommer att visa “wrote” eller dess översättning.<br /><br />Använd platshållaren <em>&#37;s</em> (en gång) för att infoga tiden som gått i separatorn.',
-));
+]);

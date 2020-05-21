@@ -1,78 +1,74 @@
-<!-- INCLUDE overall_header.html -->
+{% INCLUDE 'overall_header.html' %}
 
-<script type="text/javascript">
-// <![CDATA[
-
+<script>
 	var form_name = 'config_posts_merging';
 	var text_name = 'posts_merging_separator_text';
 	var load_draft = false;
 	var upload = false;
 	var imageTag = false;
-
-// ]]>
 </script>
 
 <a id="maincontent"></a>
 
-<h1>{L_ACP_POSTS_MERGING}</h1>
+<h1>{{ lang('ACP_POSTS_MERGING') }}</h1>
 
-<p>{L_ACP_POSTS_MERGING_EXPLAIN}</p>
+<p>{{ lang('ACP_POSTS_MERGING_EXPLAIN') }}</p>
 
-<!-- IF S_ERROR -->
+{% if S_ERROR %}
 	<div class="errorbox">
-		<h3>{L_WARNING}</h3>
-		<p>{ERROR_MSG}</p>
+		<h3>{{ lang('WARNING') }}</h3>
+		<p>{{ ERROR_MSG }}</p>
 	</div>
-<!-- ENDIF -->
+{% endif %}
 
-<form id="config_posts_merging" method="post" action="{U_ACTION}">
+<form id="config_posts_merging" method="post" action="{{ U_ACTION }}">
 
-<!-- BEGIN options -->
-	<!-- IF options.S_LEGEND -->
-		<!-- IF not options.S_FIRST_ROW -->
+	{% for options in loops.options %}
+		{% if options.S_LEGEND %}
+			{% if not options.S_FIRST_ROW %}
+				</fieldset>
+			{% endif %}
+			<fieldset>
+				<legend>{{ options.LEGEND }}</legend>
+		{% else %}
+
+			<dl>
+				<dt><label for="{{ options.KEY }}">{{ options.TITLE }}{{ lang('COLON') }}</label>{% if options.S_EXPLAIN %}<br /><span>{{ options.TITLE_EXPLAIN }}</span>{% endif %}</dt>
+				<dd>{{ options.CONTENT }}</dd>
+			</dl>
+
+		{% endif %}
+	{% endfor %}
+
+		<p>{{ lang('MERGE_SEPARATOR_EXPLAIN') }}</p>
+
+		{% if SEPARATOR_PREVIEW %}
+			<fieldset>
+				<legend>{{ lang('ACP_POSTS_MERGING_SEPARATOR_PREVIEW') }}</legend>
+				<p>{{ SEPARATOR_PREVIEW }}</p>
 			</fieldset>
-		<!-- ENDIF -->
-		<fieldset>
-			<legend>{options.LEGEND}</legend>
-	<!-- ELSE -->
+		{% endif %}
 
-		<dl>
-			<dt><label for="{options.KEY}">{options.TITLE}{L_COLON}</label><!-- IF options.S_EXPLAIN --><br /><span>{options.TITLE_EXPLAIN}</span><!-- ENDIF --></dt>
-			<dd>{options.CONTENT}</dd>
+		{% INCLUDE 'acp_posting_buttons.html' %}
+
+		<dl class="responsive-columns">
+			<dt style="width: 90px;" id="color_palette_placeholder" data-orientation="v" data-height="12" data-width="15" data-bbcode="true"></dt>
+			<dd style="margin-{{ S_CONTENT_FLOW_BEGIN }}: 90px;">
+				<textarea name="posts_merging_separator_text" rows="10" cols="60" style="width: 95%;" onselect="storeCaret(this);" onclick="storeCaret(this);" onkeyup="storeCaret(this);" onfocus="initInsertions();" data-bbcode="true">{{ POSTS_MERGING_SEPARATOR_TEXT }}</textarea>
+			</dd>
 		</dl>
+	</fieldset>
 
-	<!-- ENDIF -->
-<!-- END options -->
-
-	<p>{L_MERGE_SEPARATOR_EXPLAIN}</p>
-
-	<!-- IF SEPARATOR_PREVIEW -->
-		<fieldset>
-			<legend>{L_ACP_POSTS_MERGING_SEPARATOR_PREVIEW}</legend>
-			<p>{SEPARATOR_PREVIEW}</p>
-		</fieldset>
-	<!-- ENDIF -->
-
-	<!-- INCLUDE acp_posting_buttons.html -->
-
-	<dl class="responsive-columns">
-		<dt style="width: 90px;" id="color_palette_placeholder" data-orientation="v" data-height="12" data-width="15" data-bbcode="true"></dt>
-		<dd style="margin-{S_CONTENT_FLOW_BEGIN}: 90px;">
-			<textarea name="posts_merging_separator_text" rows="10" cols="60" style="width: 95%;" onselect="storeCaret(this);" onclick="storeCaret(this);" onkeyup="storeCaret(this);" onfocus="initInsertions();" data-bbcode="true">{POSTS_MERGING_SEPARATOR_TEXT}</textarea>
-		</dd>
-	</dl>
-</fieldset>
-
-<fieldset>
-<legend>{L_ACP_SUBMIT_CHANGES}</legend>
-	<p class="submit-buttons">
-		<input class="button1" type="submit" id="submit" name="submit" value="{L_SUBMIT}" />&nbsp;
-		<input class="button2" type="submit" id="preview "name="preview" value="{L_PREVIEW}" />&nbsp;
-		<input class="button2" type="reset" id="reset" name="reset" value="{L_RESET}" />
-	</p>
-	{S_FORM_TOKEN}
-</fieldset>
+	<fieldset>
+	<legend>{{ lang('ACP_SUBMIT_CHANGES') }}</legend>
+		<p class="submit-buttons">
+			<input class="button1" type="submit" id="submit" name="submit" value="{{ lang('SUBMIT') }}" />&nbsp;
+			<input class="button2" type="submit" id="preview "name="preview" value="{{ lang('PREVIEW') }}" />&nbsp;
+			<input class="button2" type="reset" id="reset" name="reset" value="{{ lang('RESET') }}" />
+		</p>
+		{{ S_FORM_TOKEN }}
+	</fieldset>
 
 </form>
 
-<!-- INCLUDE overall_footer.html -->
+{% INCLUDE 'overall_footer.html' %}
