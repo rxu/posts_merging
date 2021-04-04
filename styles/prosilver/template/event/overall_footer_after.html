@@ -1,0 +1,13 @@
+{% if S_QUICK_REPLY and S_QR_AJAX_SUBMIT %}
+<script>
+	$('#qr_posts').on('qr_completed', function (e) {
+		if ($('#qr_posts_merging_option').length > 0) {
+			if ($('#qr_posts_merging_option').html().length > 0 && $('#qr_postform input[name="posts_merging_option"]').length == 0) {
+				$('#message-box').after($('#qr_posts_merging_option').html());
+				quickreply.style.setAdditionalElements();
+			}
+			$('#qr_posts_merging_option').remove();
+		}
+	});
+</script>
+{% endif %}

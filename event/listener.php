@@ -288,6 +288,29 @@ class listener implements EventSubscriberInterface
 				'post_username'	=> $username,
 				'post_subject'	=> $subject,
 			]);
+
+			$data_ary = $data;
+			$poster_id = ($mode == 'edit') ? $data_ary['poster_id'] : (int) $this->user->data['user_id'];
+			/**
+			 * This event allows you to modify the notification data upon submission
+			 *
+			 * @event rxu.postsmerging.modify_submit_notification_data
+			 * @var	array	notification_data	The notification data to be inserted in to the database
+			 * @var	array	data_ary			The data array with a lot of the post submission data
+			 * @var string	mode				The posting mode
+			 * @var int		poster_id			Poster id
+			 * @since 3.0.0
+			 */
+			$vars = [
+				'notification_data',
+				'data_ary',
+				'mode',
+				'poster_id',
+			];
+			extract($this->phpbb_dispatcher->trigger_event('rxu.postsmerging.modify_submit_notification_data', compact($vars)));
+
+			$data = $data_ary;
+
 			$this->notification_manager->add_notifications(array(
 				'notification.type.quote',
 				'notification.type.bookmark',
