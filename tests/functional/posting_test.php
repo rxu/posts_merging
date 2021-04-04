@@ -33,7 +33,7 @@ class posts_merging_test extends \phpbb_functional_test_case
 		$form->setValues(['message' => 'This is a post which SHOULD BE merged with the previous one.']);
 		$crawler = self::submit($form);
 
-		$this->assertContains('Added in', $crawler->filter('html')->text());
+		$this->assertStringContainsString('Added in', $crawler->filter('html')->text());
 	}
 
 	public function test_ignore_merging_posts()
@@ -45,7 +45,7 @@ class posts_merging_test extends \phpbb_functional_test_case
 
 		// Test the ignore option checkbox is present
 		$crawler = self::request('GET', "posting.php?mode=reply&f=2&t={$post['topic_id']}&sid={$this->sid}");
-		$this->assertContains('Do not merge with previous post', $crawler->filter('html')->text());
+		$this->assertStringContainsString('Do not merge with previous post', $crawler->filter('html')->text());
 
 		// Test option to ignore merging posts
 		$form = $crawler->selectButton('Submit')->form();
@@ -55,6 +55,6 @@ class posts_merging_test extends \phpbb_functional_test_case
 		]);
 		$crawler = self::submit($form);
 
-		$this->assertNotContains('Added in', $crawler->filter('html')->text());
+		$this->assertStringNotContainsString('Added in', $crawler->filter('html')->text());
 	}
 }
