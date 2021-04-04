@@ -354,8 +354,8 @@ class listener implements EventSubscriberInterface
 
 		if ($row[$data_flag . '_last_post_id'])
 		{
-			$data_row['LAST_POST_TIME'] = $this->user->format_date(!is_null($row['post_created']) ? $row['post_created'] : $row[$data_flag . '_last_post_time']);
-			$data_row['LAST_POST_TIME_RFC3339'] = gmdate(DATE_RFC3339, !is_null($row['post_created']) ? $row['post_created'] : $row[$data_flag . '_last_post_time']);
+			$data_row['LAST_POST_TIME'] = $this->user->format_date(!is_null($row['post_created']) ? (int) $row['post_created'] : (int) $row[$data_flag . '_last_post_time']);
+			$data_row['LAST_POST_TIME_RFC3339'] = gmdate(DATE_RFC3339, !is_null($row['post_created']) ? (int) $row['post_created'] : (int) $row[$data_flag . '_last_post_time']);
 		}
 
 		$event[$data_flag . '_row'] = $data_row;
