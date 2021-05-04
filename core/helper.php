@@ -235,7 +235,7 @@ class helper
 	 *
 	 * @return string $text Decoded post text
 	 */
-	public function prepare_text_for_merge(&$data)
+	public function prepare_text_for_merge($data)
 	{
 		// Create message parser instance
 		include_once($this->phpbb_root_path . 'includes/message_parser.' . $this->php_ext);
