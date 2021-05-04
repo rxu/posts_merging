@@ -173,7 +173,7 @@ class helper
 			$this->db->sql_freeresult($result);
 		}
 
-		foreach ($data['attachment_data'] as $pos => $attach_row)
+		foreach ($data['attachment_data'] as $attach_row)
 		{
 			if ($attach_row['is_orphan'] && !in_array($attach_row['attach_id'], array_keys($orphan_rows)))
 			{
