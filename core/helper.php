@@ -260,8 +260,8 @@ class helper
 	 */
 	public function get_time_interval($old_time, $new_time)
 	{
-		$datetime_new = date_create('@' . (string) $old_time);
-		$datetime_old = date_create('@' . (string) $new_time);
+		$datetime_new = date_create('@' . $old_time);
+		$datetime_old = date_create('@' . $new_time);
 		$interval = date_diff($datetime_new, $datetime_old);
 
 		return $interval;
