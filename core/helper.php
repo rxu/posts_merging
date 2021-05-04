@@ -404,7 +404,7 @@ class helper
 		];
 
 		// Update post information - submit merged post
-		$sql = 'UPDATE ' . POSTS_TABLE . ' SET ' . $this->db->sql_build_array('UPDATE', $sql_data[POSTS_TABLE]['sql']) . ' WHERE post_id = ' .(int) $data['post_id'];
+		$sql = 'UPDATE ' . POSTS_TABLE . ' SET ' . $this->db->sql_build_array('UPDATE', $sql_data[POSTS_TABLE]['sql']) . ' WHERE post_id = ' . (int) $data['post_id'];
 		$this->db->sql_query($sql);
 
 		$sql = 'UPDATE ' . TOPICS_TABLE . ' SET ' . $this->db->sql_build_array('UPDATE', $sql_data[TOPICS_TABLE]['sql']) . ' WHERE topic_id = ' . (int) $data['topic_id'];
