@@ -106,7 +106,6 @@ class helper
 	{
 		$forum_id = (int) $data['forum_id'];
 		$topic_id = (int) $data['topic_id'];
-		$user_id = (int) $this->user->data['user_id'];
 		$sql_array = [
 			'SELECT' => 'f.enable_indexing, f.forum_id, p.bbcode_bitfield, p.bbcode_uid, pm.post_created,
 				p.enable_bbcode,  p.enable_magic_url, p.enable_smilies, p.poster_id, p.post_attachment,
@@ -238,8 +237,12 @@ class helper
 	public function prepare_text_for_merge($data)
 	{
 		// Create message parser instance
-		include_once($this->phpbb_root_path . 'includes/message_parser.' . $this->php_ext);
+		if (!class_exists('parse_message'))
+		{
+			include($this->phpbb_root_path . 'includes/message_parser.' . $this->php_ext);
+		}
 		$message_parser = new \parse_message();
+
 		$text = (isset($data['post_text'])) ? $data['post_text'] : $data['message'];
 		$message_parser->message = $text;
 
@@ -277,12 +280,13 @@ class helper
 	public function count_post_attachments($post_id)
 	{
 		$sql = 'SELECT COUNT(*) as num_attachments
-			FROM ' . ATTACHMENTS_TABLE . "
-			WHERE post_msg_id = $post_id
+			FROM ' . ATTACHMENTS_TABLE . '
+			WHERE post_msg_id = ' . (int) $post_id . '
 				AND in_message = 0
-			GROUP BY post_msg_id";
+			GROUP BY post_msg_id';
 		$result = $this->db->sql_query($sql);
 		$num_attachments = (int) $this->db->sql_fetchfield('num_attachments');
+		$this->db->sql_freeresult($result);
 
 		return ($num_attachments) ?: 0;
 	}

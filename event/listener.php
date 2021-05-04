@@ -239,8 +239,9 @@ class listener implements EventSubscriberInterface
 				$separator
 			);
 
-			// Eval linefeeds and generate the separator, time interval included
-			$separator = sprintf(str_replace('\n', "\n", $separator), implode(' ', $time));
+			// Parse {TIME} placeholder to replace it with the time interval
+			// Also eval linefeeds and generate the separator
+			$separator = str_replace(['\n', '{TIME}'], ["\n", implode(' ', $time)], $separator);
 
 			// Merge subject
 			if (!empty($subject) && $subject != $merge_post_data['post_subject'] && $merge_post_data['post_id'] != $merge_post_data['topic_first_post_id'])
@@ -397,29 +398,30 @@ class listener implements EventSubscriberInterface
 	 */
 	public function modify_sql($event, $eventname)
 	{
+		$field = $sql_ary_name = '';
 		switch ($eventname)
 		{
 			case 'core.viewtopic_get_post_data':
 			case 'core.display_forums_modify_sql':
-				$sql = 'sql_ary';
+				$sql_ary_name = 'sql_ary';
 				$field = ($eventname == 'core.viewtopic_get_post_data') ? 'p.post_id' : 'f.forum_last_post_id';
 			break;
 
 			case 'core.viewforum_get_topic_data':
-				$sql = 'sql_array';
+				$sql_ary_name = 'sql_array';
 				$field = 't.topic_last_post_id';
 			break;
 		}
 
-		$$sql = $event[$sql];
-		$$sql['SELECT'] .= ', pm.post_created';
-		$$sql['LEFT_JOIN'] = array_merge($$sql['LEFT_JOIN'], [
+		$sql = $event[$sql_ary_name];
+		$sql['SELECT'] .= ', pm.post_created';
+		$sql['LEFT_JOIN'] = array_merge($sql['LEFT_JOIN'], [
 				[
 					'FROM'	=> [$this->postsmerging_table => 'pm'],
 					'ON'	=> "$field = pm.post_id",
 				],
 		]);
-		$event[$sql] = $$sql;
+		$event[$sql_ary_name] = $sql;
 	}
 
 	/**

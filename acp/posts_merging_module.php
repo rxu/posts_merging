@@ -158,12 +158,19 @@ class posts_merging_module
 
 		$posts_merging_separator_text = ($posts_merging_separator_text) ?: $config_text->get('posts_merging_separator_text');
 
-		include_once($phpbb_root_path . 'includes/functions_display.' . $php_ext);
 
 		/*
 		* Constant merge separator preview
 		*/
-		include_once($phpbb_root_path . 'includes/message_parser.' . $php_ext);
+		if (!function_exists('display_custom_bbcodes'))
+		{
+			include($phpbb_root_path . 'includes/functions_display.' . $php_ext);
+		}
+
+		if (!class_exists('parse_message'))
+		{
+			include($phpbb_root_path . 'includes/message_parser.' . $php_ext);
+		}
 
 		// Prepare message separator
 		$language->add_lang('posts_merging', 'rxu/postsmerging');
@@ -187,8 +194,9 @@ class posts_merging_module
 			$posts_merging_separator_text
 		);
 
-		// Eval linefeeds and generate the separator, time interval included
-		$posts_merging_separator_text_prewiew = sprintf(str_replace('\n', "\n", $posts_merging_separator_text_prewiew), implode(' ', $time));
+		// Parse {TIME} placeholder to replace it with the time interval
+		// Also eval linefeeds and generate the separator
+		$posts_merging_separator_text_prewiew = str_replace(['\n', '{TIME}'], ["\n", implode(' ', $time)], $posts_merging_separator_text_prewiew);
 
 		$message_parser = new \parse_message($posts_merging_separator_text_prewiew);
 		// Allowing Quote BBCode
