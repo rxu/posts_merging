@@ -192,7 +192,6 @@ class helper
 					SET attach_comment = '" . $this->db->sql_escape($attach_row['attach_comment']) . "'
 					WHERE attach_id = " . (int) $attach_row['attach_id'] . '
 						AND is_orphan = 0';
-				$this->db->sql_query($sql);
 			}
 			else
 			{
@@ -217,8 +216,9 @@ class helper
 					WHERE attach_id = ' . (int) $attach_row['attach_id'] . '
 						AND is_orphan = 1
 						AND poster_id = ' . (int) $this->user->data['user_id'];
-				$this->db->sql_query($sql);
 			}
+
+			$this->db->sql_query($sql);
 		}
 
 		if ($space_taken && $files_added)
