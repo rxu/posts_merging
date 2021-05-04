@@ -207,7 +207,10 @@ class listener implements EventSubscriberInterface
 			{
 				$merge_post_data['post_text'] = preg_replace_callback(
 					'#\[attachment=([0-9]+)\](.*?)\[\/attachment\]#',
-					function ($match) use ($num_new_attachments) {return '[attachment='.($match[1] + $num_new_attachments).']' . $match[2] . '[/attachment]'; },
+					function ($match) use ($num_new_attachments)
+					{
+						return '[attachment=' . ($match[1] + $num_new_attachments) . ']' . $match[2] . '[/attachment]';
+					},
 					$merge_post_data['post_text']
 				);
 			}
@@ -433,8 +436,7 @@ class listener implements EventSubscriberInterface
 	/**
 	 * Inject posts creation time data to postrow to display
 	 *
-	 * @param \phpbb\event\data	$event		Event object
-	 * @param string			$eventname	Name of the event
+	 * @param \phpbb\event\data	$event	Event object
 	 */
 	public function modify_viewtopic_postrow($event)
 	{
