@@ -160,7 +160,7 @@ class listener implements EventSubscriberInterface
 
 		// Preliminary checks if the post-based post merging option was checked,
 		// and user has permission for merging or ignoring merging
-		$do_not_merge_with_previous = $this->request->is_set_post('posts_merging_option', false)
+		$do_not_merge_with_previous = $this->request->is_set_post('posts_merging_option')
 			&& $this->auth->acl_get('u_postsmerging') && $this->auth->acl_get('u_postsmerging_ignore');
 
 		if ($this->auth->acl_get('u_postsmerging') && !$do_not_merge_with_previous && !$this->helper->post_needs_approval($data)
@@ -469,7 +469,7 @@ class listener implements EventSubscriberInterface
 			$this->language->add_lang('posts_merging', 'rxu/postsmerging');
 			$this->template->assign_vars([
 				'POSTS_MERGING_OPTION'				=> true,
-				'S_POSTS_MERGING_OPTION_CHECKED'	=> $this->request->is_set_post('posts_merging_option', false) ? ' checked="checked"' : '',
+				'S_POSTS_MERGING_OPTION_CHECKED'	=> $this->request->is_set_post('posts_merging_option') ? ' checked="checked"' : '',
 			]);
 		}
 	}
