@@ -17,7 +17,7 @@ class posts_merging_test extends \phpbb_functional_test_case
 {
 	static protected function setup_extensions()
 	{
-		return array('rxu/postsmerging');
+		return ['rxu/postsmerging'];
 	}
 
 	public function test_merging_posts()
@@ -33,7 +33,7 @@ class posts_merging_test extends \phpbb_functional_test_case
 		$form->setValues(['message' => 'This is a post which SHOULD BE merged with the previous one.']);
 		$crawler = self::submit($form);
 
-		$this->assertStringContainsString('Added in', $crawler->filter('html')->text());
+		$this->assertStringContainsString('Added after', $crawler->filter('html')->text());
 	}
 
 	public function test_ignore_merging_posts()

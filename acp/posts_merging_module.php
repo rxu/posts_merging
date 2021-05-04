@@ -158,7 +158,6 @@ class posts_merging_module
 
 		$posts_merging_separator_text = ($posts_merging_separator_text) ?: $config_text->get('posts_merging_separator_text');
 
-
 		/*
 		* Constant merge separator preview
 		*/
