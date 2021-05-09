@@ -33,7 +33,7 @@ if (empty($lang) || !is_array($lang))
 // equally where a string contains only two placeholders which are used to wrap text
 // in a url you again do not need to specify an order e.g., 'Click %sHERE%s' is fine
 $lang = array_merge($lang, [
-	'MERGE_SEPARATOR'		=> "\n\n[size=85][color=green]Toegevoegd in %s:[/color][/size]\n",
+	'MERGE_SEPARATOR'		=> "\n\n[size=85][color=green]Toegevoegd in {TIME}:[/color][/size]\n",
 	'MERGE_SUBJECT'			=> "[size=85][color=green]%s[/color][/size]\n",
 	'POSTS_MERGING_OPTION'		=> 'Niet samenvoegen met vorig bericht',
 
