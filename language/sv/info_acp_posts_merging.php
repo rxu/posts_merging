@@ -46,5 +46,5 @@ $lang = array_merge($lang, [
 	'MERGE_NO_FORUMS'				=> 'Uteslutna forum',
 	'MERGE_NO_FORUMS_EXPLAIN'		=> 'Komma-separerad lista med forum-IDn där sammanslagning ej bör utföras när denna funktion har aktiverats.',
 	'MERGE_SEPARATOR'				=> 'Separator',
-	'MERGE_SEPARATOR_EXPLAIN'		=> 'Här kan du konfigurera separatorn som kommer att visas mellan de sammanslagna inläggen.<br />Du kan använda BBCodes som kommer att parsas enligt forumets inställningar.<br /><br />Du kan även använda textsträngar: {L_<em>&lt;STRINGNAME&gt;</em>} där <em>&lt;STRINGNAME&gt;</em> är namnet på den översatta textsträng som du vill använda. Exempel: {L_WROTE} kommer att visa “wrote” eller dess översättning.<br /><br />Använd platshållaren <em>&#37;s</em> (en gång) för att infoga tiden som gått i separatorn.',
+	'MERGE_SEPARATOR_EXPLAIN'		=> 'Här kan du konfigurera separatorn som kommer att visas mellan de sammanslagna inläggen.<br />Du kan använda BBCodes som kommer att parsas enligt forumets inställningar.<br /><br />Du kan även använda textsträngar: {L_<em>&lt;STRINGNAME&gt;</em>} där <em>&lt;STRINGNAME&gt;</em> är namnet på den översatta textsträng som du vill använda. Exempel: {L_WROTE} kommer att visa “wrote” eller dess översättning.<br /><br />Använd platshållaren <em>{TIME}</em> för att infoga tiden som gått i separatorn.',
 ]);
