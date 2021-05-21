@@ -3,8 +3,12 @@
 	$('#qr_posts').on('qr_completed', function (e) {
 		if ($('#qr_posts_merging_option').length > 0) {
 			if ($('#qr_posts_merging_option').html().length > 0 && $('#qr_postform input[name="posts_merging_option"]').length == 0) {
+				$('#qr_posts_merging_option div').addClass('additional-element');
 				$('#message-box').after($('#qr_posts_merging_option').html());
-				quickreply.style.setAdditionalElements();
+
+				if ($('#qr_postform').hasClass('qr_fixed_form')) {
+					$('#posts_merging_option').parents('.additional-element').hide();
+				}
 			}
 			$('#qr_posts_merging_option').remove();
 		}
