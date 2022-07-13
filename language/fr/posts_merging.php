@@ -40,7 +40,7 @@ if (empty($lang) || !is_array($lang))
 //
 
 $lang = array_merge($lang, [
-	'MERGE_SEPARATOR'		=> "\n\n[size=85][color=green]Ajouté {TIME} après :[/color][/size]\n",
+	'MERGE_SEPARATOR'		=> "\n\n[size=85][color=green]Ajouté {TIME} après :[/color][/size]\n",
 	'MERGE_SUBJECT'			=> "[size=85][color=green]%s[/color][/size]\n",
 	'POSTS_MERGING_OPTION'	=> 'Ne pas fusionner avec le message précédent',
 
