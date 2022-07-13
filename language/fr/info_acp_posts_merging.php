@@ -7,6 +7,7 @@
  * @license GNU General Public License, version 2 (GPL-2.0)
  *
  * French translation by Galixte (http://www.galixte.com)
+ * French translation review by phpBB-fr.com (https://www.phpbb-fr.com)
  *
  */
 
@@ -50,5 +51,5 @@ $lang = array_merge($lang, [
 	'MERGE_NO_FORUMS'				=> 'Forums exclus',
 	'MERGE_NO_FORUMS_EXPLAIN'		=> 'Sélectionnez les forums <strong>à exclure de fonctionnalité de fusion des messages</strong>. Ne sélectionnez aucun forum pour utiliser la fonctionnalité de fusion des messages dans tous les forums.<br />Pour sélectionner / désélectionner plusieurs forums, en utilisant la bonne combinaison du clavier et de la souris en fonction de votre ordinateur ou navigateur.',
 	'MERGE_SEPARATOR'				=> 'Séparateur',
-	'MERGE_SEPARATOR_EXPLAIN'		=> 'Permet de configurer le texte séparateur qui sera affiché entre chaque message fusionné.<br />Il est possible d’utiliser les BBCodes qui seront analysés en fonction des paramètres du forum ou des messages.<br /><br />Il est également possible d’utiliser une clé de langue présente dans le répertoire de la langue utilisée, telle que : {L_<em>&lt;NOMDELACLE&gt;</em>} où <em>&lt;NOMDELACLE&gt;</em> est le nom de la clé de langue que l’on souhaite afficher. Par exemple, {L_WROTE} affiche le mot « Écrire » ou sa traduction en fonction de la langue utilisée par l’utilisateur.<br /><br />Utiliser <em>{TIME}</em> afin d’inclure dans le texte séparateur le temps écoulé entre les messages fusionnés.',
+	'MERGE_SEPARATOR_EXPLAIN'		=> 'Permet de configurer le texte séparateur qui sera inséré entre chaque message fusionné.<br />Vous pouvez utiliser les BBCodes, en fonction des paramètres définis au niveau du forum ou des messages.<br /><br />Vous pouvez également utiliser n’importe quelle clé de langue disponible dans le répertoire « language/ », telle que : {L_<em>&lt;NOMDELACLE&gt;</em>} où <em>&lt;NOMDELACLE&gt;</em> est le nom de la clé de langue que l’on souhaite utiliser. Par exemple, {L_WROTE} affiche le mot « a écrit » ou sa traduction en fonction de la langue utilisée par l’utilisateur.<br /><br />Utilisez <em>{TIME}</em> afin d’inclure dans le texte séparateur le temps écoulé entre les messages fusionnés.',
 ]);
