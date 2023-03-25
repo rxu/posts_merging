@@ -186,7 +186,7 @@ class listener implements EventSubscriberInterface
 			// In this case, also don't merge posts and return
 			// Exceptions are administrators and forum moderators
 			$num_old_attachments = $this->helper->count_post_attachments((int) $merge_post_data['post_id']);
-			$num_new_attachments = count($data['attachment_data']);
+			$num_new_attachments = !empty($data['attachment_data']) ? count($data['attachment_data']) : 0;
 			$total_attachments_count = $num_old_attachments + $num_new_attachments;
 			if (($total_attachments_count > $this->config['max_attachments']) && !$this->auth->acl_get('a_')
 				&& !$this->auth->acl_get('m_', (int) $data['forum_id'])
