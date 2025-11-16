@@ -169,7 +169,6 @@ class listener implements EventSubscriberInterface
 		)
 		{
 			$merge_post_data = $this->helper->get_last_post_data($data);
-			$post_visibility = $merge_post_data['post_visibility'];
 
 			// Do not merge if there's no last post data, the poster is not current user, user is not registered,or
 			// the post is locked, has not yet been approved or allowed merge period has left
@@ -197,6 +196,7 @@ class listener implements EventSubscriberInterface
 
 			$data['post_id'] = (int) $merge_post_data['post_id'];
 			$merge_post_data['post_attachment'] = ($total_attachments_count) ? 1 : 0;
+			$post_visibility = $merge_post_data['post_visibility'];
 
 			// Decode old message and addon
 			$merge_post_data['post_text'] = $this->helper->prepare_text_for_merge($merge_post_data);
